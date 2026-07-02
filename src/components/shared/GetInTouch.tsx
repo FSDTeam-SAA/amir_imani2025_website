@@ -24,6 +24,40 @@ const contactSchema = z.object({
 type ContactFormData = z.infer<typeof contactSchema>;
 type FormErrors = Partial<Record<keyof ContactFormData, string>>;
 
+const MapPinIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="14"
+    height="14"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+    <circle cx="12" cy="10" r="3" />
+  </svg>
+);
+
+const MailIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="14"
+    height="14"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <rect width="20" height="16" x="2" y="4" rx="2" />
+    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+  </svg>
+);
+
 const GetInTouch = () => {
   const { mutate, isPending } = useContact();
   const [formData, setFormData] = useState<ContactFormData>({
@@ -36,12 +70,36 @@ const GetInTouch = () => {
   });
   const [errors, setErrors] = useState<FormErrors>({});
 
+  const [fullName, setFullName] = useState("");
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setFullName(value);
+
+    const parts = value.trim().split(" ");
+    const fName = parts[0] || "";
+    const lName = parts.slice(1).join(" ") || "";
+
+    setFormData((prev) => ({
+      ...prev,
+      firstName: fName,
+      lastName: lName,
+    }));
+
+    if (errors.firstName || errors.lastName) {
+      setErrors((prev) => ({
+        ...prev,
+        firstName: undefined,
+        lastName: undefined,
+      }));
+    }
+  };
+
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    // Clear the error for this field when user starts typing
     if (errors[name as keyof ContactFormData]) {
       setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
@@ -74,167 +132,279 @@ const GetInTouch = () => {
   };
 
   return (
-    <section className="my-10 md:my-16 lg:my-20 container mx-auto">
-      <div className=" px-6 bg-secondary rounded-2xl  py-6 md:py-23.75 md:px-37.5">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mx-auto">
-          {/* Form */}
+    <section className="bg-[#fbfbfb] space-y-20  text-[#222222] font-sans px-4 py-20 md:py-28 flex flex-col items-center w-full">
+      {/* Header Info */}
+      <div className="mx-auto text-center mb-12 md:mb-16">
+        <span className="text-[10px] tracking-[0.2em] font-bold text-[#bba185] uppercase block mb-3">
+          Get in Touch
+        </span>
+        <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
+          Let&apos;s <span className="text-[#577b8a]">Talk.</span>
+        </h2>
+        <p className="text-xs md:text-[13px] text-[#777777] leading-relaxed max-w-md mx-auto">
+          Our friendly team would love to hear from you.
+        </p>
+      </div>
+
+      {/* Main Contact Card Container */}
+      <div className="w-full container  overflow-hidden grid grid-cols-1 md:grid-cols-12 min-h-[520px]">
+        {/* Left Panel: Reach Out / Map Info */}
+        <div className="md:col-span-5 bg-[#15120e] text-white p-8 md:p-12 flex flex-col justify-between relative overflow-hidden">
           <div>
-            <h2 className="text-2xl md:text-4xl lg:text-[48px] font-bold text-primary-foreground mb-2 text-start">
-              Get in touch
-            </h2>
-            <p className="text-primary-foreground text-start mb-5 lg:mb-10 max-w-2xl">
-              Our friendly team would love to hear from you.
+            <h3 className="text-xl font-bold tracking-tight mb-2">Reach Out</h3>
+            <p className="text-xs text-[#999999] font-light mb-10">
+              We typically respond within 2–3 business days.
             </p>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex flex-col">
-                  <input
-                    type="text"
-                    name="firstName"
-                    placeholder="First Name"
-                    value={formData.firstName}
-                    onChange={handleChange}
-                    className={`bg-white text-gray-900 placeholder-gray-500 rounded-full px-6 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-white/30 ${
-                      errors.firstName ? "ring-2 ring-red-500" : ""
-                    }`}
-                  />
-                  {errors.firstName && (
-                    <span className="text-red-500 text-xs mt-1 px-4">
-                      {errors.firstName}
-                    </span>
-                  )}
+
+            {/* Information Blocks */}
+            <div className="space-y-8">
+              {/* Address */}
+              <div className="flex items-start gap-4">
+                <div className="w-8 h-8 rounded-full border border-neutral-800 bg-neutral-900 flex items-center justify-center shrink-0 mt-0.5 text-[#ba6143]">
+                  <MapPinIcon />
                 </div>
-                <div className="flex flex-col">
-                  <input
-                    type="text"
-                    name="lastName"
-                    placeholder="Last Name"
-                    value={formData.lastName}
-                    onChange={handleChange}
-                    className={`bg-white text-gray-900 placeholder-gray-500 rounded-full px-6 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-white/30 ${
-                      errors.lastName ? "ring-2 ring-red-500" : ""
-                    }`}
-                  />
-                  {errors.lastName && (
-                    <span className="text-red-500 text-xs mt-1 px-4">
-                      {errors.lastName}
-                    </span>
-                  )}
+                <div>
+                  <span className="text-[9px] tracking-wider font-bold text-[#888888] uppercase block mb-1">
+                    Address
+                  </span>
+                  <p className="text-xs text-[#cccccc] leading-relaxed font-light">
+                    DoUndo Studio
+                    <br />
+                    7011 McCowan Rd, Markham
+                    <br />
+                    ON L3S 3L7, Canada
+                  </p>
                 </div>
               </div>
-              <div className="flex flex-col">
+
+              {/* Email */}
+              <div className="flex items-start gap-4">
+                <div className="w-8 h-8 rounded-full border border-neutral-800 bg-neutral-900 flex items-center justify-center shrink-0 mt-0.5 text-[#ba6143]">
+                  <MailIcon />
+                </div>
+                <div>
+                  <span className="text-[9px] tracking-wider font-bold text-[#888888] uppercase block mb-1">
+                    Email
+                  </span>
+                  <a
+                    href="mailto:hello@doundo.com"
+                    className="text-xs text-[#cccccc] hover:text-white transition-colors font-light"
+                  >
+                    hello@doundo.com
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Subdued ambient glowing background */}
+          <div className="absolute -bottom-16 -right-16 w-48 h-48 bg-[#ba6143]/10 blur-[50px] rounded-full pointer-events-none" />
+        </div>
+
+        {/* Right Panel: Functional Form */}
+        <form
+          onSubmit={handleSubmit}
+          className="md:col-span-7 p-8 md:p-12 flex flex-col justify-between bg-white text-[#222222]"
+        >
+          <div>
+            <h3 className="text-xl font-bold tracking-tight mb-1 text-[#111111]">
+              Send us a message
+            </h3>
+            <p className="text-xs text-[#777777] font-light mb-8">
+              Fill in the form below and we&apos;ll get back to you shortly.
+            </p>
+
+            {/* Input fields row */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+              {/* Name (Combined First + Last Input) */}
+              <div>
+                <label className="text-[9px] tracking-wider font-bold text-[#666666] uppercase block mb-2">
+                  First Name
+                </label>
+
+                <input
+                  type="text"
+                  name="firstName"
+                  placeholder="First Name"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  className={`w-full bg-[#fcfaf4] border rounded px-3 py-2 text-xs text-[#222222] placeholder-neutral-400 focus:outline-none transition-colors ${
+                    errors.firstName
+                      ? "border-red-500 ring-1 ring-red-500"
+                      : "border-neutral-200/60 focus:border-neutral-400"
+                  }`}
+                />
+
+                {errors.firstName && (
+                  <span className="text-red-500 text-[10px] mt-1 block">
+                    {errors.firstName}
+                  </span>
+                )}
+              </div>
+
+              <div>
+                <label className="text-[9px] tracking-wider font-bold text-[#666666] uppercase block mb-2">
+                  Last Name
+                </label>
+
+                <input
+                  type="text"
+                  name="lastName"
+                  placeholder="Last Name"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  className={`w-full bg-[#fcfaf4] border rounded px-3 py-2 text-xs text-[#222222] placeholder-neutral-400 focus:outline-none transition-colors ${
+                    errors.lastName
+                      ? "border-red-500 ring-1 ring-red-500"
+                      : "border-neutral-200/60 focus:border-neutral-400"
+                  }`}
+                />
+
+                {errors.lastName && (
+                  <span className="text-red-500 text-[10px] mt-1 block">
+                    {errors.lastName}
+                  </span>
+                )}
+              </div>
+              {/* Email */}
+              <div>
+                <label className="text-[9px] tracking-wider font-bold text-[#666666] uppercase block mb-2">
+                  Email
+                </label>
                 <input
                   type="email"
                   name="email"
-                  placeholder="Email"
+                  placeholder="you@email.com"
                   value={formData.email}
                   onChange={handleChange}
-                  className={`bg-white text-gray-900 placeholder-gray-500 rounded-full px-6 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-white/30 ${
-                    errors.email ? "ring-2 ring-red-500" : ""
+                  className={`w-full bg-[#fcfaf4] border rounded px-3 py-2 text-xs text-[#222222] placeholder-neutral-400 focus:outline-none transition-colors ${
+                    errors.email
+                      ? "border-red-500 ring-1 ring-red-500"
+                      : "border-neutral-200/60 focus:border-neutral-400"
                   }`}
                 />
                 {errors.email && (
-                  <span className="text-red-500 text-xs mt-1 px-4">
+                  <span className="text-red-500 text-[10px] mt-1 block">
                     {errors.email}
                   </span>
                 )}
               </div>
-              <div className="flex flex-col">
+
+              <div>
+                <label className="text-[9px] tracking-wider font-bold text-[#666666] uppercase block mb-2">
+                  Phone Number
+                </label>
+
                 <input
                   type="tel"
                   name="phone"
-                  placeholder="Phone"
+                  placeholder="+1 (123) 456-7890"
                   value={formData.phone}
                   onChange={handleChange}
-                  className={`bg-white text-gray-900 placeholder-gray-500 rounded-full px-6 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-white/30 ${
-                    errors.phone ? "ring-2 ring-red-500" : ""
+                  className={`w-full bg-[#fcfaf4] border rounded px-3 py-2 text-xs text-[#222222] placeholder-neutral-400 focus:outline-none transition-colors ${
+                    errors.phone
+                      ? "border-red-500 ring-1 ring-red-500"
+                      : "border-neutral-200/60 focus:border-neutral-400"
                   }`}
                 />
+
                 {errors.phone && (
-                  <span className="text-red-500 text-xs mt-1 px-4">
+                  <span className="text-red-500 text-[10px] mt-1 block">
                     {errors.phone}
                   </span>
                 )}
               </div>
-              <div className="flex flex-col">
-                <textarea
-                  name="message"
-                  placeholder="Tell us a message"
-                  rows={5}
-                  value={formData.message}
-                  onChange={handleChange}
-                  className={`w-full bg-white text-gray-900 placeholder-gray-500 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-white/30 resize-none ${
-                    errors.message ? "ring-2 ring-red-500" : ""
-                  }`}
-                />
-                {errors.message && (
-                  <span className="text-red-500 text-xs mt-1 px-4">
-                    {errors.message}
-                  </span>
-                )}
-              </div>
+            </div>
 
-              <div className="flex flex-col">
-                <div className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    
-                    id="privacy"
-                    checked={formData.privacyAgreed as boolean}
-                    onChange={(e) => {
-                      setFormData((prev) => ({
+            {/* Message Area */}
+            <div className="mb-6">
+              <label className="text-[9px] tracking-wider font-bold text-[#666666] uppercase block mb-2">
+                Message
+              </label>
+              <textarea
+                name="message"
+                rows={4}
+                placeholder="Tell us how we can help..."
+                value={formData.message}
+                onChange={handleChange}
+                className={`w-full bg-[#fcfaf4] border rounded px-3 py-2 text-xs text-[#222222] placeholder-neutral-400 focus:outline-none transition-colors resize-none ${
+                  errors.message
+                    ? "border-red-500 ring-1 ring-red-500"
+                    : "border-neutral-200/60 focus:border-neutral-400"
+                }`}
+              />
+              {errors.message && (
+                <span className="text-red-500 text-[10px] mt-1 block">
+                  {errors.message}
+                </span>
+              )}
+            </div>
+
+            {/* Privacy Policy Checkbox */}
+            <div className="flex flex-col mb-8">
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="privacy"
+                  checked={formData.privacyAgreed as boolean}
+                  onChange={(e) => {
+                    setFormData((prev) => ({
+                      ...prev,
+                      privacyAgreed: e.target.checked as unknown as true,
+                    }));
+                    if (errors.privacyAgreed) {
+                      setErrors((prev) => ({
                         ...prev,
-                        privacyAgreed: e.target.checked as unknown as true,
+                        privacyAgreed: undefined,
                       }));
-                      if (errors.privacyAgreed) {
-                        setErrors((prev) => ({
-                          ...prev,
-                          privacyAgreed: undefined,
-                        }));
-                      }
-                    }}
-                    className="w-4 h-4 outline-none "
-                  />
-                  <label htmlFor="privacy" className="text-[#343A40] text-sm">
-                    I agree to the{" "}
-                    <Link
-                      href="/privacy-policy"
-                      className="underline cursor-pointer"
-                    >
-                      privacy policy
-                    </Link>
-                  </label>
-                </div>
-                {errors.privacyAgreed && (
-                  <span className="text-red-500 text-xs mt-1">
-                    {errors.privacyAgreed}
-                  </span>
-                )}
+                    }
+                  }}
+                  className="w-3.5 h-3.5 accent-[#ba6143] border-neutral-300 rounded cursor-pointer"
+                />
+                <label
+                  htmlFor="privacy"
+                  className="text-xs text-[#555555] cursor-pointer font-light select-none"
+                >
+                  I agree to the{" "}
+                  <Link
+                    href="/privacy-policy"
+                    className="underline hover:text-black"
+                  >
+                    privacy policy
+                  </Link>
+                </label>
               </div>
-
-              <Button
-                type="submit"
-                disabled={isPending}
-                className="w-full text-white py-3 rounded-full font-medium transition disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isPending ? "Sending..." : "Send message"}
-              </Button>
-            </form>
+              {errors.privacyAgreed && (
+                <span className="text-red-500 text-[10px] mt-1 block">
+                  {errors.privacyAgreed}
+                </span>
+              )}
+            </div>
           </div>
 
-          {/* Map */}
-          <div className="rounded-lg overflow-hidden h-96 lg:h-auto">
-            <iframe
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              loading="lazy"
-              allowFullScreen
-              referrerPolicy="no-referrer-when-downgrade"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d963.6179371730356!2d-79.27375832139533!3d43.83166698826154!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4d6bbc2dca6db%3A0xdcb08ca7548aaf0c!2s7011%20McCowan%20Rd%2C%20Markham%2C%20ON%20L3S%203L7%2C%20Canada!5e0!3m2!1sen!2sbd!4v1767039079283!5m2!1sen!2sbd"
-            />
+          {/* Shadcn UI / Custom Button Integration with isPending status */}
+          <div>
+            <Button
+              type="submit"
+              disabled={isPending}
+              className="bg-[#ba6143] text-white font-bold tracking-wider text-[10px] uppercase px-6 py-3 rounded shadow-sm hover:bg-[#a35237] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed h-auto"
+            >
+              {isPending ? "Sending..." : "Send Message"}
+            </Button>
           </div>
-        </div>
+        </form>
+      </div>
+
+      <div className="w-full container h-[350px] md:h-[450px] rounded-lg overflow-hidden ">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d963.6179371730356!2d-79.27375832139533!3d43.83166698826154!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4d6bbc2dca6db%3A0xdcb08ca7548aaf0c!2s7011%20McCowan%20Rd%2C%20Markham%2C%20ON%20L3S%203L7%2C%20Canada!5e0!3m2!1sen!2sbd!4v1767039079283!5m2!1sen!2sbd"
+          width="100%"
+          height="100%"
+          style={{ border: 0 }}
+          loading="lazy"
+          allowFullScreen
+          referrerPolicy="no-referrer-when-downgrade"
+        />
       </div>
     </section>
   );

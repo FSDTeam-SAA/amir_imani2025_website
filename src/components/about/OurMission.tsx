@@ -1,203 +1,97 @@
-import { Brain, Eye, Users, Globe } from "lucide-react";
-import React from "react";
+import Image from "next/image";
 
-const OurMission = () => {
-  const missionData = {
-    title: "Our Mission...",
-    description:
-      "Our mission is to design games and symbolic experiences that bring people closer. Each DoUndo project is made to spark moments of play, discovery, and joy. We believe games are more than entertainment. They are a way to share stories, explore ideas, and create lasting memories.",
-
-    values: [
-      {
-        id: "vision",
-        title: "Vision",
-        description:
-          "Creating games that turn play into meaning, and moments into memories.",
-        icon: Eye,
-        iconColor: "text-blue-600",
-        bgColor: "bg-blue-50",
-        borderColor: "border-blue-200",
-        gradient: "from-blue-50 to-white",
-      },
-      {
-        id: "creativity",
-        title: "Creativity",
-        description:
-          "Designing playful worlds where imagination and strategy thrive together.",
-        icon: Brain,
-        iconColor: "text-purple-600",
-        bgColor: "bg-purple-50",
-        borderColor: "border-purple-200",
-        gradient: "from-purple-50 to-white",
-      },
-      {
-        id: "exploration",
-        title: "Exploration",
-        description:
-          "Building symbolic experiences that reveal depth through simple rules.",
-        icon: Globe,
-        iconColor: "text-amber-600",
-        bgColor: "bg-amber-50",
-        borderColor: "border-amber-200",
-        gradient: "from-amber-50 to-white",
-      },
-      {
-        id: "community",
-        title: "Community",
-        description:
-          "Crafting moments of joy that bring people closer through play.",
-        icon: Users,
-        iconColor: "text-green-600",
-        bgColor: "bg-green-50",
-        borderColor: "border-green-200",
-        gradient: "from-green-50 to-white",
-      },
+const AboutSectionOnly = () => {
+  const storyData = {
+    aboutTag: "WHO WE ARE",
+    aboutTitle: "About",
+    aboutTitleHighlight: "DoUndo.",
+    aboutDescription: [
+      "oUndo is an independent game company based in Canada, creating innovative tabletop games and symbolic experiences that are simple to learn, yet always offer something new to discover.",
+      "At the heart of every DoUndo project are thirteen unique symbols — a system that links our games, fortune-telling practices, and accessories into one shared universe.",
+      "DoUndo is more than a game publisher. It is a brand with its own identity and language. Our journey is just beginning.",
+      "We are developing a collection of original games, from strategic duels and memory challenges to party experiences and symbolic readings. Alongside these games, we are exploring accessories, apparel, and digital projects inspired by the same symbolic system.",
     ],
+    lastParagraph: {
+      text1: "Every DoUndo experience is designed to spark ",
+      boldText: "memorable shared moments that continue beyond the table,",
+      text2: " as we grow into a global brand that bridges creativity, design, and storytelling."
+    },
+    image: {
+      src: "/about1.png", // Replace with your exact deck image path
+      alt: "DoUndo unique symbols cards and dice",
+      width: 450,
+      height: 450,
+    },
   };
 
   return (
-    <section
-      className="my-12 md:my-20  "
-      aria-labelledby="mission-heading"
-      itemScope
-      itemType="https://schema.org/AboutPage"
-    >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-        {/* Schema.org structured data for About Page */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "AboutPage",
-              name: missionData.title,
-              description: missionData.description,
-              publisher: {
-                "@type": "Organization",
-                name: "DoUndo",
-                description:
-                  "Independent game company creating symbolic experiences",
-              },
-            }),
-          }}
-        />
-
-        {/* Header Section */}
-        <header className="text-center mb-12 md:mb-16 lg:mb-20 max-w-4xl mx-auto">
-          <div
-            className="inline-flex items-center justify-center mb-4"
-            role="region"
-            aria-label="Mission tag"
-          >
-            <span
-              className="inline-block text-xs px-4 py-2 bg-secondary text-primary-foreground sm:text-sm font-semibold tracking-wide uppercase rounded-full  "
-              itemProp="keywords"
-            >
-              Our Mission & Values
+    <section className="bg-[#fafafa] py-16 md:py-24 px-6 md:px-12 lg:px-20 min-h-screen flex items-center justify-center font-sans">
+      <div className="container mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        
+        {/* Left Column: Title & Image */}
+        <div className="lg:col-span-5 flex flex-col space-y-8">
+          {/* Titles */}
+          <div className="space-y-1">
+            <span className="text-[10px] md:text-xs font-bold text-[#E28755] tracking-[0.25em] block uppercase">
+              {storyData.aboutTag}
             </span>
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 leading-none">
+              {storyData.aboutTitle}
+              <span className="block text-[#5F8D9E] mt-1">{storyData.aboutTitleHighlight}</span>
+            </h2>
           </div>
 
-          <h1
-            id="mission-heading"
-            className="text-2xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-6 leading-tight"
-            itemProp="headline"
-          >
-            {missionData.title}
-          </h1>
-
-          <p
-            className="text-lg md:text-xl text-gray-600 leading-relaxed md:leading-loose"
-            itemProp="description"
-          >
-            {missionData.description}
-          </p>
-        </header>
-
-        {/* Values Grid */}
-        <div
-          className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8"
-          role="list"
-          aria-label="Company values"
-        >
-          {missionData.values.map((value, index) => {
-            const IconComponent = value.icon;
-
-            return (
-              <article
-                key={value.id}
-                className={`group relative rounded-2xl border-2 bg-secondary text-primary-foreground/70 border-none  p-8 md:p-10 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-${
-                  value.iconColor.split("-")[1]
-                }-200/30 hover:-translate-y-1`}
-                role="listitem"
-                itemScope
-                itemType="https://schema.org/Intangible"
-                itemProp="mainEntity"
-              >
-                {/* Hover Effect Background */}
-                {/* <div
-                  className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
-                ></div> */}
-
-                <div className="relative z-10">
-                  {/* Icon Container */}
-                  <div
-                    className={`inline-flex items-center justify-center p-4 bg-white rounded-full mb-6 `}
-                    aria-hidden="true"
-                  >
-                    <IconComponent
-                      className={`w-7 h-7 text-primary`}
-                      aria-label={`${value.title} icon`}
-                    />
-                  </div>
-
-                  {/* Value Title */}
-                  <h2
-                    className="text-xl md:text-xl lg:text-3xl font-semibold text-gray-900 mb-4 leading-tight"
-                    itemProp="name"
-                  >
-                    {value.title}
-                  </h2>
-
-                  {/* Value Description */}
-                  <p
-                    className="text-gray-700 leading-relaxed md:leading-loose  md:text-lg   text-base"
-                    itemProp="description"
-                  >
-                    {value.description}
-                  </p>
-
-                  {/* Decorative Elements */}
-                  <div className="mt-6 pt-6">
-                    <div
-                      className={`w-12 h-1 bg-primary rounded-full group-hover:w-24 transition-all duration-500`}
-                    ></div>
-                  </div>
-                </div>
-
-                {/* Hidden Schema.org data */}
-                <meta itemProp="position" content={String(index + 1)} />
-              </article>
-            );
-          })}
+          {/* Card Deck Image Container */}
+          <div className="relative aspect-square w-full max-w-[420px] bg-[#2E2E2E] shadow-sm overflow-hidden">
+            <Image
+              src={storyData.image.src}
+              alt={storyData.image.alt}
+              width={storyData.image.width}
+              height={storyData.image.height}
+              className="w-full h-full object-cover"
+              priority
+            />
+          </div>
         </div>
 
-        {/* Mission Statement Schema.org */}
+        {/* Right Column: Text Paragraphs */}
+        <div className="lg:col-span-7 space-y-6 lg:pt-14 text-sm md:text-[15px] text-gray-700 leading-[1.75] font-normal tracking-wide">
+          
+          {/* Paragraph 1 with Big Drop Cap 'D' */}
+          <p className="relative">
+            <span className="text-5xl md:text-6xl font-bold text-[#E28755] float-left mr-2.5 h-12 md:h-14 flex items-center leading-none">
+              D
+            </span>
+            <strong>{storyData.aboutDescription[0].substring(0, 5)}</strong>
+            {storyData.aboutDescription[0].substring(5)}
+          </p>
 
-        {/* Additional SEO Content - Hidden from view but accessible to screen readers */}
-        <div className="sr-only" aria-hidden="false">
-          <h2>DoUndo Company Values</h2>
+          {/* Paragraph 2 with bold text */}
           <p>
-            Our mission focuses on creating meaningful gaming experiences that
-            foster connection and creativity.
+            At the heart of every DoUndo project are{" "}
+            <strong className="text-gray-900 font-bold">thirteen unique symbols</strong> — a
+            system that links our games, fortune-telling practices, and accessories into
+            one shared universe.
           </p>
+
+          {/* Paragraph 3 */}
+          <p>{storyData.aboutDescription[2]}</p>
+
+          {/* Paragraph 4 */}
+          <p>{storyData.aboutDescription[3]}</p>
+
+          {/* Paragraph 5 with bold highlight */}
           <p>
-            As an independent game studio, we value innovation, community,
-            exploration, and design excellence.
+            {storyData.lastParagraph.text1}
+            <strong className="text-gray-900 font-bold">{storyData.lastParagraph.boldText}</strong>
+            {storyData.lastParagraph.text2}
           </p>
+          
         </div>
+
       </div>
     </section>
   );
 };
 
-export default OurMission;
+export default AboutSectionOnly;

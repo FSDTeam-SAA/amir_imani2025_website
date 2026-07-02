@@ -1,129 +1,110 @@
-"use client";
-import Image from "next/image";
-import Link from "next/link";
-import { FaLinkedinIn } from "react-icons/fa6";
+import React from 'react';
+import Image from 'next/image';
+import { Linkedin } from 'lucide-react';
 
-const MeetOurTeam = () => {
-  const data = [
+// Custom icons to replicate the bottom button UI elements
+const CopyIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+);
+
+const XIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+);
+
+export default function MeetOurTeam() {
+  const founders = [
     {
-      img: "/images/Amir_image.JPG",
       name: "Amir Imani",
-      position: "Founder",
-      discription:
-        "Amir Imani is the creator of DoUndo, a series of games with simple rules and open possibilities. Thirteen unique symbols lie at the heart of his work, each carrying a story that brings depth and meaning to every game.",
-      side: `left`,
-      socialLink: [
-        {
-          link: "https://www.linkedin.com/in/amir-imani-fazel-5166a359/",
-        },
-      ],
+      role: "FOUNDER",
+      image: "/images/Amir_image.JPG", // Replace with your actual image path
+      bio: "Amir Imani is the creator of bolindo, a series of games with simple rules and open possibilities. Thirteen unique symbols lie at the heart of his work, each carrying a story that brings depth and meaning to every game.",
+      link: "https://www.linkedin.com/in/amir-imani-fazel-5166a359"
     },
     {
-      img: "/images/sara_image.jpg",
       name: "Sara Seydi",
-      position: "Co Founder & Director of Strategy and Growth",
-      discription:
-        "Sara is the strategic force behind DoUndo, turning ideas into reality and guiding them toward growth. With expertise in management and leadership, she shapes branding, partnerships, strategy, and funding, laying strong foundations for DoUndo’s journey as a global brand.",
-      side: `right`,
-      socialLink: [
-        {
-          link: "https://www.linkedin.com/in/sara-seydi-7934632a3/",
-        },
-      ],
+      role: "Co Founder & Director of Strategy and Growth",
+      image: "/images/sara_image.jpg", // Replace with your actual image path
+      bio: "Sara is the strategic force behind DoUndo, turning ideas into reality and guiding them toward growth. With expertise in management and leadership, she shapes branding, partnerships, strategy, and funding, laying strong foundations for DoUndo’s journey as a global brand.",
+            link: "https://www.linkedin.com/in/sara-seydi-7934632a3"
     },
-    {
-      img: "/images/Shikha.webp",
+        {
       name: "Shikha Singh",
-      position: "Creative Head",
-      discription:
-        "Shikha is the creative force behind DoUndo’s visual identity. As the creative designer, she brings Amir’s vision to life, crafting every symbol, card, and box design with care and imagination. From brainstorming with the team to shaping the game’s look and feel, Shikha ensures that DoUndo’s design truly connects with its players.",
-      side: `left`,
-      socialLink: [
-        {
-          link: "https://www.linkedin.com/in/shikhasingh100/",
-        },
-      ],
+      role: "Creative Head",
+      image: "/images/Shikha.png", // Replace with your actual image path
+      bio: "Shikha is the creative force behind DoUndo’s visual identity. As the creative designer, she brings Amir’s vision to life, crafting every symbol, card, and box design with care and imagination. From brainstorming with the team to shaping the game’s look and feel, Shikha ensures that DoUndo’s design truly connects with its players.",
+      link: "https://www.linkedin.com/in/shikhasingh100"
     },
-    {
-      img: "/images/AshutoshSingh.png",
+      {
       name: "Ashutosh Singh",
-      position: "Project Manager",
-      discription:
-        "Ashutosh is the project manager at Doundo and the person who helps turn big ideas into real, playable games. He works closely with the team, keeps everyone aligned, and makes sure no good idea gets lost along the way. From planning and team syncs to fine-tuning the small details, he helps bring the vision to life. With a background in VFX and experience working on major film projects, he brings a strong creative eye and a problem-solver’s mindset to everything we create.",
-      side: `right`,
-      socialLink: [
-        {
-          link: "https://www.linkedin.com/in/ashutosh89/",
-        },
-      ],
-    },
+      role: "Project Manager",
+      image: "/images/AshutoshSingh.png", // Replace with your actual image path
+      bio: "Ashutosh is the project manager at Doundo and the person who helps turn big ideas into real, playable games. He works closely with the team, keeps everyone aligned, and makes sure no good idea gets lost along the way. From planning and team syncs to fine-tuning the small details, he helps bring the vision to life. With a background in VFX and experience working on major film projects, he brings a strong creative eye and a problem-solver’s mindset to everything we create.",
+      link: "https://www.linkedin.com/in/ashutosh89"
+    }
   ];
 
   return (
-    <section className="my-10 lg:my-16">
-      <div className="container mx-auto">
-        <div className="text-center space-y-2">
-          <p className="inline-block text-xs px-4 py-2 bg-secondary text-primary-foreground sm:text-sm font-semibold tracking-wide uppercase rounded-full ">
-            Team
-          </p>
-          <h2 className="text-2xl md:text-4xl xl:text-5xl font-bold">
-            Meet Our Founders
-          </h2>
-        </div>
-        <div>
-          {data.map((item, index) => (
-            <div
-              key={index}
-              className={`flex flex-col md:flex-row items-center my-12 md:my-20 ${
-                item.side === "right" ? "md:flex-row-reverse" : ""
-              }`}
-            >
-              <div className=" relative w-90 h-90 lg:w-150 lg:h-150 px-4 ">
-                <Image
-                  src={item.img}
-                  alt={item.name}
-                  fill
-                  className=" shadow-lg w-full aspect-5/5 object-cover rounded-3xl"
-                />
-              </div>
-              <div className="w-full md:w-1/2 px-4 mt-6 md:mt-0">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-xl lg:text-3xl font-semibold mb-2">
-                    {item.name}
-                  </h3>
-                  <Link
-                    href={item.socialLink[0].link}
-                    target="_blank"
-                    className=" lg:hidden"
-                  >
-                    <FaLinkedinIn className=" w-10 h-10 hover:text-primary p-2" />
-                  </Link>
-                </div>
-                <h4 className="text-lg lg:text-xl text-gray-400 mb-4">
-                  {item.position}
-                </h4>
-                <p className="text-gray-600 text-base lg:text-lg">
-                  {item.discription}
-                </p>
-                {/* <p className=" flex gap-3 items-center pt-8">
-                  <Link href={"#"}>
-                    <FaXTwitter className=" w-10 h-10 hover:text-primary p-2 " />
-                  </Link>
-                  </p> */}
-                <Link
-                  href={item.socialLink[0].link}
-                  target="_blank"
-                  className=" gap-3 items-center pt-8 hidden lg:block"
+    <section className="bg-[#FAF6EE] text-[#222222] font-sans px-6 py-20 md:py-28">
+      <div className="container mx-auto text-center mb-16 md:mb-24">
+        {/* Top Mini Tag */}
+        <span className="text-[10px] tracking-[0.2em] font-bold text-[#E28755] uppercase block mb-4">
+          The People
+        </span>
+        
+        {/* Main Header */}
+        <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
+          Meet Our <span className="text-[#6096b4]">Founders.</span>
+        </h2>
+        
+        {/* Subtitle Description */}
+        <p className="text-sm md:text-base text-[#666666] max-w-xl mx-auto leading-relaxed">
+          A small, focused team building bolindo from idea to game table — and beyond.
+        </p>
+      </div>
+
+      {/* Grid Container */}
+      <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
+        {founders.map((founder, index) => (
+          <div key={index} className="flex flex-col">
+            {/* Image Wrapper */}
+            <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-200 mb-6">
+              <Image
+                src={founder.image}
+                alt={founder.name}
+                fill
+                priority
+                className={`object-cover ${index === 1 ? 'grayscale' : ''}`} 
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
+
+            {/* Profile Info */}
+            <div className="flex flex-col flex-grow">
+              <h3 className="text-xl font-bold tracking-tight text-[#111111]">
+                {founder.name}
+              </h3>
+              
+              <span className="text-[10px] tracking-wider font-bold text-[#c2593f] block mt-1 mb-3 uppercase">
+                {founder.role}
+              </span>
+              
+              <p className="text-xs md:text-[13px] text-[#555555] leading-relaxed mb-6 font-normal">
+                {founder.bio}
+              </p>
+
+              {/* Action/Social Buttons at Bottom */}
+              <div className="flex gap-2 mt-auto">
+                <button 
+                  className="w-7 h-7 flex items-center justify-center "
+                  aria-label="LinkedIn"
                 >
-                  <FaLinkedinIn className=" w-10 h-10 hover:text-primary p-2" />
-                </Link>
+                  <Linkedin/>
+                </button>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </section>
   );
-};
-
-export default MeetOurTeam;
+}

@@ -24,6 +24,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     siteName: "DOUNDO | GAME",
   },
+  
 };
 
 export default function RootLayout({
