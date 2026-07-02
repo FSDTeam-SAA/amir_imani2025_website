@@ -9,7 +9,7 @@ import { Product } from "@/lib/types/ecommerce";
 import { productService } from "@/lib/api/product-service";
 
 // import { MoveRight } from "lucide-react";
-import WhyChooseUs from "../about/WhyChooseUs";
+import WhyChooseUs from "../about/MakingOfSection";
 // import Link from "next/link";
 const AboutGame = () => {
   const [products, setProducts] = useState<Product[]>([]);

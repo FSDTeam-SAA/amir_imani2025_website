@@ -8,6 +8,7 @@ interface FAQItem {
 }
 
 export default function FAQAccordionSection() {
+  
   const faqData: FAQItem[] = [
     {
       question: "How do I choose my size?",
