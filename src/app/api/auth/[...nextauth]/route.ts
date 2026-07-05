@@ -66,6 +66,10 @@ const handler = NextAuth({
           // ⭐ Decode token using the typed interface
           const decoded = jwtDecode<DecodedToken>(token);
 
+          if (decoded.role?.toLowerCase() === "admin") {
+            throw new Error("Admin accounts must sign in from the admin portal.");
+          }
+
           // Return object must match 'User' interface in next.auth.d.ts
           return {
             id: decoded.sub,
@@ -124,4 +128,3 @@ const handler = NextAuth({
 });
 
 export { handler as GET, handler as POST };
-

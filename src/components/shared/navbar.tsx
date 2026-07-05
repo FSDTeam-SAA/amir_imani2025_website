@@ -38,6 +38,7 @@ export default function Navbar() {
   const { cart } = useCart();
 
   const cartItemCount = cart?.productIds?.length || 0;
+  const isAdmin = profile?.role?.toLowerCase() === "admin";
 
   const getUserInitials = () => {
     if (!profile) return "U";
@@ -190,7 +191,7 @@ export default function Navbar() {
                                 session.user?.email ||
                                 "No email"}
                           </p>
-                          {profile?.role && (
+                          {profile?.role && !isAdmin && (
                             <p className="text-xs text-muted-foreground capitalize">
                               {profile.role}
                             </p>
@@ -199,19 +200,9 @@ export default function Navbar() {
                       </div>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem asChild>
-                        {profile?.role === "admin" ? (
-                          <Link
-                            href="https://admin.doundogames.com/"
-                            className="cursor-pointer"
-                            target="_blank"
-                          >
-                            Dashboard
-                          </Link>
-                        ) : (
-                          <Link href="/profile" className="cursor-pointer">
-                            Account Settings
-                          </Link>
-                        )}
+                        <Link href="/profile" className="cursor-pointer">
+                          Account Settings
+                        </Link>
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem
@@ -306,7 +297,7 @@ export default function Navbar() {
                                     session.user?.email ||
                                     "No email"}
                               </p>
-                              {profile?.role && (
+                              {profile?.role && !isAdmin && (
                                 <p className="text-xs text-muted-foreground capitalize mt-1">
                                   {profile.role}
                                 </p>
@@ -353,17 +344,11 @@ export default function Navbar() {
                               asChild
                             >
                               <Link
-                                href={
-                                  profile?.role === "admin"
-                                    ? "/dashboard"
-                                    : "/profile"
-                                }
+                                href="/profile"
                                 onClick={() => setIsOpen(false)}
                               >
                                 <User2Icon className="mr-2 h-4 w-4" />
-                                {profile?.role === "admin"
-                                  ? "Dashboard"
-                                  : "Account Settings"}
+                                Account Settings
                               </Link>
                             </Button>
                             <Button
