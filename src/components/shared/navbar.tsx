@@ -66,8 +66,8 @@ export default function Navbar() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
   return (
-    <header className="fixed top-0  z-50 w-full  animate-in fade-in duration-500 ">
-      <nav className="w-screen backdrop-blur-md bg-[#FFFFFF] border-b border-white/10 transition-all duration-300">
+    <header className="fixed top-0 z-50 w-full animate-in fade-in duration-500">
+      <div className="w-full backdrop-blur-md bg-[#FFFFFF] border-b border-white/10 transition-all duration-300">
         <div className="container mx-auto px-4 2xl:px-0">
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo */}
@@ -106,7 +106,7 @@ export default function Navbar() {
             </nav>
 
             {/* Right side actions */}
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center gap-1 sm:gap-2">
               {/* Search Button */}
               <Button
                 variant="ghost"
@@ -119,21 +119,22 @@ export default function Navbar() {
               </Button>
 
               {/* Cart Button */}
-              <Link href="/cart" className="relative">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="relative bg-transparent hover:bg-white/20 transition-colors"
-                  aria-label={`Shopping cart with ${cartItemCount} items`}
-                >
+              <Button
+                variant="ghost"
+                size="icon"
+                className="relative bg-transparent hover:bg-white/20 transition-colors"
+                aria-label={`Shopping cart with ${cartItemCount} items`}
+                asChild
+              >
+                <Link href="/cart">
                   <ShoppingCart className="h-5 w-5 sm:h-8 sm:w-8 text-primary" />
                   {cartItemCount > 0 && (
-                    <span className="absolute top-1 right-1 bg-primary text-white text-[10px] font-bold rounded-full h-3 w-3 flex items-center justify-center shadow-lg animate-in fade-in zoom-in">
+                    <span className="absolute top-1 right-1 bg-primary text-white text-[10px] font-bold rounded-full h-4 min-w-4 px-1 flex items-center justify-center shadow-lg animate-in fade-in zoom-in">
                       {cartItemCount > 99 ? "99+" : cartItemCount}
                     </span>
                   )}
-                </Button>
-              </Link>
+                </Link>
+              </Button>
 
               {/* User Profile/Login - Desktop */}
               <div className="hidden lg:block">
@@ -191,18 +192,26 @@ export default function Navbar() {
                                 session.user?.email ||
                                 "No email"}
                           </p>
-                          {profile?.role && !isAdmin && (
-                            <p className="text-xs text-muted-foreground capitalize">
-                              {profile.role}
-                            </p>
-                          )}
+                          <p className="text-xs text-muted-foreground capitalize">
+                            {profile?.role || "User"}
+                          </p>
                         </div>
                       </div>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem asChild>
-                        <Link href="/profile" className="cursor-pointer">
-                          Account Settings
-                        </Link>
+                        {isAdmin ? (
+                          <Link
+                            href="https://admin.doundogames.com/"
+                            className="cursor-pointer"
+                            target="_blank"
+                          >
+                            Dashboard
+                          </Link>
+                        ) : (
+                          <Link href="/profile" className="cursor-pointer">
+                            Account Settings
+                          </Link>
+                        )}
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem
@@ -386,7 +395,7 @@ export default function Navbar() {
         </div>
 
         <SearchMotal open={searchOpen} onSetSearchOpen={setSearchOpen} />
-      </nav>
+      </div>
     </header>
   );
 }

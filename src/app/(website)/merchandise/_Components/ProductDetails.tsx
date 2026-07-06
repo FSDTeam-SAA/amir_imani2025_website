@@ -26,7 +26,6 @@ export default function ProductDetailSection() {
   ];
 
   const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
-  const thumbnails = ["MAIN", "BACK", "DETAIL", "LIFE"];
 
   return (
     <section className="bg-[#FAF6EE] text-[#171513] py-12 px-6 md:px-12 lg:px-24 min-h-screen flex items-center justify-center font-sans antialiased">
