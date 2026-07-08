@@ -70,3 +70,33 @@ export interface CreatePaymentResponse {
   message: string;
   data: PaymentData;
 }
+
+export interface ShippingAddress {
+  street: string;
+  city: string;
+  province: string;
+  postalCode: string;
+  country: string;
+}
+
+export interface CreatePaymentIntentRequest {
+  userId: string;
+  shippingAddress: ShippingAddress;
+  currency?: "usd" | "cad";
+  couponCode?: string;
+}
+
+export interface PaymentIntentData {
+  clientSecret: string;
+  paymentId: string;
+  coupon?: {
+    couponId: string;
+    discountAmount: number;
+  };
+}
+
+export interface CreatePaymentIntentResponse {
+  success: boolean;
+  message: string;
+  data: PaymentIntentData;
+}

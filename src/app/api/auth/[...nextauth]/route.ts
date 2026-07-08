@@ -14,6 +14,7 @@ interface DecodedToken {
   sub: string; // user ID
   role: string;
   name: string;
+  email?: string;
   iat: number;
   exp: number;
 }
@@ -28,6 +29,7 @@ const handler = NextAuth({
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
+        token: { label: "Token", type: "text" },
       },
 
       async authorize(credentials) {
@@ -35,6 +37,18 @@ const handler = NextAuth({
           throw new Error(
             "NEXT_PUBLIC_API_URL is not defined in environment variables",
           );
+        }
+
+        if (credentials?.token) {
+          const decoded = jwtDecode<DecodedToken>(credentials.token);
+
+          return {
+            id: decoded.sub,
+            email: credentials.email || decoded.email || "",
+            role: decoded.role,
+            name: decoded.name,
+            accessToken: credentials.token,
+          };
         }
 
         if (!credentials?.email || !credentials?.password) return null;
@@ -65,10 +79,6 @@ const handler = NextAuth({
 
           // ⭐ Decode token using the typed interface
           const decoded = jwtDecode<DecodedToken>(token);
-
-          if (decoded.role?.toLowerCase() === "admin") {
-            throw new Error("Admin accounts must sign in from the admin portal.");
-          }
 
           // Return object must match 'User' interface in next.auth.d.ts
           return {

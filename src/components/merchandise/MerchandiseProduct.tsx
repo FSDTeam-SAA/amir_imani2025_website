@@ -5,7 +5,6 @@ import { Product } from "@/lib/types/ecommerce";
 import { productService } from "@/lib/api/product-service";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCart } from "@/provider/cart-provider";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import ProductCard from "../shared/product-card";
@@ -65,11 +64,6 @@ const MerchandiseProduct = () => {
     e.preventDefault();
     e.stopPropagation();
 
-    if (!session?.user?.id) {
-      toast.error("Please sign in to add to cart.");
-      return;
-    }
-
     setAddingToCartId(product._id);
     try {
       await addToCart(
@@ -77,9 +71,9 @@ const MerchandiseProduct = () => {
           {
             productId: product._id,
             quantity: 1,
+            product,
           },
-        ],
-        session.user.id
+        ]
       );
       toast.success(`${product.productName} added to cart!`);
       if (redirect) {
@@ -94,7 +88,6 @@ const MerchandiseProduct = () => {
   };
 
   const { addToCart } = useCart();
-  const { data: session } = useSession();
   const router = useRouter();
 
   if (loading) {

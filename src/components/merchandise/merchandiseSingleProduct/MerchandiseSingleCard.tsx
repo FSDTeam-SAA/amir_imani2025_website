@@ -81,10 +81,6 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
 
   const handleAddToCart = async () => {
     setIsAdding(true);
-    if (!session?.user?.id) {
-      toast.error("Please sign in to add to cart.");
-      return;
-    }
 
     if (
       ((product.colors && product.colors.length > 0) ||
@@ -114,9 +110,10 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
             quantity,
             color: selectColor || undefined,
             size: selectSize || undefined,
+            product,
           },
         ],
-        session?.user?.id as string
+        session?.user?.id
       );
       toast.success(`${product.productName} added to cart for pre-order!`);
     } catch (error) {

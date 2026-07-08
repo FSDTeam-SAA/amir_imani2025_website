@@ -1,14 +1,22 @@
 "use client";
 
 import React from "react";
-import { ShieldCheck, Loader2 } from "lucide-react";
+import { ShieldCheck, Loader2, Tag, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 interface OrderSummaryProps {
   subtotal: number;
   shipping: number;
   tax: number;
+  couponCode?: string;
+  couponDiscount?: number;
+  couponError?: string;
+  isApplyingCoupon?: boolean;
   onCheckout?: () => void;
+  onCouponCodeChange?: (value: string) => void;
+  onApplyCoupon?: () => void;
+  onRemoveCoupon?: () => void;
   isCheckoutLoading?: boolean;
   isDisabled?: boolean;
 }
@@ -17,11 +25,19 @@ const OrderSummary = React.memo(function OrderSummary({
   subtotal,
   shipping,
   tax,
+  couponCode = "",
+  couponDiscount = 0,
+  couponError = "",
+  isApplyingCoupon = false,
   onCheckout,
+  onCouponCodeChange,
+  onApplyCoupon,
+  onRemoveCoupon,
   isCheckoutLoading,
   isDisabled,
 }: OrderSummaryProps) {
-  const total = subtotal + shipping + tax;
+  const discount = Math.min(couponDiscount, subtotal);
+  const total = Math.max(0, subtotal - discount) + shipping + tax;
 
   return (
     <div className="bg-white border border-[#EFEFEF] rounded-2xl p-6 lg:p-10 shadow-[0px_8px_24px_rgba(0,0,0,0.03)] h-fit sticky top-24">
@@ -40,6 +56,60 @@ const OrderSummary = React.memo(function OrderSummary({
           <span className="text-gray-500">Tax(13%)</span>
           <span className="text-gray-500">+ ${tax.toFixed(2)}</span>
         </div>
+        {discount > 0 ? (
+          <div className="flex justify-between items-center text-sm font-medium text-emerald-600">
+            <span>Coupon discount</span>
+            <span>- ${discount.toFixed(2)}</span>
+          </div>
+        ) : null}
+      </div>
+
+      <div className="mb-8 rounded-2xl border border-[#EFEFEF] bg-[#FBFBFB] p-4">
+        <div className="mb-3 flex items-center gap-2 text-sm font-bold text-[#111111]">
+          <Tag className="h-4 w-4 text-primary" />
+          Apply Coupon
+        </div>
+        {discount > 0 ? (
+          <div className="flex items-center justify-between rounded-full bg-emerald-50 px-4 py-2 text-sm font-semibold text-emerald-700">
+            <span>{couponCode}</span>
+            <button
+              type="button"
+              onClick={onRemoveCoupon}
+              className="rounded-full p-1 transition hover:bg-emerald-100"
+              aria-label="Remove coupon"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        ) : (
+          <div className="flex gap-2">
+            <Input
+              value={couponCode}
+              onChange={(event) =>
+                onCouponCodeChange?.(event.target.value.toUpperCase())
+              }
+              placeholder="Coupon code"
+              className="h-10 rounded-full border-[#E5E5E5] bg-white text-sm"
+            />
+            <Button
+              type="button"
+              onClick={onApplyCoupon}
+              disabled={isApplyingCoupon || !couponCode.trim() || isDisabled}
+              className="h-10 rounded-full bg-primary px-5 text-white hover:bg-[#111111]"
+            >
+              {isApplyingCoupon ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                "Apply"
+              )}
+            </Button>
+          </div>
+        )}
+        {couponError ? (
+          <p className="mt-2 text-xs font-medium text-red-600">
+            {couponError}
+          </p>
+        ) : null}
       </div>
 
       <div className="pt-6 border-t border-[#EFEFEF] mb-8">

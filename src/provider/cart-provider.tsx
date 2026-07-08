@@ -8,24 +8,24 @@ import React, {
   useCallback,
 } from "react";
 import { Cart } from "../lib/types/ecommerce";
-import { cartService } from "../lib/api/cart-service";
-import { useSession } from "next-auth/react";
+// import { cartService } from "../lib/api/cart-service";
+// import { useSession } from "next-auth/react";
 import { toast } from "sonner";
+import {
+  addGuestCartItems,
+  CartItemInputWithProduct,
+  clearGuestCart,
+  getGuestCart,
+  removeGuestCartItem,
+  updateGuestCartItem,
+} from "@/lib/utils/guest-cart";
 
 
 interface CartContextType {
   cart: Cart | null;
   loading: boolean;
   refreshCart: () => Promise<void>;
-  addToCart: (
-    items: {
-      productId: string;
-      quantity: number;
-      color?: string;
-      size?: string;
-    }[],
-    userId: string
-  ) => Promise<void>;
+  addToCart: (items: CartItemInputWithProduct[], userId?: string) => Promise<void>;
   updateQuantity: (
     productId: string,
     quantity: number,
@@ -47,46 +47,68 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [cart, setCart] = useState<Cart | null>(null);
   const [loading, setLoading] = useState(false);
-  const { data: session } = useSession();
-  console.log(session?.user.id);
+  // const { data: session } = useSession();
 
   const refreshCart = useCallback(async () => {
-    if (!session?.user?.id) {
-      setCart(null);
-      return;
-    }
     setLoading(true);
-    try {
-      const response = await cartService.getCart(session.user.id);
-      if (response.success) {
-        setCart(response.data);
-      }
-    } catch (error) {
-      console.error("Failed to fetch cart:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, [session?.user?.id]);
+    setCart(getGuestCart());
+    setLoading(false);
+
+    // Previous API-based cart fetch. Kept for future restore if needed.
+    // if (!session?.user?.id) {
+    //   setCart(getGuestCart());
+    //   return;
+    // }
+    // setLoading(true);
+    // try {
+    //   const response = await cartService.getCart(session.user.id);
+    //   if (response.success) {
+    //     setCart(response.data);
+    //   }
+    // } catch (error) {
+    //   console.error("Failed to fetch cart:", error);
+    // } finally {
+    //   setLoading(false);
+    // }
+  }, []);
 
   useEffect(() => {
     refreshCart();
   }, [refreshCart]);
 
+  useEffect(() => {
+    const handleGuestCartUpdate = () => setCart(getGuestCart());
+    window.addEventListener("guest-cart-updated", handleGuestCartUpdate);
+
+    return () => {
+      window.removeEventListener("guest-cart-updated", handleGuestCartUpdate);
+    };
+  }, []);
+
   const addToCart = useCallback(
-    async (
-      items: {
-        productId: string;
-        quantity: number;
-        color?: string;
-        size?: string;
-      }[],
-      userId: string
-    ) => {
+    async (items: CartItemInputWithProduct[], userId?: string) => {
       try {
-        const response = await cartService.addToCart(userId, items);
-        if (response.success) {
-          setCart(response.data);
-        }
+        void userId;
+        setCart(addGuestCartItems(items));
+
+        // Previous API-based cart add. Kept for future restore if needed.
+        // const effectiveUserId = userId || session?.user?.id;
+        //
+        // if (!effectiveUserId) {
+        //   setCart(addGuestCartItems(items));
+        //   return;
+        // }
+        //
+        // const productItems = items.map((item) => ({
+        //   productId: item.productId,
+        //   quantity: item.quantity,
+        //   color: item.color,
+        //   size: item.size,
+        // }));
+        // const response = await cartService.addToCart(effectiveUserId, productItems);
+        // if (response.success) {
+        //   setCart(response.data);
+        // }
       } catch (error) {
         console.error("Failed to add to cart:", error);
         throw error;
@@ -102,75 +124,97 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
       color?: string,
       size?: string
     ) => {
-      if (!session?.user?.id || !cart) return;
+      if (!cart) return;
 
-      try {
-        // Build updated productIds array
-        const updatedProductIds = cart.productIds.map((item) =>
-          item.productId._id === productId &&
-          item.color === color &&
-          item.size === size
-            ? {
-                productId: item.productId._id,
-                quantity,
-                color: item.color,
-                size: item.size,
-              }
-            : {
-                productId: item.productId._id,
-                quantity: item.quantity,
-                color: item.color,
-                size: item.size,
-              }
-        );
+      setCart(updateGuestCartItem(productId, quantity, color, size));
 
-        const response = await cartService.updateCart(
-          session.user.id,
-          updatedProductIds
-        );
-        if (response.success) {
-          setCart(response.data);
-        }
-      } catch (error) {
-        console.error("Failed to update cart quantity:", error);
-        throw error;
-      }
+      // Previous API-based cart update. Kept for future restore if needed.
+      // if (!session?.user?.id) {
+      //   setCart(updateGuestCartItem(productId, quantity, color, size));
+      //   return;
+      // }
+      //
+      // try {
+      //   const updatedProductIds = cart.productIds.map((item) =>
+      //     item.productId._id === productId &&
+      //     item.color === color &&
+      //     item.size === size
+      //       ? {
+      //           productId: item.productId._id,
+      //           quantity,
+      //           color: item.color,
+      //           size: item.size,
+      //         }
+      //       : {
+      //           productId: item.productId._id,
+      //           quantity: item.quantity,
+      //           color: item.color,
+      //           size: item.size,
+      //         }
+      //   );
+      //
+      //   const response = await cartService.updateCart(
+      //     session.user.id,
+      //     updatedProductIds
+      //   );
+      //   if (response.success) {
+      //     setCart(response.data);
+      //   }
+      // } catch (error) {
+      //   console.error("Failed to update cart quantity:", error);
+      //   throw error;
+      // }
     },
-    [session?.user?.id, cart]
+    [cart]
   );
 
   const removeFromCart = useCallback(
     async (productId: string, color?: string, size?: string) => {
-      if (!session?.user?.id || !cart) return;
+      if (!cart) return;
 
-      try {
-        // Note: The specific DELETE endpoint as currently implemented in the backend
-        // removes all variations of the productId.
-        const response = await cartService.removeFromCart(cart._id, productId);
-        if (response.success) {
-          setCart(response.data);
-          toast.success(response.message || 'Item has remove form cart')
-        }
-      } catch (error) {
-        console.error("Failed to remove from cart:", error);
-        throw error;
-      }
+      setCart(removeGuestCartItem(productId, color, size));
+      toast.success("Item removed from cart");
+
+      // Previous API-based cart remove. Kept for future restore if needed.
+      // if (!session?.user?.id) {
+      //   setCart(removeGuestCartItem(productId, color, size));
+      //   toast.success("Item removed from cart");
+      //   return;
+      // }
+      //
+      // try {
+      //   const response = await cartService.removeFromCart(cart._id, productId);
+      //   if (response.success) {
+      //     setCart(response.data);
+      //     toast.success(response.message || "Item has remove form cart");
+      //   }
+      // } catch (error) {
+      //   console.error("Failed to remove from cart:", error);
+      //   throw error;
+      // }
     },
-    [session?.user?.id, cart]
+    [cart]
   );
 
   const clearCart = useCallback(async () => {
-    if (!session?.user?.id) return;
-    try {
-      const response = await cartService.updateCart(session.user.id, []);
-      if (response.success) {
-        setCart(response.data);
-      }
-    } catch (error) {
-      console.error("Failed to clear cart:", error);
-      throw error;
-    }
-  }, [session?.user?.id]);
+    setCart(clearGuestCart());
+
+    // Previous API-based cart clear. Kept for future restore if needed.
+    // if (!session?.user?.id) {
+    //   setCart(clearGuestCart());
+    //   return;
+    // }
+    //
+    // try {
+    //   const response = await cartService.updateCart(session.user.id, []);
+    //   if (response.success) {
+    //     setCart(response.data);
+    //   }
+    // } catch (error) {
+    //   console.error("Failed to clear cart:", error);
+    //   throw error;
+    // }
+  }, []);
 
   return (
     <CartContext.Provider
