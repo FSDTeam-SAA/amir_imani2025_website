@@ -18,9 +18,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { authService } from "@/lib/api/auth-service";
-// import { cartService } from "@/lib/api/cart-service";
 import { paymentService } from "@/lib/api/payment-service";
-import { ShippingAddress } from "@/lib/types/ecommerce";
+import {
+  CreatePaymentIntentRequest,
+  ShippingAddress,
+} from "@/lib/types/ecommerce";
 import { getAppliedCoupon } from "@/lib/utils/applied-coupon";
 import { clearGuestCart } from "@/lib/utils/guest-cart";
 import { useCartQuery } from "@/hooks/use-cart-query";
@@ -129,7 +131,7 @@ function CheckoutPaymentForm({
 }
 
 export default function CheckoutPage() {
-  const { data: session } = useSession();
+  const { data: session, update: updateSession } = useSession();
   const { data: cart, isLoading } = useCartQuery();
   const [values, setValues] = useState<CheckoutFormValues>(initialValues);
   const [clientSecret, setClientSecret] = useState("");
@@ -183,7 +185,9 @@ export default function CheckoutPage() {
 
     const data = response.data as RegisteredUserData | undefined;
     const userId = data?.userId || data?.user?._id || data?.user?.id;
-    if (!userId) throw new Error("Registration succeeded but no user ID was returned.");
+    if (!userId) {
+      throw new Error("Registration succeeded but no user ID was returned.");
+    }
 
     const token = data?.accessToken || data?.token;
     if (token) {
@@ -194,23 +198,12 @@ export default function CheckoutPage() {
         redirect: false,
       });
 
-      if (signInResult?.error) {
-        throw new Error(signInResult.error);
+      if (signInResult?.error || !signInResult?.ok) {
+        throw new Error(signInResult?.error || "Auto login failed.");
       }
-    }
 
-    // Previous API-based cart sync before payment. Kept for future restore if needed.
-    // if (items.length > 0) {
-    //   await cartService.addToCart(
-    //     userId,
-    //     items.map((item) => ({
-    //       productId: item.productId._id,
-    //       quantity: item.quantity,
-    //       color: item.color,
-    //       size: item.size,
-    //     }))
-    //   );
-    // }
+      await updateSession();
+    }
 
     setCheckoutUserId(userId);
     return userId;
@@ -232,6 +225,17 @@ export default function CheckoutPage() {
     setIsPreparingPayment(true);
     try {
       const userId = await ensureCheckoutUser();
+      const checkoutItems = items.map((item) => ({
+        productId: item.productId._id,
+        quantity: item.quantity,
+        color: item.color,
+        size: item.size,
+      }));
+
+      if (checkoutItems.some((item) => !item.productId)) {
+        throw new Error("Some cart items are missing product details.");
+      }
+
       const shippingAddress: ShippingAddress = {
         street: values.address,
         city: values.city,
@@ -240,11 +244,14 @@ export default function CheckoutPage() {
         country: values.country,
       };
 
-      const response = await paymentService.createPaymentIntent({
+      const payload: CreatePaymentIntentRequest = {
         userId,
+        items: checkoutItems,
         shippingAddress,
-        couponCode: appliedCoupon?.code,
-      });
+        couponCode: appliedCoupon?.code?.trim() || undefined,
+      };
+
+      const response = await paymentService.createPaymentIntent(payload);
 
       setClientSecret(response.data.clientSecret);
       setPaymentId(response.data.paymentId);

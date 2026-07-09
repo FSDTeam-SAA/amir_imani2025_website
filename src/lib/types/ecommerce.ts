@@ -80,7 +80,11 @@ export interface ShippingAddress {
 }
 
 export interface CreatePaymentIntentRequest {
-  userId: string;
+  userId?: string;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  items?: CartItemInput[];
   shippingAddress: ShippingAddress;
   currency?: "usd" | "cad";
   couponCode?: string;
