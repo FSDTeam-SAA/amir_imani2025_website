@@ -1,12 +1,15 @@
 "use client";
 
+import * as React from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { ArrowLeft } from "lucide-react";
+import { toast } from "sonner";
 import ProductNavbar from "@/components/shared/ProductNavbar";
 import ProductFooter from "@/components/shared/ProductFooter";
 import CartItem from "@/components/shared/CartItem";
 import OrderSummary from "@/components/shared/OrderSummary";
-import { usePayment } from "@/hooks/use-payment";
 import {
   useCartQuery,
   useUpdateCartQuantity,
@@ -14,8 +17,20 @@ import {
 } from "@/hooks/use-cart-query";
 import { useCartLogic, getCartItemKey } from "@/hooks/use-cart-logic";
 import CartSkeleton from "@/components/shared/CartSkeleton";
+import { couponService } from "@/lib/api/coupon-service";
+import {
+  clearAppliedCoupon,
+  saveAppliedCoupon,
+} from "@/lib/utils/applied-coupon";
 
 export default function CartPage() {
+  const router = useRouter();
+  const { data: session } = useSession();
+  const [couponCode, setCouponCode] = React.useState("");
+  const [couponDiscount, setCouponDiscount] = React.useState(0);
+  const [couponError, setCouponError] = React.useState("");
+  const [isApplyingCoupon, setIsApplyingCoupon] = React.useState(false);
+
   // Fetch cart data
   const { data: cart, isLoading } = useCartQuery();
 
@@ -36,24 +51,67 @@ export default function CartPage() {
     onRemoveFromCart: removeFromCart,
   });
 
-  // Payment
-  const { mutate: createPayment, isPending: isCheckoutLoading } = usePayment();
-
   // Constants for shipping and tax
   const SHIPPING_ESTIMATE = 5;
   const TAX_RATE = 0.13;
 
   const tax = subtotal * TAX_RATE;
-  const totalAmount = subtotal + SHIPPING_ESTIMATE + tax;
+
+  React.useEffect(() => {
+    setCouponDiscount(0);
+    setCouponError("");
+    clearAppliedCoupon();
+  }, [subtotal]);
+
+  const handleApplyCoupon = async () => {
+    const userId = session?.user?.id;
+
+    // if (!userId) {
+    //   setCouponError("Please login before applying a coupon.");
+    //   return;
+    // }
+
+    if (!couponCode.trim()) return;
+
+    setIsApplyingCoupon(true);
+    setCouponError("");
+
+    try {
+      const response = await couponService.applyCoupon({
+        code: couponCode.trim(),
+        cartTotal: subtotal,
+      });
+
+      const discountAmount = response.data?.discountAmount || 0;
+      setCouponDiscount(discountAmount);
+      saveAppliedCoupon({
+        code: couponCode.trim(),
+        discountAmount,
+      });
+      toast.success(response.message || "Coupon applied successfully.");
+    } catch (error) {
+      const message =
+        (error as { response?: { data?: { message?: string } } }).response?.data
+          ?.message || "Invalid coupon code.";
+      setCouponDiscount(0);
+      clearAppliedCoupon();
+      setCouponError(message);
+      toast.error(message);
+    } finally {
+      setIsApplyingCoupon(false);
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    setCouponCode("");
+    setCouponDiscount(0);
+    setCouponError("");
+    clearAppliedCoupon();
+  };
 
   const handleCheckout = () => {
-    if (!cart) return;
-
-    createPayment({
-      userId: cart.userId,
-      totalAmount: totalAmount,
-      itemIds: [cart._id],
-    });
+    if (!cart || items.length === 0) return;
+    router.push("/checkout");
   };
 
   if (isLoading) {
@@ -144,8 +202,14 @@ export default function CartPage() {
               subtotal={subtotal}
               shipping={SHIPPING_ESTIMATE}
               tax={tax}
+              couponCode={couponCode}
+              couponDiscount={couponDiscount}
+              couponError={couponError}
+              isApplyingCoupon={isApplyingCoupon}
+              onCouponCodeChange={setCouponCode}
+              onApplyCoupon={handleApplyCoupon}
+              onRemoveCoupon={handleRemoveCoupon}
               onCheckout={handleCheckout}
-              isCheckoutLoading={isCheckoutLoading}
               isDisabled={items.length === 0}
             />
           </div>

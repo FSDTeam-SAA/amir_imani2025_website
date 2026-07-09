@@ -9,10 +9,7 @@ export function proxy(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname;
   // Protect /profile route
-  if (
-    (pathname.startsWith("/profile") || pathname.startsWith("/cart")) &&
-    !token
-  ) {
+  if (pathname.startsWith("/profile") && !token) {
     const loginUrl = new URL("/login", request.url);
     return NextResponse.redirect(loginUrl);
   }
@@ -23,5 +20,5 @@ export function proxy(request: NextRequest) {
 
 // Run proxy only for protected routes
 export const config = {
-  matcher: ["/profile/:path*", "/profile", "/cart/:path*", "/cart"],
+  matcher: ["/profile/:path*", "/profile"],
 };

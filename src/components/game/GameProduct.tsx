@@ -7,7 +7,6 @@ import { Product } from "@/lib/types/ecommerce";
 import { productService } from "@/lib/api/product-service";
 import { MoveRight } from "lucide-react";
 import { useCart } from "@/provider/cart-provider";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import ProductCard from "../shared/product-card";
@@ -20,7 +19,6 @@ const GameProduct = () => {
   const [addingToCartId, setAddingToCartId] = useState<string | null>(null);
 
   const { addToCart } = useCart();
-  const { data: session } = useSession();
   const router = useRouter();
 
   useEffect(() => {
@@ -51,11 +49,6 @@ const GameProduct = () => {
     e.preventDefault();
     e.stopPropagation();
 
-    if (!session?.user?.id) {
-      toast.error("Please sign in to add to cart.");
-      return;
-    }
-
     setAddingToCartId(product._id);
     try {
       await addToCart(
@@ -63,9 +56,9 @@ const GameProduct = () => {
           {
             productId: product._id,
             quantity: 1,
+            product,
           },
-        ],
-        session.user.id
+        ]
       );
       toast.success(`${product.productName} added to cart!`);
       if (redirect) {

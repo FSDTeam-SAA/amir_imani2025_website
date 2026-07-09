@@ -52,11 +52,6 @@ const ComingSoon = () => {
     e.preventDefault();
     e.stopPropagation();
 
-    if (!session?.user?.id) {
-      toast.error("Please sign in to add to Pre-order cart.");
-      return;
-    }
-
     setAddingToCartId(product?._id);
     try {
       await addToCart(
@@ -64,9 +59,10 @@ const ComingSoon = () => {
           {
             productId: product?._id,
             quantity: 1,
+            product,
           },
         ],
-        session.user.id
+        session?.user?.id
       );
       toast.success(`${product?.productName} added to cart!`);
       if (redirect) {
