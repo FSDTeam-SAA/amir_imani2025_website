@@ -6,7 +6,7 @@ import ProductShot from "./_components/product-shot";
 
 const page = () => {
   return (
-    <main className="relative overflow-hidden bg-[#0b191d] text-[#f2eadf]">
+    <main className="relative overflow-hidden bg-[#0b191d] text-[#f2eadf] scroll-smooth">
       <div className="pointer-events-none absolute inset-0 opacity-70">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(21,44,46,0.85),_rgba(11,25,29,0.96)_42%,_#0b191d_75%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(#d7ded5_0.8px,transparent_0.8px)] [background-size:38px_38px] opacity-[0.12]" />
@@ -18,7 +18,7 @@ const page = () => {
         <div className="absolute right-[12%] bottom-[14%] h-[2px] w-[2px] rounded-full bg-[#d7ded5]/50" />
       </div>
 
-      <div className="relative mx-auto flex w-full max-w-[980px] flex-col gap-24 px-6 pb-24 pt-5 sm:px-10 lg:px-0 lg:pb-28">
+      <div className="container relative flex w-full flex-col gap-24 px-4 pb-24 pt-16 sm:px-6 lg:px-8 lg:pb-28">
         <FortuneTellingHero />
         <TheReading />
         <FourSteps />

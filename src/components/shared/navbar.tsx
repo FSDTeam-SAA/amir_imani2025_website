@@ -25,7 +25,7 @@ const navigationItems = [
   { name: "About Us", href: "/about-us" },
   { name: "Games", href: "/game" },
   { name: "Merchandise", href: "/merchandise" },
-  // { name: "Fortune Telling", href: "/fortune-telling" },
+  { name: "Fortune Telling", href: "/fortune-telling" },
   { name: "Contact", href: "/contact" },
 ];
 
@@ -36,6 +36,7 @@ export default function Navbar() {
   const { data: session, status } = useSession();
   const { profile, loading } = useUserProfile();
   const { cart } = useCart();
+  const isFortunePage = pathname === "/fortune-telling";
 
   const cartItemCount = cart?.productIds?.length || 0;
   const isAdmin = profile?.role?.toLowerCase() === "admin";
@@ -67,7 +68,13 @@ export default function Navbar() {
   }, []);
   return (
     <header className="fixed top-0 z-50 w-full animate-in fade-in duration-500">
-      <div className="w-full backdrop-blur-md bg-[#FFFFFF] border-b border-white/10 transition-all duration-300">
+      <div
+        className={`w-full border-b backdrop-blur-md transition-all duration-300 ${
+          isFortunePage
+            ? "border-[#1e3136] bg-[#0b191d]/95 text-white"
+            : "border-white/10 bg-[#FFFFFF]"
+        }`}
+      >
         <div className="container mx-auto px-4 2xl:px-0">
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo */}
@@ -96,8 +103,18 @@ export default function Navbar() {
                     key={item.name}
                     href={item.href}
                     className={`${
-                      isActive ? "text-primary font-semibold" : "text-[#0E1D2B]"
-                    } px-3 py-2 text-sm 2xl:text-base rounded-lg transition-all duration-200 hover:text-primary hover:bg-white/30`}
+                      isActive
+                        ? isFortunePage
+                          ? "bg-white/10 text-white font-semibold"
+                          : "text-primary font-semibold"
+                        : isFortunePage
+                          ? "text-white/80"
+                          : "text-[#0E1D2B]"
+                    } px-3 py-2 text-sm 2xl:text-base rounded-lg transition-all duration-200 ${
+                      isFortunePage
+                        ? "hover:bg-white/10 hover:text-white"
+                        : "hover:text-primary hover:bg-white/30"
+                    }`}
                   >
                     {item.name}
                   </Link>
@@ -112,22 +129,34 @@ export default function Navbar() {
                 variant="ghost"
                 size="icon"
                 onClick={() => setSearchOpen(!searchOpen)}
-                className="relative bg-transparent hover:bg-white/20 transition-colors"
+                className={`relative bg-transparent transition-colors ${
+                  isFortunePage ? "hover:bg-white/10" : "hover:bg-white/20"
+                }`}
                 aria-label="Search"
               >
-                <Search className="h-5 w-5 sm:h-8 sm:w-8 text-primary" />
+                <Search
+                  className={`h-5 w-5 sm:h-8 sm:w-8 ${
+                    isFortunePage ? "text-white" : "text-primary"
+                  }`}
+                />
               </Button>
 
               {/* Cart Button */}
               <Button
                 variant="ghost"
                 size="icon"
-                className="relative bg-transparent hover:bg-white/20 transition-colors"
+                className={`relative bg-transparent transition-colors ${
+                  isFortunePage ? "hover:bg-white/10" : "hover:bg-white/20"
+                }`}
                 aria-label={`Shopping cart with ${cartItemCount} items`}
                 asChild
               >
                 <Link href="/cart">
-                  <ShoppingCart className="h-5 w-5 sm:h-8 sm:w-8 text-primary" />
+                  <ShoppingCart
+                    className={`h-5 w-5 sm:h-8 sm:w-8 ${
+                      isFortunePage ? "text-white" : "text-primary"
+                    }`}
+                  />
                   {cartItemCount > 0 && (
                     <span className="absolute top-1 right-1 bg-primary text-white text-[10px] font-bold rounded-full h-4 min-w-4 px-1 flex items-center justify-center shadow-lg animate-in fade-in zoom-in">
                       {cartItemCount > 99 ? "99+" : cartItemCount}
@@ -144,7 +173,9 @@ export default function Navbar() {
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="relative bg-transparent hover:bg-white/20 transition-colors"
+                        className={`relative bg-transparent transition-colors ${
+                          isFortunePage ? "hover:bg-white/10" : "hover:bg-white/20"
+                        }`}
                         aria-label="User menu"
                       >
                         {profile?.imageLink ? (
@@ -156,7 +187,11 @@ export default function Navbar() {
                             className="rounded-full object-cover border-2 border-primary"
                           />
                         ) : (
-                          <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
+                          <div
+                            className={`h-8 w-8 rounded-full flex items-center justify-center ${
+                              isFortunePage ? "bg-white/15" : "bg-primary"
+                            }`}
+                          >
                             <span className="text-white text-sm font-semibold">
                               {getUserInitials()}
                             </span>
@@ -175,7 +210,11 @@ export default function Navbar() {
                             className="rounded-full object-cover border-2 border-primary"
                           />
                         ) : (
-                          <div className="h-10 w-10 rounded-full bg-primary flex items-center justify-center">
+                          <div
+                            className={`h-10 w-10 rounded-full flex items-center justify-center ${
+                              isFortunePage ? "bg-white/15" : "bg-primary"
+                            }`}
+                          >
                             <span className="text-white font-semibold">
                               {getUserInitials()}
                             </span>
@@ -227,7 +266,11 @@ export default function Navbar() {
                   <Link href="/login">
                     <Button
                       size="sm"
-                      className="bg-primary hover:bg-[#D63E1F] text-white font-medium"
+                      className={`text-white font-medium ${
+                        isFortunePage
+                          ? "bg-white/10 hover:bg-white/20"
+                          : "bg-primary hover:bg-[#D63E1F]"
+                      }`}
                     >
                       Log In
                     </Button>
@@ -242,7 +285,11 @@ export default function Navbar() {
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="text-[#0E1D2B] hover:bg-white/20"
+                      className={`${
+                        isFortunePage
+                          ? "text-white hover:bg-white/10"
+                          : "text-[#0E1D2B] hover:bg-white/20"
+                      }`}
                       aria-label="Open menu"
                     >
                       <Menu className="h-6 w-6" />

@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import SocialIcons from "../footer/SocialIcons";
 import FooterLinks from "../footer/FooterLinks";
 import NewsletterForm from "../footer/NewsletterForm";
@@ -54,6 +57,8 @@ const structuredData = {
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const pathname = usePathname();
+  const isFortunePage = pathname === "/fortune-telling";
 
   return (
     <footer
@@ -70,7 +75,11 @@ export default function Footer() {
       />
 
       {/* Main Footer Content */}
-      <div className="bg-[#3D8D9A] text-white py-10 md:py-12">
+      <div
+        className={`py-10 text-white md:py-12 ${
+          isFortunePage ? "bg-[#0b191d]" : "bg-[#3D8D9A]"
+        }`}
+      >
         <div className="container mx-auto px-4 sm:px-6 lg:px-0 ">
           <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-6 gap-8 lg:gap-4">
             {/* Company Info - Column 1 */}
@@ -128,11 +137,15 @@ export default function Footer() {
       </div>
 
       {/* Footer Bottom Bar */}
-      <div className="bg-white py-2">
+      <div className={`${isFortunePage ? "bg-[#081316]" : "bg-white"} py-2`}>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 ">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-3 md:space-y-0">
             {/* Copyright */}
-            <p className="text-xs md:text-sm text-[#717680] order-2 md:order-1">
+            <p
+              className={`order-2 text-xs md:order-1 md:text-sm ${
+                isFortunePage ? "text-white/65" : "text-[#717680]"
+              }`}
+            >
               &copy; {currentYear} {COMPANY_INFO.name}. All rights reserved.
             </p>
 
@@ -148,7 +161,11 @@ export default function Footer() {
                   <li key={item.label}>
                     <Link
                       href={item.href}
-                      className="text-[#717680] hover:text-primary underline transition-colors duration-300 text-xs md:text-sm font-medium"
+                      className={`text-xs font-medium underline transition-colors duration-300 md:text-sm ${
+                        isFortunePage
+                          ? "text-white/70 hover:text-white"
+                          : "text-[#717680] hover:text-primary"
+                      }`}
                       prefetch={false}
                       itemProp="url"
                     >

@@ -1,4 +1,9 @@
+"use client";
+
 import React from "react";
+import { motion } from "framer-motion";
+
+const EASE_OUT = [0.22, 1, 0.36, 1] as const;
 
 const STEPS_DATA = [
   {
@@ -25,39 +30,54 @@ const STEPS_DATA = [
 
 export default function FourSteps() {
   return (
-    <section className="text-[#f2eadf]">
-      <div className="space-y-8">
+    <motion.section
+      id="fortune-ritual"
+      className="text-[#f2eadf] scroll-mt-28"
+      initial={{ opacity: 0, y: 28 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.6, ease: EASE_OUT }}
+    >
+      <div className="space-y-10">
         <div className="space-y-3">
           <span className="block text-[9px] uppercase tracking-[0.26em] text-[#c9803d]">
             — the ritual —
           </span>
-          <h2 className="font-serif text-[38px] font-light leading-none tracking-[-0.03em] text-[#efe4d4] sm:text-[46px]">
+          <h2 className="font-serif text-[42px] font-light leading-none tracking-[-0.04em] text-[#f3e9da] sm:text-[52px]">
             Four steps, one circle.
           </h2>
         </div>
 
-        <div className="grid gap-3 md:grid-cols-4">
+        <div className="grid gap-4 md:grid-cols-4">
           {STEPS_DATA.map((step) => (
-            <div
+            <motion.div
               key={step.number}
-              className="flex min-h-[122px] flex-col justify-between border border-[#2a302f] bg-[#1b1e1d]/85 px-5 py-4"
+              className="flex min-h-[156px] flex-col justify-between border border-[#2d3738] bg-[linear-gradient(180deg,rgba(25,31,32,0.92),rgba(17,23,24,0.92))] px-6 py-5 shadow-[0_24px_70px_rgba(0,0,0,0.14)]"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{
+                duration: 0.45,
+                ease: EASE_OUT,
+                delay: Number(step.number) * 0.05,
+              }}
             >
               <div className="space-y-4">
                 <span className="block text-[9px] tracking-[0.22em] text-[#c9803d]">
                   {step.number}
                 </span>
-                <h3 className="font-serif text-[16px] font-light leading-none text-[#efe4d4]">
+                <h3 className="font-serif text-[20px] font-light leading-none text-[#f2eadf]">
                   {step.title}
                 </h3>
               </div>
 
-              <p className="pt-4 text-[11px] leading-[1.55] text-[#99a39f]">
+              <p className="pt-5 text-[13px] leading-[1.7] text-[#a6b0ac]">
                 {step.desc}
               </p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }
