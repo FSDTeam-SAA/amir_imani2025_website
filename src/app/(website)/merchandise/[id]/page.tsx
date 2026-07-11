@@ -6,6 +6,7 @@ import { Loader2 } from "lucide-react";
 import FAQAccordionSection from "../_Components/FAQAccordionSection";
 import GarmentSpecsSection from "../_Components/GarmentSpecsSection";
 import ProductImageSlider from "../_Components/RecommendedProducts";
+import ProductReviewsSection from "../_Components/product-reviews-section";
 import MerchandiseSingleCard, {
   MerchandiseSingleCardSkeleton,
 } from "@/components/merchandise/merchandiseSingleProduct/MerchandiseSingleCard";
@@ -184,8 +185,9 @@ export default function MerchandiseDetailsPage() {
         </div>
       </section>
 
+      <ProductReviewsSection productId={product._id} />
       <GarmentSpecsSection />
-      <ProductImageSlider />
+      <ProductImageSlider currentProductId={product._id} />
       <FAQAccordionSection />
     </main>
   );

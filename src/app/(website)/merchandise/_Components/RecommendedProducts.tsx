@@ -1,65 +1,56 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { Loader2 } from "lucide-react";
+import { productService } from "@/lib/api/product-service";
+import { Product } from "@/lib/types/ecommerce";
 
-const recommendedProducts = [
-  {
-    name: "Ahura",
-    tag: "TEE - AHURA",
-    price: "$48",
-    desc: "Light & truth",
-    // Light T-shirt / Apparel image
-    imageUrl: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&q=80&w=600", 
-    isDarkTag: false,
-  },
-  {
-    name: "Ares",
-    tag: "TEE - ARES",
-    price: "$48",
-    desc: "War & courage",
-    // Dark/Teal tone or Minimalist Apparel image
-    imageUrl: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&q=80&w=600",
-    isDarkTag: true,
-  },
-  {
-    name: "Enki",
-    tag: "TEE - ENKI",
-    price: "$48",
-    desc: "Water & wisdom",
-    imageUrl: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&q=80&w=600",
-    isDarkTag: false,
-  },
-  {
-    name: "Gaia",
-    tag: "TEE - GAIA",
-    price: "$48",
-    desc: "Earth & creation",
-    imageUrl: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&q=80&w=600",
-    isDarkTag: true,
-  },
-  {
-    name: "Odin",
-    tag: "TEE - ODIN",
-    price: "$48",
-    desc: "Wisdom & shadow",
-    imageUrl: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&q=80&w=600",
-    isDarkTag: false,
-  },
-  {
-    name: "Zeus",
-    tag: "TEE - ZEUS",
-    price: "$48",
-    desc: "Thunder & sky",
-    imageUrl: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&q=80&w=600",
-    isDarkTag: true,
-  },
-];
-
-export default function ProductImageSlider() {
+export default function ProductImageSlider({
+  currentProductId,
+}: {
+  currentProductId: string;
+}) {
   const sliderRef = useRef<HTMLDivElement>(null);
   const [isDown, setIsDown] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchRelatedProducts = async () => {
+      setIsLoading(true);
+      try {
+        const response = await productService.getmarchandice();
+
+        if (!isMounted || !response.success) return;
+
+        const relatedProducts = response.data
+          .filter((product) => product._id !== currentProductId)
+          .slice(0, 8);
+
+        setProducts(relatedProducts);
+      } catch (error) {
+        console.error("Failed to load related products:", error);
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    fetchRelatedProducts();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [currentProductId]);
+
+  const viewAllCount = useMemo(() => products.length, [products.length]);
 
   // স্মুথ ড্র্যাগ-টু-স্ক্রোল (Right to Left) ফাংশনালিটি
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -94,70 +85,91 @@ export default function ProductImageSlider() {
               More from the Series.
             </h2>
           </div>
-          
-          <button className="border border-stone-950 px-6 py-3 text-[11px] font-bold tracking-widest uppercase bg-transparent hover:bg-stone-950 hover:text-[#FAF6EE] transition-colors duration-200 flex items-center gap-4 shrink-0">
-            VIEW ALL 12 <span className="text-xs">→</span>
-          </button>
+
+          <Link
+            href="/merchandise"
+            className="border border-stone-950 px-6 py-3 text-[11px] font-bold tracking-widest uppercase bg-transparent hover:bg-stone-950 hover:text-[#FAF6EE] transition-colors duration-200 flex items-center gap-4 shrink-0"
+          >
+            VIEW ALL {viewAllCount || "ITEMS"} <span className="text-xs">→</span>
+          </Link>
         </div>
 
-        {/* Horizontal Slider Area */}
-        <div
-          ref={sliderRef}
-          onMouseDown={handleMouseDown}
-          onMouseLeave={handleMouseLeave}
-          onMouseUp={handleMouseUp}
-          onMouseMove={handleMouseMove}
-          className="flex gap-6 overflow-x-auto pb-8 pr-6 md:pr-12 scrollbar-none select-none cursor-grab active:cursor-grabbing scroll-smooth"
-          style={{ scrollbarWidth: "none" }}
-        >
-          {recommendedProducts.map((product, index) => (
-            <div 
-              key={index} 
-              className="w-[260px] md:w-[290px] shrink-0 flex flex-col space-y-4"
-            >
-              {/* Product Visual Frame Box with Image Background */}
-              <div className="w-full aspect-[4/5] relative p-5 flex flex-col justify-end overflow-hidden border border-stone-300/30 bg-stone-200">
-           
-                <img 
-                  src={product.imageUrl} 
-                  alt={product.name}
-                  className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-                />
+        {isLoading ? (
+          <div className="flex items-center gap-2 rounded-2xl border border-stone-200 bg-white px-6 py-8 text-sm text-stone-500">
+            <Loader2 className="h-4 w-4 animate-spin" />
+            Loading more merchandise...
+          </div>
+        ) : products.length === 0 ? (
+          <div className="rounded-2xl border border-dashed border-stone-300 bg-white px-6 py-8 text-sm text-stone-500">
+            More merchandise will appear here once additional products are available.
+          </div>
+        ) : (
+          <div
+            ref={sliderRef}
+            onMouseDown={handleMouseDown}
+            onMouseLeave={handleMouseLeave}
+            onMouseUp={handleMouseUp}
+            onMouseMove={handleMouseMove}
+            className="flex gap-6 overflow-x-auto pb-8 pr-6 md:pr-12 scrollbar-none select-none cursor-grab active:cursor-grabbing scroll-smooth"
+            style={{ scrollbarWidth: "none" }}
+          >
+            {products.map((product, index) => {
+              const imageUrl =
+                (product.imgs && product.imgs.length > 0
+                  ? product.imgs[0]
+                  : product.img) || "/no-image.jpg";
 
-                {/* Diagonal Striped Mask Overlay (ফিগমার অবিকল তির্যক বর্ডার লুক ফিরিয়ে আনার জন্য) */}
-                <div 
-                  className="absolute inset-0 opacity-[0.12] pointer-events-none mix-blend-difference"
-                  style={{
-                    backgroundImage: `repeating-linear-gradient(-45deg, #fff, #fff 1px, transparent 1px, transparent 24px)`,
-                  }}
-                />
-
-               
-                {/* Metadata Badge Over Image */}
-                <div 
-                  className={`self-start px-2 py-1 text-[9px] font-mono tracking-wider z-10 shadow-xs ${
-                    product.isDarkTag 
-                      ? "bg-[#171513] text-white" 
-                      : "bg-[#FAF6EE] text-[#171513] border border-stone-300/40"
-                  }`}
+              return (
+                <Link
+                  href={`/merchandise/${product._id}`}
+                  key={product._id}
+                  className="w-[260px] md:w-[290px] shrink-0 flex flex-col space-y-4"
                 >
-                  {product.tag}
-                </div>
-              </div>
+                  <div className="w-full aspect-[4/5] relative p-5 flex flex-col justify-end overflow-hidden border border-stone-300/30 bg-stone-200">
+                    <Image
+                      src={imageUrl}
+                      alt={product.productName}
+                      fill
+                      className="absolute inset-0 h-full w-full object-cover pointer-events-none"
+                    />
 
-              {/* Text Information Stack */}
-              <div className="space-y-1">
-                <div className="flex items-center justify-between text-sm md:text-base font-normal tracking-tight text-stone-950">
-                  <h3>{product.name}</h3>
-                  <span className="text-stone-500 font-medium text-xs md:text-sm">{product.price}</span>
-                </div>
-                <p className="text-stone-400 text-[11px] md:text-xs tracking-wide">
-                  {product.desc}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
+                    <div
+                      className="absolute inset-0 opacity-[0.12] pointer-events-none mix-blend-difference"
+                      style={{
+                        backgroundImage:
+                          "repeating-linear-gradient(-45deg, #fff, #fff 1px, transparent 1px, transparent 24px)",
+                      }}
+                    />
+
+                    <div
+                      className={`self-start px-2 py-1 text-[9px] font-mono tracking-wider z-10 shadow-xs ${
+                        index % 2 === 0
+                          ? "bg-[#FAF6EE] text-[#171513] border border-stone-300/40"
+                          : "bg-[#171513] text-white"
+                      }`}
+                    >
+                      {product.productType === "marchandice"
+                        ? "MERCHANDISE"
+                        : "PRODUCT"}
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between gap-3 text-sm md:text-base font-normal tracking-tight text-stone-950">
+                      <h3 className="line-clamp-1">{product.productName}</h3>
+                      <span className="text-stone-500 font-medium text-xs md:text-sm">
+                        ${product.price}
+                      </span>
+                    </div>
+                    <p className="line-clamp-2 text-stone-400 text-[11px] md:text-xs tracking-wide">
+                      {product.feature || "Explore another piece from the same series."}
+                    </p>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        )}
 
       </div>
     </section>

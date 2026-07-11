@@ -48,6 +48,64 @@ export interface SingleProductResponse {
   data: Product;
 }
 
+export interface ProductReview {
+  id: string;
+  productId: string;
+  userId: string;
+  rating: number;
+  review: string;
+  status: "pending" | "published" | "rejected";
+  userName: string;
+  userEmail: string;
+  productName: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ProductReviewSummary {
+  totalReviews: number;
+  averageRating: number;
+  ratingBreakdown: Record<1 | 2 | 3 | 4 | 5, number>;
+}
+
+export interface ProductReviewsPayload {
+  reviews: ProductReview[];
+  summary: ProductReviewSummary;
+}
+
+export interface ProductReviewsResponse {
+  success: boolean;
+  message: string;
+  data: ProductReviewsPayload;
+}
+
+export interface ReviewEligibility {
+  hasPurchased: boolean;
+  hasReviewed: boolean;
+  canReview: boolean;
+  review: ProductReview | null;
+}
+
+export interface ReviewEligibilityResponse {
+  success: boolean;
+  message: string;
+  data: ReviewEligibility;
+}
+
+export interface CreateReviewRequest {
+  productId: string;
+  rating: number;
+  review: string;
+  userName?: string;
+  userEmail?: string;
+}
+
+export interface CreateReviewResponse {
+  success: boolean;
+  message: string;
+  data: ProductReview;
+}
+
 export interface CartResponse {
   success: boolean;
   message: string;
@@ -93,6 +151,7 @@ export interface CreatePaymentIntentRequest {
 export interface PaymentIntentData {
   clientSecret: string;
   paymentId: string;
+  stripeMode: "live" | "test";
   coupon?: {
     couponId: string;
     discountAmount: number;

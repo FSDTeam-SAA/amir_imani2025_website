@@ -31,6 +31,13 @@ const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
   ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
   : null;
 
+const stripePublishableKeyMode = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+  ?.startsWith("pk_live_")
+  ? "live"
+  : process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY?.startsWith("pk_test_")
+    ? "test"
+    : "unknown";
+
 type CheckoutFormValues = {
   firstName: string;
   lastName: string;
@@ -252,9 +259,24 @@ export default function CheckoutPage() {
       };
 
       const response = await paymentService.createPaymentIntent(payload);
+      const paymentData = response.data;
 
-      setClientSecret(response.data.clientSecret);
-      setPaymentId(response.data.paymentId);
+      if (!paymentData?.clientSecret) {
+        throw new Error("Stripe did not return a client secret.");
+      }
+
+      if (
+        paymentData.stripeMode &&
+        stripePublishableKeyMode !== "unknown" &&
+        paymentData.stripeMode !== stripePublishableKeyMode
+      ) {
+        throw new Error(
+          `Stripe key mismatch: frontend is using ${stripePublishableKeyMode} mode, but the backend created a ${paymentData.stripeMode} PaymentIntent. Update your Stripe env keys so both use the same mode.`
+        );
+      }
+
+      setClientSecret(paymentData.clientSecret);
+      setPaymentId(paymentData.paymentId);
       toast.success("Secure payment form is ready.");
     } catch (error) {
       toast.error(
