@@ -137,7 +137,7 @@ export default function ProductReviewsSection({
 
     if (eligibility?.review) {
       return `You already submitted a review. Current status: ${eligibility.review.status}.`;
-    }
+    } 
 
     return "You can submit your review now. Check your name and email before sending.";
   }, [eligibility, isAuthenticated, status]);
