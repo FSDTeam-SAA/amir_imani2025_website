@@ -8,7 +8,7 @@ const page = () => {
   return (
     <div>
       <Hero1 
-        image="/hero.jpeg"
+        image="/hero.jpg"
         title="ABOUT US"
         subtitle="Our Story"
         description="Meet the team and learn about our mission to build a universe of games around thirteen symbols."

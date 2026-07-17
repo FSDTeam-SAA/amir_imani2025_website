@@ -21,14 +21,19 @@ export default function RightToLeftMarquee() {
       `}} />
 
       <div className="relative flex w-full">
-        <div className="flex items-center space-x-12 whitespace-nowrap animate-marquee-left">
+        <div className="flex items-center gap-8 md:gap-12 whitespace-nowrap animate-marquee-left">
           {repeatedWords.map((word, index) => (
-            <span
-              key={index}
-              className="text-stone-800 text-sm md:text-base font-semibold tracking-[0.2em] uppercase font-sans selection:bg-transparent"
-            >
-              {word}
-            </span>
+            <React.Fragment key={`${word}-${index}`}>
+              <span className="text-stone-800 text-sm md:text-base font-semibold tracking-[0.2em] uppercase font-sans selection:bg-transparent">
+                {word}
+              </span>
+              <span
+                aria-hidden="true"
+                className="text-[#28A8B5] text-sm md:text-base leading-none selection:bg-transparent"
+              >
+                ✦
+              </span>
+            </React.Fragment>
           ))}
         </div>
       </div>

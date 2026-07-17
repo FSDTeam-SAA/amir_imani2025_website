@@ -19,6 +19,7 @@ This card is a call to rise with clarity, not
 ego. It asks if you’re ready to lose comfort for
 absolute truth.`,
     iconImage: "/symbol_AHURA.png",
+    cardImage: "/card/Cards-1.jpg",
     color: "#5EA3A3",
   },
   {
@@ -35,6 +36,7 @@ forces in collision, not enemies but truth
 confronting itself. The red isn’t just for blood.
 It’s for life refusing to stay numb.`,
     iconImage: "/symbol_ARES.png",
+    cardImage: "/card/Cards-2.jpg",
     color: "#D32F2F",
   },
   {
@@ -51,6 +53,7 @@ shape is a roof, rising like a shelter built inside you. This card is about retu
 to the self before the world made you forget.`,
 
     iconImage: "/symbol_ASGARD.png",
+    cardImage: "/card/Cards-3.jpg",
     color: "#F6D021",
   },
   {
@@ -65,6 +68,7 @@ He has no edges, only movement. Like water, he solves without force. His form is
 line inside, calm outside, creation within. Enki doesn’t repair. He begins again, without fear,
 without shame.`,
     iconImage: "/symbol_ENKI.png",
+    cardImage: "/card/Cards-4.jpg",
     color: "#C37BB0",
   },
   {
@@ -79,6 +83,7 @@ She holds life in her curve, not just one child but the memory of all birth. Her
 shelter, womb, and earth itself. Gaia is where everything begins and where everything longs to
 return.`,
     iconImage: "/symbol_GAIA.png",
+    cardImage: "/card/Cards-5.jpg",
     color: "#2E7D32",
   },
   {
@@ -92,6 +97,7 @@ sovereignty • dignity • presence
 One side holds color. The other reveals it. Together they don’t merge. They define each other.
 Hera is the space between union and distance, the birth of language and law.`,
     iconImage: "/symbol_HERA.png",
+    cardImage: "/card/Cards-6.jpg",
     color: "#6A1B9A",
   },
   {
@@ -106,6 +112,7 @@ Laozi sits by a river and says nothing, but somehow changes everything. His shap
 quiet fire, and a small window through which another world can be seen. This card suggests
 that stillness, not action, brings transformation.`,
     iconImage: "/symbol_LAOZI.png",
+    cardImage: "/card/Cards-7.jpg",
     color: "#E67E22",
   },
   {
@@ -120,6 +127,7 @@ In ancient Persia, Mitra watched over promises, not through power but presence. 
 square, different in every way but joined at one point. That one point is not sameness. It’s
 friendship. He sees who stays loyal even when no one is watching.`,
     iconImage: "/symbol_MITRA.png",
+    cardImage: "/card/Cards-8.jpg",
     color: "#95A5A6",
   },
   {
@@ -134,6 +142,7 @@ Setna is the illusionist who once fooled death. His shape feels balanced, but on
 angle. Spin it and what seemed real begins to twist. This card asks what masks do you wear,
 and who would you be without them.`,
     iconImage: "/symbol_SETNA.png",
+    cardImage: "/card/Cards-9.jpg",
     color: "#9CCC65",
   },
   {
@@ -148,6 +157,7 @@ Shaman appears in black because he carries the others. Eleven colours from the o
 sit inside him, silent but alive. His shape pulls you inward, as if he already knows what you're
 hiding. He doesn’t walk the path. He is where it begins.`,
     iconImage: "/symbol_SHAMAN.png",
+    cardImage: "/card/Cards-10.jpg",
     color: "#D4AC0D",
   },
   {
@@ -162,6 +172,7 @@ Shiva dances where things fall apart, not to end them but to set them free. His 
 eye, closed to the world but open to truth. This card marks the end of what you’ve outgrown.
 Step into the fire. See what stays.`,
     iconImage: "/symbol_SHIVA.png",
+    cardImage: "/card/Cards-11.jpg",
     color: "#1565C0",
   },
   {
@@ -176,6 +187,7 @@ Titan is the rebel who lost everything but still stood tall. His power is not in
 kneel. Pulling Titan means you're being asked to stop apologizing for being too much. Be
 thunder. Own it.`,
     iconImage: "/symbol_TITAN.png",
+    cardImage: "/card/Cards-012.jpg",
     color: "#795548",
   },
 ];
@@ -185,7 +197,7 @@ export default function PantheonCombinedSection() {
 
   return (
     <section className="bg-[#FAF6EE] text-stone-900 py-16 px-4 md:px-12 lg:px-24 min-h-screen flex items-center justify-center font-sans antialiased">
-      <div className=" mx-auto w-full">
+      <div className=" mx-auto container">
         {/* Header Section */}
         <div className="mb-10">
           <span className="text-stone-400 text-[10px] font-bold tracking-[0.25em] uppercase block mb-3">
@@ -242,48 +254,24 @@ export default function PantheonCombinedSection() {
         </div>
 
         {/* Bottom Preview Section */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
-          {/* Left: Original Card Layout with Dynamic Icon Inside */}
-          <div className="md:col-span-5 flex justify-center md:justify-start">
-            <div className="w-[280px] h-[400px] bg-white border-[10px] border-[#E2DCD0] shadow-xl relative p-4 flex flex-col justify-between overflow-hidden">
-              {/* Card Lining Pattern */}
-              <div className="absolute inset-0 border-4 border-dashed border-stone-200/30 pointer-events-none m-1" />
-
-              {/* Top Left Rotated Name */}
-              <div className="text-left">
-                <span
-                  className="text-[10px] font-bold tracking-widest uppercase block rotate-90 origin-left translate-x-2"
-                  style={{ color: activeGod.color }}
-                >
-                  {activeGod.name}
-                </span>
-              </div>
-
-              {/* CENTER: Dynamic Icon instead of Large Image Cover */}
-              <div className="flex-1 flex items-center justify-center relative w-full h-full max-h-[160px] my-auto">
-                <Image
-                  src={activeGod.iconImage}
-                  alt={`${activeGod.name} center icon`}
-                  fill
-                  className="object-contain animate-fade-in p-2"
-                  priority
-                />
-              </div>
-
-              {/* Bottom Right Rotated Name */}
-              <div className="text-right flex justify-end">
-                <span
-                  className="text-[10px] font-bold tracking-widest uppercase block rotate-90 origin-right -translate-x-2"
-                  style={{ color: activeGod.color }}
-                >
-                  {activeGod.name}
-                </span>
-              </div>
+        <div className="flex  items-center gap-36 ">
+          {/* Left: Selected card image */}
+          <div className="flex justify-center md:justify-start">
+            <div className="relative w-[280px] h-[400px] shadow-xl overflow-hidden">
+              <Image
+                key={activeGod.cardImage}
+                src={activeGod.cardImage}
+                alt={`${activeGod.name} card`}
+                fill
+                sizes="280px"
+                className="object-contain animate-fade-in"
+                priority
+              />
             </div>
           </div>
 
           {/* Right Text Details */}
-          <div className="md:col-span-7 space-y-4">
+          <div className=" space-y-4">
             <span className="text-[#5EA3A3] text-xs font-mono font-semibold tracking-wider block">
               {activeGod.number}
             </span>

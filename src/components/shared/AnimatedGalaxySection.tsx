@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import React, { useEffect, useRef } from "react";
 
 const pantheonData = [
@@ -171,10 +172,12 @@ export default function MixedGalaxySymbols() {
         </p>
 
         <div className="mb-14">
+         <Link href={"/about-us"}>
           <button className="bg-[#E97443] hover:bg-[#d66332] text-white text-xs font-bold tracking-[0.25em] uppercase px-9 py-4.5 transition-all duration-200 rounded-none flex items-center gap-3 group shadow-lg">
             BEGIN YOUR READING
             <span className="text-xs transition-transform group-hover:translate-x-1 duration-200">✦</span>
           </button>
+         </Link>
         </div>
 
         <div className="text-stone-500 text-xs italic tracking-wide mt-auto font-serif">
@@ -183,7 +186,12 @@ export default function MixedGalaxySymbols() {
       </div>
 
       {/* Right Column - Premium Animated Mixed Canvas Galaxy */}
-      <div className="lg:col-span-7 relative w-full h-[550px] lg:h-full min-h-[550px] bg-black flex items-center justify-center overflow-hidden border-l border-stone-950/40">
+      <div className="lg:col-span-7 relative w-full h-[550px] lg:h-full min-h-[550px] bg-black flex items-center justify-center overflow-hidden">
+        {/* Smoothly merge the content background into the black galaxy canvas. */}
+        <div
+          aria-hidden="true"
+          className="absolute top-0 left-0 z-10 h-28 w-full pointer-events-none bg-linear-to-b from-[#171513] via-[#171513]/80 to-transparent lg:inset-y-0 lg:h-full lg:w-64 lg:bg-linear-to-r"
+        />
         <canvas 
           ref={canvasRef} 
           className="w-full h-full block opacity-95 mix-blend-screen"

@@ -6,20 +6,33 @@ import GameSection from "@/components/shared/GameSection";
 import Hero from "@/components/shared/Hero";
 import LeftToRightMarquee from "@/components/shared/LeftToRightMarquee";
 import PantheonInteractiveSection from "@/components/shared/PantheonInteractiveSection";
+import HomeSectionReveal from "@/components/home/HomeSectionReveal";
 
 export default function Home() {
   return (
     <div className=" ">
       <Hero />
-      <LeftToRightMarquee/>
-      <GameSection/>
-      <AboutSectionPixelPerfect/>
-      <PantheonInteractiveSection/>
-      <AnimatedGalaxySection/>
+      <HomeSectionReveal>
+        <LeftToRightMarquee />
+      </HomeSectionReveal>
+      <HomeSectionReveal>
+        <GameSection />
+      </HomeSectionReveal>
+      <HomeSectionReveal>
+        <AboutSectionPixelPerfect />
+      </HomeSectionReveal>
+      <HomeSectionReveal>
+        <PantheonInteractiveSection />
+      </HomeSectionReveal>
+      <HomeSectionReveal>
+        <AnimatedGalaxySection />
+      </HomeSectionReveal>
       {/* <About /> */}
       {/* <Products /> */}
       {/* <GetInTouch /> */}
-      <FAQ />
+      <HomeSectionReveal>
+        <FAQ />
+      </HomeSectionReveal>
     </div>
   );
 }

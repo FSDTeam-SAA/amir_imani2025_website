@@ -14,10 +14,10 @@ import Image from "next/image";
 
 export default function Hero() {
   return (
-    <section className="relative w-full min-h-screen overflow-hidden flex flex-col items-center justify-center sm:justify-end">
+    <section className="relative w-full min-h-screen overflow-hidden flex flex-col items-center justify-center">
       {/* Background image */}
       <motion.div
-        className="absolute inset-0 bg-[url('/hero.jpeg')] bg-cover bg-center md:bg-center origin-center"
+        className="absolute inset-0 bg-[url('/hero.jpg')] bg-cover bg-center md:bg-center origin-center"
         style={{ backgroundPosition: "center 40%" }}
         role="img"
         aria-label="Hero background"
@@ -30,7 +30,7 @@ export default function Hero() {
 
 
       {/* Center content */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-0 lg:pb-34">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           className="text-center max-w-3xl mx-auto"
           variants={staggerContainer}

@@ -1,62 +1,68 @@
-import React from 'react';
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export default function MakingOfSection() {
+  const [selectedImage, setSelectedImage] = useState<{
+    title: string;
+    image: string;
+  } | null>(null);
+
+  useEffect(() => {
+    if (!selectedImage) return;
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setSelectedImage(null);
+    };
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleEscape);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', handleEscape);
+    };
+  }, [selectedImage]);
+
   // Data for the bento grid items to keep code clean and modular
   const gridItems = [
     {
       title: "STUDIO",
-      className: "col-span-12 md:col-span-6 row-span-2 bg-gradient-to-b from-[#5c3e2b] to-[#1f1610]",
-      icon: (
-        <svg className="w-10 h-10 opacity-30 text-white" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" />
-        </svg>
-      )
+      image: "/about/logo.jpg",
+      className: "col-span-12 md:col-span-6 row-span-2",
     },
     {
       title: "PROTOTYPE",
-      className: "col-span-12 sm:col-span-6 md:col-span-3 bg-gradient-to-b from-[#416a7a] to-[#1b2b32]",
-      icon: (
-        <div className="w-6 h-8 opacity-30 bg-white clip-diamond rotate-45 transform scale-75" style={{ clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)' }}></div>
-      )
+      image: "/about/GameBox_v2.jpg",
+      className: "col-span-12 sm:col-span-6 md:col-span-3",
     },
     {
       title: "SYMBOLS",
-      className: "col-span-12 sm:col-span-6 md:col-span-3 row-span-2 bg-gradient-to-b from-[#94442d] to-[#361a12]",
-      icon: (
-        <div className="w-8 h-8 opacity-30 border-2 border-white rounded-full flex items-center justify-center">
-          <div className="w-1 h-5 bg-white"></div>
-        </div>
-      )
+      image: "/about/Symbols.jpg",
+      className: "col-span-12 sm:col-span-6 md:col-span-3 row-span-2",
     },
     {
       title: "SKETCHES",
-      className: "col-span-12 sm:col-span-6 md:col-span-3 bg-gradient-to-b from-[#7e735e] to-[#2c2821]",
-      icon: (
-        <div className="w-6 h-6 opacity-30 bg-white rounded-t-full rotate-45"></div>
-      )
+      image: "/about/Icons.jpg",
+      className: "col-span-12 sm:col-span-6 md:col-span-3",
     },
     {
       title: "BOX DESIGN",
-      className: "col-span-12 md:col-span-6 bg-gradient-to-b from-[#2e4d58] to-[#142126]",
-      icon: (
-        <svg className="w-12 h-12 opacity-30 text-white" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 2L2 22h20L12 2z" />
-        </svg>
-      )
+      image: "/about/GameBox.jpg",
+      className: "col-span-12 md:col-span-6",
     },
     {
       title: "PROCESS",
-      className: "col-span-12 sm:col-span-6 md:col-span-3 bg-gradient-to-b from-[#7a623f] to-[#2b2216]",
-      icon: (
-        <div className="w-6 h-8 opacity-30 bg-white rounded-full scale-x-75"></div>
-      )
+      image: "/about/Symbols_2.jpg",
+      className: "col-span-12 sm:col-span-6 md:col-span-3",
     },
     {
       title: "STUDIO DAY",
-      className: "col-span-12 sm:col-span-6 md:col-span-3 bg-gradient-to-b from-[#5c4669] to-[#201824]",
-      icon: (
-        <div className="w-4 h-8 opacity-30 bg-white rounded-l-full rotate-12"></div>
-      )
+      image: "/about/Symbols_3.jpg",
+      className: "col-span-12 sm:col-span-6 md:col-span-3",
     }
   ];
 
@@ -81,16 +87,24 @@ export default function MakingOfSection() {
       </div>
 
       {/* Bento Grid layout */}
-      <div className="container mx-auto grid grid-cols-12 auto-rows-[160px] gap-4">
+      <div className="container mx-auto grid grid-cols-12 auto-rows-[190px] md:auto-rows-[220px] gap-4">
         {gridItems.map((item, index) => (
-          <div
+          <button
+            type="button"
             key={index}
-            className={`${item.className} relative rounded-md p-6 flex flex-col justify-between overflow-hidden group cursor-pointer transition-all duration-300 hover:brightness-110`}
+            onClick={() => setSelectedImage(item)}
+            aria-label={`Open ${item.title} image`}
+            className={`${item.className} relative rounded-md p-6 flex flex-col text-left justify-between overflow-hidden group cursor-zoom-in transition-all duration-300 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#577b8a]`}
           >
-            {/* Centered Decorative Icon Placeholder */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              {item.icon}
-            </div>
+            <Image
+              src={item.image}
+              alt={`${item.title} behind the scenes`}
+              fill
+              sizes="(min-width: 768px) 50vw, 100vw"
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+
+            <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/10 to-transparent pointer-events-none" />
 
             {/* Empty space filler for flex-col top alignment layout */}
             <div></div>
@@ -99,9 +113,58 @@ export default function MakingOfSection() {
             <span className="text-[10px] font-bold tracking-[0.15em] text-white/70 uppercase relative z-10">
               {item.title}
             </span>
-          </div>
+          </button>
         ))}
       </div>
+
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 md:p-8 backdrop-blur-md"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            onClick={() => setSelectedImage(null)}
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${selectedImage.title} image preview`}
+          >
+            <motion.div
+              className="relative h-[82vh] w-full max-w-6xl overflow-hidden rounded-xl bg-[#171513] shadow-2xl"
+              initial={{ opacity: 0, scale: 0.9, y: 24 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.94, y: 16 }}
+              transition={{ type: 'spring', stiffness: 260, damping: 26 }}
+              onClick={(event) => event.stopPropagation()}
+            >
+              <Image
+                src={selectedImage.image}
+                alt={`${selectedImage.title} behind the scenes enlarged`}
+                fill
+                sizes="(min-width: 1280px) 1152px, 100vw"
+                className="object-contain p-2 md:p-4"
+                priority
+              />
+
+              <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/80 to-transparent px-6 pb-5 pt-14 pointer-events-none">
+                <span className="text-xs font-bold tracking-[0.2em] text-white uppercase">
+                  {selectedImage.title}
+                </span>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setSelectedImage(null)}
+                className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/60 text-xl text-white backdrop-blur transition hover:scale-105 hover:bg-black focus-visible:outline-2 focus-visible:outline-white"
+                aria-label="Close image preview"
+              >
+                ×
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

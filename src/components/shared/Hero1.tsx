@@ -5,14 +5,13 @@ const Hero1 = ({image, title, subtitle, description, text  }: {image: string, ti
   return (
     <div className="bg-[#FAF6EE] font-sans antialiased text-[#2D2D2D]">
       <section
-        className="text-white py-20 px-4 text-center relative overflow-hidden"
+        className="text-white py-20 px-4 text-center min-h-[500px] relative overflow-hidden"
         style={{
           backgroundImage: `url('${image}')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
-          backgroundBlendMode: "overlay",
-          backgroundColor: "rgba(0, 0, 0, 0.5)",
+
         }}
       >
         <div className="max-w-3xl mx-auto">

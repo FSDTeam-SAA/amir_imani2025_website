@@ -42,7 +42,7 @@ const AboutSectionOnly = () => {
           </div>
 
           {/* Card Deck Image Container */}
-          <div className="relative aspect-square w-full max-w-[420px] bg-[#2E2E2E] shadow-sm overflow-hidden">
+          <div className="relative aspect-square w-full max-w-[480px] bg-[#2E2E2E] shadow-sm overflow-hidden">
             <Image
               src={storyData.image.src}
               alt={storyData.image.alt}
@@ -55,7 +55,7 @@ const AboutSectionOnly = () => {
         </div>
 
         {/* Right Column: Text Paragraphs */}
-        <div className="lg:col-span-7 space-y-6 lg:pt-14 text-sm md:text-[15px] text-gray-700 leading-[1.75] font-normal tracking-wide">
+        <div className="lg:col-span-7 space-y-6 lg:pt-[152px] text-sm md:text-[15px] text-gray-700 leading-[1.75] font-normal tracking-wide">
           
           {/* Paragraph 1 with Big Drop Cap 'D' */}
           <p className="relative">

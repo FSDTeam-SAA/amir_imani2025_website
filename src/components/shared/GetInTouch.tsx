@@ -142,7 +142,9 @@ const GetInTouch = () => {
           Let&apos;s <span className="text-[#577b8a]">Talk.</span>
         </h2>
         <p className="text-xs md:text-[13px] text-[#777777] leading-relaxed max-w-md mx-auto">
-          Our friendly team would love to hear from you.
+         Have a question, partnership idea, or just
+want to say hello? We&apos;d love to hear from
+you.
         </p>
       </div>
 
@@ -168,11 +170,12 @@ const GetInTouch = () => {
                     Address
                   </span>
                   <p className="text-xs text-[#cccccc] leading-relaxed font-light">
-                    DoUndo Studio
+                  DoUndo Corp.
                     <br />
-                    7011 McCowan Rd, Markham
+                   Unit 277, 7025 Markham Road,
+Markham, Ontario
                     <br />
-                    ON L3S 3L7, Canada
+                    Canada - L3S 0C3
                   </p>
                 </div>
               </div>
@@ -190,7 +193,7 @@ const GetInTouch = () => {
                     href="mailto:hello@doundo.com"
                     className="text-xs text-[#cccccc] hover:text-white transition-colors font-light"
                   >
-                    hello@doundo.com
+                   Info@doundogames.com
                   </a>
                 </div>
               </div>
