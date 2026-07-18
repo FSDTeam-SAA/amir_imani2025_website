@@ -22,6 +22,10 @@ import {
   clearAppliedCoupon,
   saveAppliedCoupon,
 } from "@/lib/utils/applied-coupon";
+import {
+  calculateShippingCad,
+  ShippingCountry,
+} from "@/lib/utils/shipping";
 
 export default function CartPage() {
   const router = useRouter();
@@ -30,6 +34,8 @@ export default function CartPage() {
   const [couponDiscount, setCouponDiscount] = React.useState(0);
   const [couponError, setCouponError] = React.useState("");
   const [isApplyingCoupon, setIsApplyingCoupon] = React.useState(false);
+  const [shippingCountry, setShippingCountry] =
+    React.useState<ShippingCountry>("CA");
 
   // Fetch cart data
   const { data: cart, isLoading } = useCartQuery();
@@ -51,12 +57,8 @@ export default function CartPage() {
     onRemoveFromCart: removeFromCart,
   });
 
-  // Constants for shipping and tax
-  const SHIPPING_ESTIMATE = 5;
-  const TAX_RATE = 0.13;
-
-  const tax = subtotal * TAX_RATE;
-
+  // Shipping is free from $150 CAD; otherwise the destination flat rate applies.
+  const shipping = calculateShippingCad(subtotal, shippingCountry);
   React.useEffect(() => {
     setCouponDiscount(0);
     setCouponError("");
@@ -125,7 +127,7 @@ export default function CartPage() {
   }
 
   return (
-    <div className=" bg-[#FBFBFB]">
+    <div className=" bg-[#faf7f0]">
       {/* <ProductNavbar /> */}
 
       <main className="container mx-auto px-6 py-8">
@@ -200,8 +202,9 @@ export default function CartPage() {
           <div className="w-full lg:w-[380px]">
             <OrderSummary
               subtotal={subtotal}
-              shipping={SHIPPING_ESTIMATE}
-              tax={tax}
+              shipping={shipping}
+              shippingCountry={shippingCountry}
+              onShippingCountryChange={setShippingCountry}
               couponCode={couponCode}
               couponDiscount={couponDiscount}
               couponError={couponError}

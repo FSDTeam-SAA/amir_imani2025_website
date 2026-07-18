@@ -8,7 +8,6 @@ import { Input } from "@/components/ui/input";
 interface OrderSummaryProps {
   subtotal: number;
   shipping: number;
-  tax: number;
   couponCode?: string;
   couponDiscount?: number;
   couponError?: string;
@@ -19,12 +18,13 @@ interface OrderSummaryProps {
   onRemoveCoupon?: () => void;
   isCheckoutLoading?: boolean;
   isDisabled?: boolean;
+  shippingCountry?: "CA" | "US";
+  onShippingCountryChange?: (country: "CA" | "US") => void;
 }
 
 const OrderSummary = React.memo(function OrderSummary({
   subtotal,
   shipping,
-  tax,
   couponCode = "",
   couponDiscount = 0,
   couponError = "",
@@ -35,33 +35,54 @@ const OrderSummary = React.memo(function OrderSummary({
   onRemoveCoupon,
   isCheckoutLoading,
   isDisabled,
+  shippingCountry,
+  onShippingCountryChange,
 }: OrderSummaryProps) {
   const discount = Math.min(couponDiscount, subtotal);
-  const total = Math.max(0, subtotal - discount) + shipping + tax;
+  const total = Math.max(0, subtotal - discount) + shipping;
 
   return (
     <div className="bg-white border border-[#EFEFEF] rounded-2xl p-6 lg:p-10 shadow-[0px_8px_24px_rgba(0,0,0,0.03)] h-fit sticky top-24">
       <h2 className="text-lg md:text-xl font-bold text-[#111111] mb-8">Order Summary</h2>
 
       <div className="space-y-4 mb-8">
+        {shippingCountry ? (
+          <label className="block text-sm font-medium text-[#333333]">
+            Shipping destination
+            <select
+              value={shippingCountry}
+              onChange={(event) =>
+                onShippingCountryChange?.(event.target.value as "CA" | "US")
+              }
+              className="mt-2 h-10 w-full rounded-full border border-[#E5E5E5] bg-white px-4 text-sm outline-none focus:border-primary"
+            >
+              <option value="CA">Canada</option>
+              <option value="US">USA</option>
+            </select>
+          </label>
+        ) : null}
         <div className="flex justify-between items-center text-sm font-medium">
           <span className="text-[#333333]">Subtotal</span>
           <span className="text-[#111111]">${subtotal.toFixed(2)}</span>
         </div>
         <div className="flex justify-between items-center text-sm font-medium">
           <span className="text-gray-500">Shipping</span>
-          <span className="text-gray-500">+ ${shipping.toFixed(2)}</span>
+          <span className="text-gray-500">
+            {shipping === 0 ? "Free" : `+ $${shipping.toFixed(2)} CAD`}
+          </span>
         </div> 
-         <div className="flex justify-between items-center text-sm font-medium">
-          <span className="text-gray-500">Tax(13%)</span>
-          <span className="text-gray-500">+ ${tax.toFixed(2)}</span>
-        </div>
         {discount > 0 ? (
           <div className="flex justify-between items-center text-sm font-medium text-emerald-600">
             <span>Coupon discount</span>
             <span>- ${discount.toFixed(2)}</span>
           </div>
         ) : null}
+      </div>
+
+      <div className="mb-8 rounded-xl bg-[#FBFBFB] px-4 py-3 text-xs leading-5 text-[#666666]">
+        <p>Canada: Flat rate $9.99 CAD</p>
+        <p>USA: Flat rate $19.99 CAD</p>
+        <p>Free shipping on orders of $150.00 CAD or more</p>
       </div>
 
       <div className="mb-8 rounded-2xl border border-[#EFEFEF] bg-[#FBFBFB] p-4">
