@@ -7,7 +7,6 @@ import { Product } from "@/lib/types/ecommerce";
 import { productService } from "@/lib/api/product-service";
 import { MoveRight } from "lucide-react";
 import { useCart } from "@/provider/cart-provider";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import ProductCard from "../shared/product-card";
 
@@ -19,7 +18,6 @@ const GameProduct = () => {
   const [addingToCartId, setAddingToCartId] = useState<string | null>(null);
 
   const { addToCart } = useCart();
-  const router = useRouter();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -62,7 +60,7 @@ const GameProduct = () => {
       );
       toast.success(`${product.productName} added to cart!`);
       if (redirect) {
-        router.push("/cart");
+       window.location.href = "/cart"
       }
     } catch (error) {
       toast.error("Failed to add to cart. Please try again.");

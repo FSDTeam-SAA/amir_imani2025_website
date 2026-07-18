@@ -160,7 +160,7 @@ export default function Navbar() {
                 aria-label={`Shopping cart with ${cartItemCount} items`}
                 asChild
               >
-                <Link href="/cart">
+                <a href="/cart">
                   <ShoppingCart
                     className={`h-5 w-5 sm:h-8 sm:w-8 ${
                       isFortunePage ? "text-white" : "text-primary"
@@ -171,7 +171,7 @@ export default function Navbar() {
                       {cartItemCount > 99 ? "99+" : cartItemCount}
                     </span>
                   )}
-                </Link>
+                </a>
               </Button>
 
               {/* User Profile/Login - Desktop */}

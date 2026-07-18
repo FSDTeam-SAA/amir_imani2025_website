@@ -132,7 +132,7 @@ const GetInTouch = () => {
   };
 
   return (
-    <section className="bg-[#fbfbfb] space-y-20  text-[#222222] font-sans px-4 py-20 md:py-28 flex flex-col items-center w-full">
+    <section className="bg-[#faf7f0] space-y-20  text-[#222222] font-sans px-4 py-20 md:py-28 flex flex-col items-center w-full">
       {/* Header Info */}
       <div className="mx-auto text-center mb-12 md:mb-16">
         <span className="text-[10px] tracking-[0.2em] font-bold text-[#bba185] uppercase block mb-3">

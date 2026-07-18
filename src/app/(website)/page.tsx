@@ -13,17 +13,21 @@ export default function Home() {
     <div className=" ">
       <Hero />
       <HomeSectionReveal>
-        <LeftToRightMarquee />
+        <LeftToRightMarquee active={false} />
       </HomeSectionReveal>
+
       <HomeSectionReveal>
         <GameSection />
       </HomeSectionReveal>
+      
       <HomeSectionReveal>
         <AboutSectionPixelPerfect />
       </HomeSectionReveal>
+      
       <HomeSectionReveal>
         <PantheonInteractiveSection />
       </HomeSectionReveal>
+      
       <HomeSectionReveal>
         <AnimatedGalaxySection />
       </HomeSectionReveal>

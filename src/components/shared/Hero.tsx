@@ -92,7 +92,7 @@ export default function Hero() {
             </Link>
 
             {/* Second Button: Outlined White (Learn More) */}
-            <Link href="/about">
+            <Link href="/about-us">
               <Button
                 asChild
                 variant="outline"

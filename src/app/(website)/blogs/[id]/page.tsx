@@ -67,7 +67,8 @@ const BlogDetailsPage = () => {
 
   return (
     <div className="bg-white pt-10 pb-12">
-      <article className="container mx-auto px-4 ">
+      {/* Added max-w-4xl to center and bound the whole layout */}
+      <article className="container mx-auto px-4">
         {/* Navigation */}
         <Link
           href="/blogs"
@@ -82,7 +83,7 @@ const BlogDetailsPage = () => {
           <time className="text-sm font-medium text-primary">
             {formattedDate}
           </time>
-          <h1 className="text-3xl font-bold leading-tight text-gray-900 md:text-4xl lg:text-5xl">
+          <h1 className="text-3xl font-bold leading-tight text-gray-900 md:text-4xl lg:text-5xl break-words">
             {blog.title}
           </h1>
         </header>
@@ -101,10 +102,11 @@ const BlogDetailsPage = () => {
           </div>
         )}
 
-        {/* Content */}
-        <div className="blog-content">
+        {/* Content - Fixed layout constraints & overflow issues */}
+        <div className="w-full min-w-0 overflow-hidden">
           <div
-            className="prose prose-lg prose-primary max-w-none wrap-break-word" 
+            className="prose prose-sm sm:prose-base md:prose-lg prose-primary max-w-none break-words overflow-x-auto 
+            prose-headings:break-words prose-p:break-words prose-pre:max-w-full prose-pre:overflow-x-auto prose-table:overflow-x-auto"
             dangerouslySetInnerHTML={{ __html: blog.description }}
           />
         </div>

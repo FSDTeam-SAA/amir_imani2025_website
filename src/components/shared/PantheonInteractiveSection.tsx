@@ -196,7 +196,7 @@ export default function PantheonCombinedSection() {
   const [activeGod, setActiveGod] = useState(pantheonData[2]);
 
   return (
-    <section className="bg-[#FAF6EE] text-stone-900 py-16 px-4 md:px-12 lg:px-24 min-h-screen flex items-center justify-center font-sans antialiased">
+    <section className="bg-[#faf7f0] text-stone-900 py-16 px-4 md:px-12 lg:px-24 min-h-screen flex items-center justify-center font-sans antialiased">
       <div className=" mx-auto container">
         {/* Header Section */}
         <div className="mb-10">
