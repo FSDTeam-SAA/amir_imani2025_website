@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
@@ -59,23 +60,13 @@ export default function ProductShot() {
             animate={{ y: [0, -4, 0] }}
             transition={{ duration: 5, ease: EASE_IN_OUT, repeat: Infinity }}
           >
-            <div className="text-[9px] tracking-[0.18em] text-[#8f6848]">
-              {"// product shot — DoUndo box"}
-            </div>
-
-            <div className="relative mt-3 flex aspect-[1.5] items-center justify-center overflow-hidden border border-[#6b4a34] bg-[#2a1b14]">
-              <div
-                className="absolute inset-[12%] border border-[#d0c6b8]"
-                style={{
-                  backgroundImage:
-                    "repeating-linear-gradient(135deg, rgba(208,198,184,0.22) 0 1px, transparent 1px 8px)",
-                }}
+            <div className="relative aspect-[1.5] overflow-hidden border border-[#6b4a34] bg-[#2a1b14]">
+              <Image
+                src="/doundo.jpg"
+                alt="DoUndo product shot"
+                fill
+                className="object-cover"
               />
-              <div className="relative z-10 flex h-[76px] w-[76px] items-center justify-center rounded-full border border-[#dd9448]">
-                <span className="font-serif text-[15px] font-light tracking-[-0.02em] text-[#efe4d4]">
-                  DoUndo
-                </span>
-              </div>
             </div>
           </motion.div>
         </div>
