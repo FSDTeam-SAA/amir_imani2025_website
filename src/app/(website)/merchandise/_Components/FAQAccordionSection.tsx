@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Plus } from "lucide-react";
 
 interface FAQItem {
   question: string;
@@ -49,44 +51,90 @@ export default function FAQAccordionSection() {
         </div>
 
         {/* Right Side: Interactive Accordion List (Takes 7 Columns) */}
-        <div className="lg:col-span-7 border-t border-stone-200/80">
+        <motion.div
+          className="lg:col-span-7 border-t border-stone-200/80"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.15 }}
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.07 } },
+          }}
+        >
           {faqData.map((item, index) => {
             const isOpen = openIndex === index;
             
             return (
-              <div 
+              <motion.div
                 key={index} 
+                variants={{
+                  hidden: { opacity: 0, y: 16 },
+                  visible: { opacity: 1, y: 0 },
+                }}
+                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
                 className="border-b border-stone-200/80 transition-colors duration-150"
               >
                 {/* Accordion Trigger Header Button */}
                 <button
                   onClick={() => toggleAccordion(index)}
+                  aria-expanded={isOpen}
+                  aria-controls={`merchandise-faq-answer-${index}`}
                   className="w-full py-6 md:py-7 flex items-center justify-between text-left group focus:outline-hidden"
                 >
-                  <span className="text-base md:text-lg font-normal text-stone-900 tracking-tight transition-colors duration-200 group-hover:text-stone-600">
+                  <span
+                    className={`text-base md:text-lg font-normal tracking-tight transition-colors duration-300 ${
+                      isOpen
+                        ? "text-[#3A8B91]"
+                        : "text-stone-900 group-hover:text-[#3A8B91]"
+                    }`}
+                  >
                     {item.question}
                   </span>
                   
-                  {/* +/- Indicator Icons with Light Stroke Line */}
-                  <span className="text-xl font-light text-stone-400 pl-4 select-none w-5 h-5 flex items-center justify-center">
-                    {isOpen ? "−" : "+"}
-                  </span>
+                  {/* Animated +/- Indicator */}
+                  <motion.span
+                    animate={{
+                      rotate: isOpen ? 45 : 0,
+                      borderColor: isOpen ? "#3A8B91" : "#d6d3d1",
+                      color: isOpen ? "#3A8B91" : "#a8a29e",
+                    }}
+                    transition={{ duration: 0.25, ease: "easeOut" }}
+                    className="ml-4 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full border bg-transparent group-hover:border-[#3A8B91] group-hover:text-[#3A8B91]"
+                  >
+                    <Plus aria-hidden="true" size={13} strokeWidth={2} />
+                  </motion.span>
                 </button>
 
                 {/* Accordion Content Body Panel */}
-                <div
-                  className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                    isOpen ? "max-h-40 pb-6 md:pb-8 opacity-100" : "max-h-0 opacity-0"
-                  }`}
-                >
-                  <p className="text-stone-500 text-xs md:text-[13px] leading-relaxed max-w-xl font-normal tracking-wide">
-                    {item.answer}
-                  </p>
-                </div>
-              </div>
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      id={`merchandise-faq-answer-${index}`}
+                      role="region"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{
+                        height: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
+                        opacity: { duration: 0.25, ease: "easeOut" },
+                      }}
+                      className="overflow-hidden"
+                    >
+                      <motion.p
+                        initial={{ y: -8 }}
+                        animate={{ y: 0 }}
+                        exit={{ y: -5 }}
+                        className="text-stone-500 text-xs md:text-[13px] leading-relaxed max-w-xl pb-6 md:pb-8 font-normal tracking-wide"
+                      >
+                        {item.answer}
+                      </motion.p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
 
       </div>
     </section>
