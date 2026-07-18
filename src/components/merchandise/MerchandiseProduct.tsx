@@ -77,7 +77,7 @@ const MerchandiseProduct = () => {
       );
       toast.success(`${product.productName} added to cart!`);
       if (redirect) {
-        router.push("/cart");
+        window.location.href = "/cart"
       }
     } catch (error) {
       toast.error("Failed to add to cart. Please try again.");
@@ -88,7 +88,7 @@ const MerchandiseProduct = () => {
   };
 
   const { addToCart } = useCart();
-  const router = useRouter();
+
 
   if (loading) {
     return (

@@ -73,10 +73,7 @@ const Login = () => {
 
   return (
     <section
-      className="min-h-screen flex items-center justify-center 
-      bg-[linear-gradient(0deg,rgba(212,161,50,0.90)_0%,rgba(212,161,50,0.90)_100%),url('/bg.png')] 
-      bg-cover bg-center bg-no-repeat bg-lightgray flex-col gap-5"
-    >
+      className="min-h-screen flex items-center justify-center flex-col gap-5">
       {/* Logo */}
       <div className="flex justify-center mb-4">
         <Image

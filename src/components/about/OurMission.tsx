@@ -25,7 +25,7 @@ const AboutSectionOnly = () => {
   };
 
   return (
-    <section className="bg-[#fafafa] py-16 md:py-24 px-6 md:px-12 lg:px-20 min-h-screen flex items-center justify-center font-sans">
+    <section className="bg-[#faf7f0] py-16 md:py-24 px-6 md:px-12 lg:px-20 min-h-screen flex items-center justify-center font-sans">
       <div className="container mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
         
         {/* Left Column: Title & Image */}

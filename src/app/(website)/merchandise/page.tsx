@@ -3,7 +3,7 @@ import Hero1 from "@/components/shared/Hero1";
 
 const page = () => {
   return (
-    <div>
+    <div className="bg-[#fcf8efb0]">
       <Hero1
         image="/hero.jpeg"
         title="MERCHANDISE"
@@ -11,7 +11,9 @@ const page = () => {
         description="Apparel, accessories, and keepsakes inspired by the thirteen symbols. Designed in Canada, made to last."
         text="Symbols."
       />
+      <div>
       <MerchandiseProduct />
+      </div>
     </div>
   );
 };

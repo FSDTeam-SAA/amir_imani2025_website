@@ -57,10 +57,11 @@ export default function FAQPixelPerfect() {
   };
 
   return (
-    <section className="bg-[#FAF6EE] text-stone-950 px-6 md:px-12 lg:px-24 py-20  flex items-center justify-center font-sans antialiased">
-      <div className=" container mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-        {/* Left Typography Block - 5 Columns */}
-        <div className="lg:col-span-5 sticky top-12 space-y-4">
+    <section className="bg-[#FAF6EE] text-stone-950 px-6 md:px-12 lg:px-24 py-16 md:py-24 flex items-center justify-center font-sans antialiased">
+      <div className="container mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 lg:gap-16 items-start">
+        
+        {/* Left Typography Block - Fixed responsive spacing and sticky behavior */}
+        <div className="lg:col-span-5 lg:sticky lg:top-12 space-y-4 mb-4 lg:mb-0">
           <span className="text-[#E97443] text-xs font-bold tracking-widest uppercase block">
             FAQ
           </span>
@@ -70,9 +71,9 @@ export default function FAQPixelPerfect() {
             <span className="text-[#3A8B91]">We have answers.</span>
           </h2>
 
-          <p className="text-stone-500 text-xs md:text-sm leading-relaxed max-w-xs font-normal">
+          <p className="text-stone-500 text-xs md:text-sm leading-relaxed max-w-sm font-normal">
             Everything you need to know about the product, licensing,
-            transparency and transparency.
+            transparency and policies.
           </p>
         </div>
 
@@ -106,8 +107,9 @@ export default function FAQPixelPerfect() {
                   aria-controls={`faq-answer-${index}`}
                   className="group flex w-full items-center justify-between py-4.5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E97443]/40 focus-visible:ring-offset-2"
                 >
+                  {/* Fixed responsive font size for questions */}
                   <span
-                    className={`pr-4 text-xs font-medium tracking-wide transition-colors duration-300 md:text-[16px] ${
+                    className={`pr-4 text-xs font-medium tracking-wide transition-colors duration-300 md:text-[16px] leading-snug ${
                       isOpen
                         ? "text-[#E97443]"
                         : "text-stone-800 group-hover:text-[#E97443]"
@@ -159,7 +161,7 @@ export default function FAQPixelPerfect() {
           })}
 
           <p className="text-[10px] text-stone-400/80 leading-relaxed mt-6 tracking-wide max-w-2xl">
-You can reach us through the Contact page on our website. We aim to respond to all enquiries within 2-3 business days. For order-specific issues, please include your order number to help us assist you faster.
+            You can reach us through the Contact page on our website. We aim to respond to all enquiries within 2-3 business days. For order-specific issues, please include your order number to help us assist you faster.
           </p>
         </motion.div>
       </div>

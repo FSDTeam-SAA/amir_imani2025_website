@@ -59,7 +59,7 @@ export default function ProductPage() {
   }
 
   return (
-    <div className="  selection:text-[#2E8F8A]">
+    <div className="bg-[#faf7f0] border   selection:text-[#2E8F8A]">
       {/* Patterned Background Overlay (Subtle) */}
       <div
         className="fixed inset-0 pointer-events-none opacity-[0.03] z-0"
@@ -72,9 +72,9 @@ export default function ProductPage() {
 
       {/* <ProductNavbar /> */}
 
-      <main>
-        <ProductHero product={product} />
-        <RightToLeftMarquee />
+      <main >
+        <ProductHero product={product} /> 
+        <RightToLeftMarquee active={true}/>
         <GameRulesSection />
         <BoardAnatomySection />
         <MediaSection videoLink={product.videoLink} />

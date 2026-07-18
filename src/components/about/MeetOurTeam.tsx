@@ -44,7 +44,7 @@ export default function MeetOurTeam() {
   ];
 
   return (
-    <section className="bg-[#FAF6EE] text-[#222222] font-sans px-6 py-20 md:py-28">
+    <section className="bg-[#f5f0dd] text-[#222222] font-sans px-6 py-20 md:py-28">
       <div className="container mx-auto text-center mb-16 md:mb-24">
         {/* Top Mini Tag */}
         <span className="text-[10px] tracking-[0.2em] font-bold text-[#E28755] uppercase block mb-4">

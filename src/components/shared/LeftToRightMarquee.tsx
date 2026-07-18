@@ -1,6 +1,11 @@
 import React from "react";
 
-export default function RightToLeftMarquee() {
+type RightToLeftMarqueeProps = {
+  active: boolean;
+};
+
+
+export default function RightToLeftMarquee({active}:RightToLeftMarqueeProps) {
   const words = [
     "Ares", "Shiva", "Gaia", "Shaman", "Enki", 
     "Hera", "Mitra", "Ahura", "Asgard", "Titan", "Laozi", "Setna", "Zigi"
@@ -9,7 +14,7 @@ export default function RightToLeftMarquee() {
   const repeatedWords = [...words, ...words, ...words];
 
   return (
-    <div className="w-full overflow-hidden bg-[#FCF8EF] py-6 border-y border-stone-200">
+    <div className={`w-full overflow-hidden ${ active ? "bg-[#f0eddc]" : "bg-[#FCF8EF]"}  py-6 border-y border-stone-200`}>
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes scroll-right-to-left {
           0% { transform: translateX(0%); }

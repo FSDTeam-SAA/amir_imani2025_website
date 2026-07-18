@@ -26,6 +26,7 @@ import {
 import { getAppliedCoupon } from "@/lib/utils/applied-coupon";
 import { clearGuestCart } from "@/lib/utils/guest-cart";
 import { useCartQuery } from "@/hooks/use-cart-query";
+import { calculateShippingCad } from "@/lib/utils/shipping";
 
 const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
   ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
@@ -165,7 +166,7 @@ export default function CheckoutPage() {
     setAppliedCoupon(getAppliedCoupon());
   }, []);
 
-  const shippingPreview = values.country === "CA" ? 15 : 5;
+  const shippingPreview = calculateShippingCad(subtotal, values.country);
   const couponDiscount = Math.min(appliedCoupon?.discountAmount || 0, subtotal);
   const totalPreview = Math.max(0, subtotal - couponDiscount) + shippingPreview;
 
@@ -288,7 +289,7 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="bg-[#FBFBFB]">
+    <div className="bg-[#faf7f0]">
       <main className="container mx-auto px-6 py-8">
         <Link
           href="/cart"
@@ -458,7 +459,9 @@ export default function CheckoutPage() {
                 <div className="flex justify-between">
                   <span className="text-[#666666]">Shipping estimate</span>
                   <span className="font-semibold text-[#111111]">
-                    ${shippingPreview.toFixed(2)}
+                    {shippingPreview === 0
+                      ? "Free"
+                      : `$${shippingPreview.toFixed(2)} CAD`}
                   </span>
                 </div>
                 {couponDiscount > 0 ? (
