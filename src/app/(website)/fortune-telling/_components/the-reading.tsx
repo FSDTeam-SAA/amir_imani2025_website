@@ -2,12 +2,13 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { AnimatePresence, motion, type Variants } from "framer-motion";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { LoaderCircle, Sparkles, ScrollText, Swords } from "lucide-react";
+import { LoaderCircle, ScrollText, Sparkles, Swords } from "lucide-react";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -26,7 +27,7 @@ type CardData = {
   symbol: string;
   name: string;
   title: string;
-  icon: React.ReactNode;
+  imageSrc: string;
 };
 
 const CARDS_DATA: CardData[] = [
@@ -35,130 +36,103 @@ const CARDS_DATA: CardData[] = [
     symbol: "AHURA",
     name: "Ahura",
     title: "Above",
-    icon: (
-      <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10z" />
-    ),
+    imageSrc: "/shapes/Shapes-01.svg",
   },
   {
     id: "ares",
     symbol: "ARES",
     name: "Ares",
     title: "Arms",
-    icon: <path d="M12 2L2 22h20L12 2zm0 4l7 14H5l7-14z" />,
+    imageSrc: "/shapes/Shapes-02.svg",
   },
   {
     id: "asgard",
     symbol: "ASGARD",
     name: "Asgard",
     title: "Angel",
-    icon: <path d="M12 2l9 7-9 7-9-7 9-7zm0 11l9 7-9 7-9-7 9-7z" />,
+    imageSrc: "/shapes/Shapes-03.svg",
   },
   {
     id: "enki",
     symbol: "ENKI",
     name: "Enki",
     title: "Rain",
-    icon: (
-      <path d="M2 12h3a4 4 0 0 1 4 4 4 4 0 0 0 4 4h1a4 4 0 0 0 4-4 4 4 0 0 1 4-4h3M2 6h3a4 4 0 0 1 4 4 4 4 0 0 0 4 4h1a4 4 0 0 0 4-4 4 4 0 0 1 4-4h3" />
-    ),
+    imageSrc: "/shapes/Shapes-04.svg",
   },
   {
     id: "gaia",
     symbol: "GAIA",
     name: "Gaia",
     title: "Earth",
-    icon: (
-      <>
-        <circle cx="12" cy="12" r="10" />
-        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10M12 2a15.3 15.3 0 0 0-4 10 15.3 15.3 0 0 0 4 10M2 12h20" />
-      </>
-    ),
+    imageSrc: "/shapes/Shapes-05.svg",
   },
   {
     id: "hera",
     symbol: "HERA",
     name: "Hera",
     title: "Prize",
-    icon: <path d="M6 3h12v3H6zm2 3h8v12H8zm-3 12h14v3H5z" />,
+    imageSrc: "/shapes/Shapes-06.svg",
   },
   {
     id: "laozi",
     symbol: "LAOZI",
     name: "Laozi",
     title: "Leaf",
-    icon: (
-      <>
-        <circle cx="12" cy="12" r="10" />
-        <path d="M12 2a10 10 0 0 1 0 20M2 12h20" />
-      </>
-    ),
+    imageSrc: "/shapes/Shapes-07.svg",
   },
   {
     id: "mitra",
     symbol: "MITRA",
     name: "Mitra",
     title: "Mist",
-    icon: (
-      <path d="M3 15c2.2-2.2 4.2-3.3 6-3.3 2.1 0 3.4 1.2 5 1.2 1.7 0 3-.9 7-4" />
-    ),
+    imageSrc: "/shapes/Shapes-08.svg",
   },
   {
     id: "setna",
     symbol: "SETNA",
     name: "Setna",
     title: "Stone",
-    icon: (
-      <path d="M12 3.5c2.5 3 5.5 6.6 5.5 10.1A5.5 5.5 0 1 1 6.5 13.6c0-3.5 3-7.1 5.5-10.1Z" />
-    ),
+    imageSrc: "/shapes/Shapes-09.svg",
   },
   {
     id: "shaman",
     symbol: "SHAMAN",
     name: "Shaman",
     title: "Stream",
-    icon: (
-      <>
-        <circle cx="12" cy="12" r="8" />
-        <path d="M12 2v20M2 12h20" />
-      </>
-    ),
+    imageSrc: "/shapes/Shapes-10.svg",
   },
   {
     id: "shiva",
     symbol: "SHIVA",
     name: "Shiva",
     title: "Shot",
-    icon: <path d="M18 6 6 18M6 6l12 12" />,
+    imageSrc: "/shapes/Shapes-11.svg",
   },
   {
     id: "titan",
     symbol: "TITAN",
     name: "Titan",
     title: "Trace",
-    icon: (
-      <>
-        <rect x="4" y="4" width="16" height="16" rx="1" />
-        <path d="M12 4v16" />
-      </>
-    ),
+    imageSrc: "/shapes/Shapes-12.svg",
   },
   {
     id: "zigi",
     symbol: "ZIGI",
     name: "Zigi",
     title: "Veil",
-    icon: (
-      <>
-        <path d="M4 12c2.4-4 5-6 8-6s5.6 2 8 6c-2.4 4-5 6-8 6s-5.6-2-8-6Z" />
-        <circle cx="12" cy="12" r="2.5" />
-      </>
-    ),
+    imageSrc: "/shapes/Shapes-14.svg",
   },
 ];
 
 const EASE_OUT = [0.22, 1, 0.36, 1] as const;
 const EASE_IN_OUT = [0.42, 0, 0.58, 1] as const;
 const EASE_LINEAR = [0, 0, 1, 1] as const;
+
+const CARD_ROWS = [
+  CARDS_DATA.slice(0, 4),
+  CARDS_DATA.slice(4, 9),
+  CARDS_DATA.slice(9, 13),
+];
 
 const sectionVariants: Variants = {
   hidden: { opacity: 0, y: 28 },
@@ -462,20 +436,23 @@ export default function TheReading() {
           <div className="pointer-events-none absolute h-[220px] w-[220px] rounded-full bg-[radial-gradient(circle,rgba(28,87,96,0.24),rgba(13,24,27,0)_72%)] blur-3xl" />
 
           <motion.div
-            className="pointer-events-none absolute h-[430px] w-[430px] rounded-full sm:h-[520px] sm:w-[520px]"
+            className="pointer-events-none absolute h-[560px] w-[560px] rounded-full sm:h-[700px] sm:w-[700px] lg:h-[820px] lg:w-[820px]"
             animate={{ rotate: 360 }}
             transition={{ duration: 50, ease: EASE_LINEAR, repeat: Infinity }}
           >
-            <div className="absolute inset-0 rounded-full border border-[#37545b]/75 shadow-[0_0_90px_rgba(19,60,66,0.16)]" />
-            <div className="absolute inset-[34px] rounded-full border border-[#2d464b]/60" />
-            <div className="absolute inset-[72px] rounded-full border border-[#25393e]/45" />
+            <div className="absolute inset-0 rounded-full border border-[#37545b]/75 shadow-[0_0_120px_rgba(19,60,66,0.18)]" />
+            <div className="absolute inset-[42px] rounded-full border border-[#2d464b]/60 sm:inset-[58px] lg:inset-[72px]" />
+            <div className="absolute inset-[92px] rounded-full border border-[#25393e]/45 sm:inset-[122px] lg:inset-[150px]" />
+            <div className="absolute inset-[145px] rounded-full border border-[#213338]/35 sm:inset-[190px] lg:inset-[230px]" />
             <div className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-[#355157]/45" />
             <div className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-[#355157]/45" />
             {Array.from({ length: 12 }).map((_, i) => (
               <div
                 key={i}
                 className="absolute left-1/2 top-1/2 h-[1px] w-4 origin-left bg-[#55777d]/70"
-                style={{ transform: `rotate(${i * 30}deg) translateX(210px)` }}
+                style={{
+                  transform: `rotate(${i * 30}deg) translateX(clamp(276px, 30vw, 390px))`,
+                }}
               />
             ))}
           </motion.div>
@@ -493,71 +470,86 @@ export default function TheReading() {
             </span>
           </motion.div>
 
-          <div className="relative z-10 grid w-full max-w-[580px] grid-cols-4 gap-3 sm:gap-4">
-            {CARDS_DATA.map((card, index) => {
-              const isSelected = selectedCards.includes(card.id);
-              const isLocked = Boolean(todayFortune);
-              const needsCenterOffset =
-                index === CARDS_DATA.length - 1 && CARDS_DATA.length % 4 === 1;
+          <div className="relative z-10 flex w-full max-w-[720px] flex-col items-center gap-3 sm:gap-4">
+            {CARD_ROWS.map((row, rowIndex) => (
+              <div
+                key={rowIndex}
+                className="flex flex-wrap justify-center gap-3 sm:gap-4"
+              >
+                {row.map((card, columnIndex) => {
+                  const isSelected = selectedCards.includes(card.id);
+                  const isLocked = Boolean(todayFortune);
+                  const index =
+                    CARD_ROWS.slice(0, rowIndex).reduce(
+                      (count, currentRow) => count + currentRow.length,
+                      0,
+                    ) + columnIndex;
 
-              return (
-                <motion.button
-                  key={card.id}
-                  type="button"
-                  onClick={() => handleCardClick(card.id)}
-                  className={`group flex aspect-[0.76] cursor-pointer select-none flex-col items-center justify-center rounded-[2px] border bg-[linear-gradient(180deg,rgba(58,35,24,0.98),rgba(44,26,18,0.98))] px-2 py-3 text-center transition-all duration-200 ${
-                    isSelected
-                      ? "border-[#f0a95d] bg-[#4b2d1f] shadow-[0_0_0_1px_rgba(240,169,93,0.18)]"
-                      : "border-[#6a4530] hover:border-[#9b6a45]"
-                  } ${isLocked ? "cursor-not-allowed opacity-80" : ""} ${
-                    needsCenterOffset
-                      ? "col-start-2 sm:col-start-auto lg:col-start-2"
-                      : ""
-                  }`}
-                  initial={{ opacity: 0, y: 18 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.35 }}
-                  transition={{
-                    duration: 0.35,
-                    ease: EASE_OUT,
-                    delay: index * 0.03,
-                  }}
-                  whileHover={!isLocked ? { y: -4, scale: 1.03 } : undefined}
-                  whileTap={!isLocked ? { scale: 0.98 } : undefined}
-                  animate={
-                    isSelected
-                      ? {
-                          y: -6,
-                          boxShadow: "0 0 44px rgba(240, 169, 93, 0.18)",
-                        }
-                      : { y: 0, boxShadow: "0 0 0 rgba(0,0,0,0)" }
-                  }
-                >
-                  <svg
-                    className={`h-[18px] w-[18px] fill-none stroke-[1.1] transition-colors ${
-                      isSelected
-                        ? "stroke-[#f0a95d]"
-                        : "stroke-[#f0e0c8]/82 group-hover:stroke-[#fff4e5]"
-                    }`}
-                    viewBox="0 0 24 24"
-                  >
-                    {card.icon}
-                  </svg>
+                  return (
+                    <motion.button
+                      key={card.id}
+                      type="button"
+                      onClick={() => handleCardClick(card.id)}
+                      className={`group flex h-[132px] w-[100px] cursor-pointer select-none flex-col items-center justify-center rounded-[2px] border bg-[linear-gradient(180deg,rgba(58,35,24,0.98),rgba(44,26,18,0.98))] px-2 py-3 text-center transition-all duration-200 sm:h-[152px] sm:w-[116px] ${
+                        isSelected
+                          ? "border-[#f0a95d] bg-[#4b2d1f] shadow-[0_0_0_1px_rgba(240,169,93,0.18)]"
+                          : "border-[#6a4530] hover:border-[#9b6a45]"
+                      } ${isLocked ? "cursor-not-allowed opacity-80" : ""}`}
+                      initial={{ opacity: 0, y: 18 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.35 }}
+                      transition={{
+                        duration: 0.35,
+                        ease: EASE_OUT,
+                        delay: index * 0.03,
+                      }}
+                      whileHover={
+                        !isLocked ? { y: -4, scale: 1.03 } : undefined
+                      }
+                      whileTap={!isLocked ? { scale: 0.98 } : undefined}
+                      animate={
+                        isSelected
+                          ? {
+                              y: -6,
+                              boxShadow: "0 0 44px rgba(240, 169, 93, 0.18)",
+                            }
+                          : { y: 0, boxShadow: "0 0 0 rgba(0,0,0,0)" }
+                      }
+                    >
+                      <div className="relative flex h-[36px] w-[36px] items-center justify-center sm:h-[42px] sm:w-[42px]">
+                        <Image
+                          src={card.imageSrc}
+                          alt={card.name}
+                          width={42}
+                          height={42}
+                          className="h-full w-full object-contain"
+                        />
+                      </div>
 
-                  <h3
-                    className={`mt-3 font-serif text-[13px] leading-none tracking-[0.01em] ${
-                      isSelected ? "text-[#fff3e3]" : "text-[#f3e9da]"
-                    }`}
-                  >
-                    {card.name}
-                  </h3>
+                      <AnimatePresence initial={false}>
+                        {isSelected && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 8 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 6 }}
+                            transition={{ duration: 0.22, ease: EASE_OUT }}
+                            className="mt-3"
+                          >
+                            <h3 className="font-serif text-[13px] leading-none tracking-[0.01em] text-[#fff3e3]">
+                              {card.name}
+                            </h3>
 
-                  <span className="mt-1 text-[8px] tracking-[0.18em] text-[#c8a07b]">
-                    {card.title}
-                  </span>
-                </motion.button>
-              );
-            })}
+                            <span className="mt-1 block text-[8px] tracking-[0.18em] text-[#c8a07b]">
+                              {card.title}
+                            </span>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </motion.button>
+                  );
+                })}
+              </div>
+            ))}
           </div>
         </motion.div>
       </motion.section>

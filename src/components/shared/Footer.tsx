@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import SocialIcons from "../footer/SocialIcons";
 import FooterLinks from "../footer/FooterLinks";
 import NewsletterForm from "../footer/NewsletterForm";
+import StarfieldBackground from "@/app/(website)/fortune-telling/_components/starfield-background";
 // import NewsletterForm from "../footer/NewsletterForm";
 
 // Constants for maintainability
@@ -62,7 +63,7 @@ export default function Footer() {
 
   return (
     <footer
-      className="text-white "
+      className="text-white"
       role="contentinfo"
       aria-label="Website footer"
       itemScope
@@ -76,11 +77,19 @@ export default function Footer() {
 
       {/* Main Footer Content */}
       <div
-        className={`py-10 text-white md:py-12 ${
+        className={`relative py-10 text-white md:py-12 ${
           isFortunePage ? "bg-[#0b191d]" : "bg-[#3D8D9A]"
         }`}
       >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-0 ">
+        {isFortunePage && (
+          <StarfieldBackground
+            showBackdrop={false}
+            densityScale={0.28}
+            durationMs={3600}
+            canvasOpacity={0.72}
+          />
+        )}
+        <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-0 ">
           <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-6 gap-8 lg:gap-4">
             {/* Company Info - Column 1 */}
             <div className="col-span-2 md:col-span-2 lg:col-span-2 space-y-4">
@@ -137,8 +146,16 @@ export default function Footer() {
       </div>
 
       {/* Footer Bottom Bar */}
-      <div className={`${isFortunePage ? "bg-[#081316]" : "bg-white"} py-2`}>
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 ">
+      <div className={`relative ${isFortunePage ? "bg-[#081316]" : "bg-white"} py-2`}>
+        {isFortunePage && (
+          <StarfieldBackground
+            showBackdrop={false}
+            densityScale={0.08}
+            durationMs={3600}
+            canvasOpacity={0.5}
+          />
+        )}
+        <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8 ">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-3 md:space-y-0">
             {/* Copyright */}
             <p

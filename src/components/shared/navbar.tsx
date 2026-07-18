@@ -19,6 +19,7 @@ import { useUserProfile } from "@/hooks/use-user-profile";
 import { useCart } from "@/provider/cart-provider";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import SearchMotal from "../search/SearchMotal";
+import StarfieldBackground from "@/app/(website)/fortune-telling/_components/starfield-background";
 
 const navigationItems = [
   { name: "Home", href: "/" },
@@ -69,13 +70,21 @@ export default function Navbar() {
   return (
     <header className="fixed top-0 z-50 w-full animate-in fade-in duration-500">
       <div
-        className={`w-full border-b backdrop-blur-md transition-all duration-300 ${
+        className={`relative w-full border-b backdrop-blur-md transition-all duration-300 ${
           isFortunePage
             ? "border-[#1e3136] bg-[#0b191d]/95 text-white"
             : "border-white/10 bg-[#FFFFFF]"
         }`}
       >
-        <div className="container mx-auto px-4 2xl:px-0">
+        {isFortunePage && (
+          <StarfieldBackground
+            showBackdrop={false}
+            densityScale={0.12}
+            durationMs={3400}
+            canvasOpacity={0.7}
+          />
+        )}
+        <div className="container relative z-10 mx-auto px-4 2xl:px-0">
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo */}
             <div className="shrink-0">
