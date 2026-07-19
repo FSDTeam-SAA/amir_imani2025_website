@@ -3,6 +3,15 @@ export interface Product {
   productName: string;
   price: number;
   productType?: "card" | "marchandice";
+  category?:
+    | "ALL"
+    | "APPAREL"
+    | "ACCESSORIES"
+    | "PRINTS & POSTERS"
+    | "STATIONERY"
+    | "HOME & DECOR"
+    | "COLLECTIBLES"
+    | string;
   feature: string;
   description: string;
   videoLink?: string;

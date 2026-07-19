@@ -25,6 +25,25 @@ export const productService = {
     return data;
   },
 
+  getMerchandiseByCategory: async (
+    category?: string
+  ): Promise<ProductsResponse> => {
+    const query = category && category !== "ALL" ? `&category=${encodeURIComponent(category)}` : "";
+    const response = await axiosInstance.get<ProductsResponse>(
+      `/products?type=marchandice${query}`
+    );
+    const data = response.data;
+
+    if (data.success && data.data) {
+      data.data = data.data.map((p) => ({
+        ...p,
+        img: p.imgs && p.imgs.length > 0 ? p.imgs[0] : p.img,
+      }));
+    }
+
+    return data;
+  },
+
   getCards: async (): Promise<ProductsResponse> => {
     const response = await axiosInstance.get<ProductsResponse>(
       `/products?type=card`

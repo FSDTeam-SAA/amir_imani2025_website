@@ -1,22 +1,21 @@
 "use client";
 
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
-import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import z from "zod";
 
-import { Input } from "../ui/input";
+import { subscribeToNewsletter } from "@/lib/api/subscriber-service";
 import { Button } from "../ui/button";
-import { Download } from "@/lib/api/download";
+import { Input } from "../ui/input";
 
 interface NewsletterFormProps {
   className?: string;
 }
 
 const formSchema = z.object({
-  name: z.string().min(1, "Name is required"),
   email: z.string().email("Enter a valid email"),
 });
 
@@ -29,23 +28,22 @@ export default function NewsletterForm({
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "Subscriber",
       email: "",
     },
   });
 
   const mutation = useMutation({
-    mutationFn: (data: FormValues) => Download(data.name, data.email),
+    mutationFn: (data: FormValues) => subscribeToNewsletter({ email: data.email }),
     onSuccess: (data) => {
-      toast.success(data.message || "Successfully added your request");
+      toast.success(data.message || "Successfully subscribed to newsletter.");
       reset();
     },
     onError: (err: Error) => {
-      toast.error(err.message || "Failed to submit request");
+      toast.error(err.message || "Failed to subscribe. Please try again.");
     },
   });
 
@@ -60,9 +58,6 @@ export default function NewsletterForm({
       noValidate
       aria-label="Newsletter subscription form"
     >
-      {/* Hidden name field since you're using "Subscriber" as default */}
-      <input type="hidden" {...register("name")} />
-
       <div className="flex gap-2">
         <div className="grow">
           <Input
@@ -105,7 +100,7 @@ export default function NewsletterForm({
 
       {mutation.isSuccess && (
         <p className="text-sm text-green-300" role="alert">
-          Successfully subscribed to newsletter!
+          You are subscribed for future updates.
         </p>
       )}
 
