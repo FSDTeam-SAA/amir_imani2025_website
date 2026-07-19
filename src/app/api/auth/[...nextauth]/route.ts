@@ -91,7 +91,11 @@ const handler = NextAuth({
         } catch (error: any) {
           console.error("Authorize error:", error.message);
           // Throw the specific error so NextAuth passes it to the client
-          throw new Error(error.message || "Authentication failed");
+          throw new Error(
+            error?.message && error.message !== "undefined"
+              ? error.message
+              : "Authentication failed"
+          );
         }
       },
     }),
