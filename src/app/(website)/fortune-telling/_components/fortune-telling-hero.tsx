@@ -17,7 +17,7 @@ export default function FortuneTellingHero() {
 
   return (
     <motion.section
-      className="relative overflow-hidden pt-2 text-[#f2eadf] scroll-mt-28"
+      className="relative overflow-hidden pb-8 pt-2 text-[#f2eadf] scroll-mt-28 md:pb-10"
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease: EASE_OUT }}
@@ -69,7 +69,7 @@ export default function FortuneTellingHero() {
           </div>
         </div>
 
-        <div className="pointer-events-none absolute bottom-0 right-[-48px] hidden md:block lg:right-[0] xl:right-[40px]">
+        <div className="pointer-events-none absolute bottom-4 right-[-48px] hidden md:block lg:right-[0] xl:right-[40px]">
           <div className="relative h-[240px] w-[240px] md:h-[300px] md:w-[300px] lg:h-[380px] lg:w-[380px] xl:h-[430px] xl:w-[430px]">
             <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(20,77,85,0.24),rgba(9,20,23,0)_70%)] blur-2xl" />
             <motion.div
@@ -82,7 +82,7 @@ export default function FortuneTellingHero() {
               <div className="absolute inset-[42px] rounded-full border border-[#20393d]/55 md:inset-[52px] lg:inset-[58px]" />
               <div className="absolute inset-[68px] rounded-full border border-[#1b3034]/45 md:inset-[80px] lg:inset-[92px]" />
               {dots.map((_, i) => {
-              const angle = (i * 360) / 13;
+                const angle = (i * 360) / 13;
                 return (
                   <div
                     key={i}
