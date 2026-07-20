@@ -50,6 +50,40 @@ export default function ProductHero({ product }: ProductHeroProps) {
     [product.imgs, product.img]
   );
 
+  const facts = useMemo(() => {
+    const nextFacts = [
+      {
+        value: isMerchandise ? "Merch" : "Card",
+        label: "Type",
+      },
+      {
+        value: product.category || (isMerchandise ? "General" : "Gameplay"),
+        label: "Category",
+      },
+      {
+        value:
+          typeof product.quantity === "number"
+            ? String(product.quantity)
+            : isMerchandise
+              ? "Pre-order"
+              : `${thumbnails.length} image${thumbnails.length > 1 ? "s" : ""}`,
+        label: isMerchandise ? "Stock" : "Gallery",
+      },
+      {
+        value: product.videoLink ? "Available" : "None",
+        label: "Video",
+      },
+    ];
+
+    return nextFacts;
+  }, [
+    isMerchandise,
+    product.category,
+    product.quantity,
+    product.videoLink,
+    thumbnails.length,
+  ]);
+
   // Optimized handlers with useCallback
   const handleQuantityChange = useCallback((delta: number) => {
     setQuantity((prev) => Math.max(1, prev + delta));
@@ -137,24 +171,17 @@ export default function ProductHero({ product }: ProductHeroProps) {
             </p>
           </div>
 
-          {/* Stats / Specifications Row styling from Figma */}
           <div className="border-t border-b border-[#EAE6DF] py-6 grid grid-cols-4 gap-4 max-w-xl">
-            <div>
-              <p className="text-xl md:text-2xl font-semibold text-[#1A1A1A]">2</p>
-              <p className="text-[10px] uppercase tracking-wider text-[#8A8A8A] font-medium mt-1">Players</p>
-            </div>
-            <div>
-              <p className="text-xl md:text-2xl font-semibold text-[#1A1A1A]">15-25</p>
-              <p className="text-[10px] uppercase tracking-wider text-[#8A8A8A] font-medium mt-1">Minutes</p>
-            </div>
-            <div>
-              <p className="text-xl md:text-2xl font-semibold text-[#1A1A1A]">8+</p>
-              <p className="text-[10px] uppercase tracking-wider text-[#8A8A8A] font-medium mt-1">Ages</p>
-            </div>
-            <div>
-              <p className="text-xl md:text-2xl font-semibold text-[#1A1A1A]">72</p>
-              <p className="text-[10px] uppercase tracking-wider text-[#8A8A8A] font-medium mt-1">Cards</p>
-            </div>
+            {facts.map((fact) => (
+              <div key={fact.label}>
+                <p className="text-xl md:text-2xl font-semibold text-[#1A1A1A]">
+                  {fact.value}
+                </p>
+                <p className="text-[10px] uppercase tracking-wider text-[#8A8A8A] font-medium mt-1">
+                  {fact.label}
+                </p>
+              </div>
+            ))}
           </div>
 
           {/* Color & Size Variant Selectors (Rendered dynamically if merchandise) */}
@@ -248,7 +275,14 @@ export default function ProductHero({ product }: ProductHeroProps) {
             </Button>
 
             {/* How To Play Arrow Link */}
-            <button className="text-xs font-bold tracking-widest text-[#1A1A1A] uppercase flex items-center gap-2 hover:opacity-80 transition-opacity ml-auto sm:ml-0">
+            <button
+              onClick={() =>
+                document
+                  .getElementById(isMerchandise ? "product-details" : "game-rules")
+                  ?.scrollIntoView({ behavior: "smooth", block: "start" })
+              }
+              className="text-xs font-bold tracking-widest text-[#1A1A1A] uppercase flex items-center gap-2 hover:opacity-80 transition-opacity ml-auto sm:ml-0"
+            >
               How To Play <ArrowRight className="w-4 h-4" />
             </button>
           </div>

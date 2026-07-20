@@ -22,6 +22,31 @@ export interface Product {
   sizes?: string[]; // Keep for compatibility
   size?: string[];
   quantity?: number;
+  ruleTitle?: string;
+  rulls?: ProductRule[];
+  boardanatomyTitle?: string;
+  boardAnatomyDiscription?: string;
+  passandplayTittle?: string;
+  passandplay?: ProductPassAndPlayItem[];
+  garmentTitle?: string;
+  garmentsMATERIAL?: string;
+  garmentWEIGHT?: string;
+  garmentFit?: string;
+  garmentPRINT?: string;
+  garmentMADeIN?: string;
+  garmentCARE?: string;
+}
+
+export interface ProductRule {
+  num?: string;
+  title?: string;
+  description?: string;
+}
+
+export interface ProductPassAndPlayItem {
+  message?: string;
+  name?: string;
+  type?: string;
 }
 
 export interface CartItem {

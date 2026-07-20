@@ -2,11 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-// import ProductNavbar from "@/components/shared/ProductNavbar"
 import ProductHero from "@/components/shared/ProductHero";
 import ProductDetails from "@/components/shared/ProductDetails";
 import MediaSection from "@/components/shared/MediaSection";
-// import ProductFooter from "@/components/shared/ProductFooter"
 import { Product } from "@/lib/types/ecommerce";
 import { productService } from "@/lib/api/product-service";
 import RightToLeftMarquee from "@/components/shared/LeftToRightMarquee";
@@ -59,9 +57,43 @@ export default function ProductPage() {
     );
   }
 
+  const materialItems = [
+    {
+      count: "01",
+      title: "Material",
+      description: product.garmentsMATERIAL || "",
+    },
+    {
+      count: "02",
+      title: "Weight",
+      description: product.garmentWEIGHT || "",
+    },
+    {
+      count: "03",
+      title: "Fit",
+      description: product.garmentFit || "",
+    },
+    {
+      count: "04",
+      title: "Print",
+      description: product.garmentPRINT || "",
+    },
+    {
+      count: "05",
+      title: "Made In",
+      description: product.garmentMADeIN || "",
+    },
+    {
+      count: "06",
+      title: "Care",
+      description: product.garmentCARE || "",
+    },
+  ].filter((item) => item.description);
+
+  const shouldShowCardSections = product.productType === "card";
+
   return (
     <div className="bg-[#faf7f0] border   selection:text-[#2E8F8A]">
-      {/* Patterned Background Overlay (Subtle) */}
       <div
         className="fixed inset-0 pointer-events-none opacity-[0.03] z-0"
         style={{
@@ -71,17 +103,40 @@ export default function ProductPage() {
         }}
       />
 
-      {/* <ProductNavbar /> */}
-
-      <main >
-        <ProductHero product={product} /> 
-        <RightToLeftMarquee active={true}/>
-        <GameRulesSection />
-        <BoardAnatomySection />
-        <MediaSection videoLink={product.videoLink} />
-        <MaterialsSection/>
+      <main>
+        <ProductHero product={product} />
+        <RightToLeftMarquee active={true} />
+        {shouldShowCardSections && (
+          <GameRulesSection
+            title={product.ruleTitle}
+            rules={product.rulls?.filter(
+              (rule) => rule?.num || rule?.title || rule?.description
+            )}
+          />
+        )}
+        {shouldShowCardSections && (
+          <BoardAnatomySection
+            title={product.boardanatomyTitle}
+            description={product.boardAnatomyDiscription}
+          />
+        )}
+        <MediaSection
+          productName={product.productName}
+          videoLink={product.videoLink}
+        />
+        <MaterialsSection
+          title={product.garmentTitle}
+          items={materialItems}
+        />
         <ProductDetails product={product} />
-        <PressReactionsSection/>
+        {shouldShowCardSections && (
+          <PressReactionsSection
+            title={product.passandplayTittle}
+            items={product.passandplay?.filter(
+              (item) => item?.message || item?.name || item?.type
+            )}
+          />
+        )}
       </main>
     </div>
   );
