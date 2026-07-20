@@ -29,26 +29,32 @@ export default function ProductShot() {
           </h2>
 
           <p className="text-[13px] leading-[1.8] text-[#a7b2ae]">
-            DoUndo is a board card game built around these same twelve symbols
-            — one language, many games. Strategy, perception, imagination,
-            story. Bring the circle into the room.
+            DoUndo is a board card game built around these same twelve symbols —
+            one language, many games. Strategy, perception, imagination, story.
+            Bring the circle into the room.
           </p>
 
           <div className="flex flex-wrap gap-3 pt-1 text-[10px] uppercase tracking-[0.12em]">
-            <motion.div whileHover={{ y: -2, scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+            <motion.div
+              whileHover={{ y: -2, scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
               <Link
-                href="/game"
+                href="/product/695057098548e119f5fa7cfd"
                 className="block rounded-[2px] border border-[#e2974b] bg-[#e2974b] px-4 py-2.5 font-medium text-[#1b1713] transition-colors hover:bg-[#ed9f50]"
               >
-              Shop the game
+                Shop the game
               </Link>
             </motion.div>
-            <motion.div whileHover={{ y: -2, scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+            <motion.div
+              whileHover={{ y: -2, scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
               <Link
                 href="/about-us"
                 className="block rounded-[2px] border border-[#4f5d5e] px-4 py-2.5 text-[#ced4ce] transition-colors hover:border-[#68777a]"
               >
-              About DoUndo
+                About DoUndo
               </Link>
             </motion.div>
           </div>
