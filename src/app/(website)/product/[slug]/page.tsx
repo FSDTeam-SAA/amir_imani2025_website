@@ -13,6 +13,7 @@ import RightToLeftMarquee from "@/components/shared/LeftToRightMarquee";
 import GameRulesSection from "../_components/GameRulesSection";
 import BoardAnatomySection from "../_components/BoardAnatomySection";
 import PressReactionsSection from "../_components/PressReactionsSection";
+import MaterialsSection from "../_components/MaterialsSection";
 
 export default function ProductPage() {
   const params = useParams();
@@ -78,6 +79,7 @@ export default function ProductPage() {
         <GameRulesSection />
         <BoardAnatomySection />
         <MediaSection videoLink={product.videoLink} />
+        <MaterialsSection/>
         <ProductDetails product={product} />
         <PressReactionsSection/>
       </main>
