@@ -121,13 +121,12 @@ export default function ProductHero({ product }: ProductHeroProps) {
       className="my-6 md:my-12 lg:my-20 container"
       aria-labelledby="product-title"
     >
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12  lg:gap-16 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
         
-        {/* Left Column: Product Details */}
-        <article className="w-full flex flex-col gap-8 lg:col-span-7 lg:self-stretch lg:justify-between lg:gap-0">
+        {/* Left Column: Product Details -> Added order-2 lg:order-1 */}
+        <article className="w-full flex flex-col gap-8 lg:col-span-7 lg:self-stretch lg:justify-between lg:gap-0 order-2 lg:order-1">
           <div>
-   
-         {/* Dynamic Product Name as fallback/sub-heading if needed */}
+            {/* Dynamic Product Name as fallback/sub-heading if needed */}
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-light text-[#1A1A1A] tracking-tight leading-[1.1] mb-6">
               {product.productName}
             </h2>
@@ -255,8 +254,8 @@ export default function ProductHero({ product }: ProductHeroProps) {
           </div>
         </article>
 
-        {/* Right Column: Images Grid */}
-        <div className="w-full lg:col-span-5 flex flex-col gap-4">
+        {/* Right Column: Images Grid -> Added order-1 lg:order-2 */}
+        <div className="w-full lg:col-span-5 flex flex-col gap-4 order-1 lg:order-2">
           {/* Main Product Frame */}
           <div className="relative w-full aspect-square bg-white shadow-sm border border-gray-100 overflow-hidden">
             <Image
