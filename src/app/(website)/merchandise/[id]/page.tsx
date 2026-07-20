@@ -109,7 +109,7 @@ export default function MerchandiseDetailsPage() {
       <div className="container mx-auto px-4">
         <MerchandiseSingleCard product={product} />
       </div>
-      <GarmentSpecsSection />
+      <GarmentSpecsSection product={product}/>
       <ProductImageSlider currentProductId={product._id} />
       <FAQAccordionSection />
       <ProductReviewsSection productId={product._id} />
