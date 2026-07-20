@@ -8,7 +8,7 @@ import { useSession } from "next-auth/react";
 import { AnimatePresence, motion, type Variants } from "framer-motion";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { LoaderCircle, ScrollText, Sparkles, Swords } from "lucide-react";
+import { LoaderCircle, ScrollText, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -181,6 +181,10 @@ function getApiErrorMessage(error: unknown, fallback: string) {
   return message || (error as Error)?.message || fallback;
 }
 
+function getCardBySymbol(symbol: string) {
+  return CARDS_DATA.find((card) => card.symbol === symbol);
+}
+
 export default function TheReading() {
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -188,7 +192,6 @@ export default function TheReading() {
   const [selectedCards, setSelectedCards] = useState<string[]>([]);
   const [selectedOrder, setSelectedOrder] = useState<string[]>([]);
   const [isAuthDialogOpen, setIsAuthDialogOpen] = useState(false);
-  const [isResultDialogOpen, setIsResultDialogOpen] = useState(false);
   const [isHistoryDialogOpen, setIsHistoryDialogOpen] = useState(false);
   const [activeFortune, setActiveFortune] = useState<FortuneHistoryItem | null>(
     null,
@@ -221,10 +224,7 @@ export default function TheReading() {
       };
 
       setActiveFortune(revealed);
-      setIsResultDialogOpen(true);
       toast.success("Your fortune has been revealed.");
-      setSelectedCards([]);
-      setSelectedOrder([]);
 
       await queryClient.invalidateQueries({
         queryKey: ["fortune-telling", "my-history"],
@@ -242,7 +242,6 @@ export default function TheReading() {
         toast.error(message);
         if (todayFortune) {
           setActiveFortune(todayFortune);
-          setIsResultDialogOpen(true);
         }
         return;
       }
@@ -255,7 +254,13 @@ export default function TheReading() {
     .map((id) => CARDS_DATA.find((card) => card.id === id))
     .filter(Boolean) as CardData[];
 
-  const canReveal = selectedCards.length === 3 && !revealMutation.isPending;
+  const displayedCards = displayedFortune
+    ? (displayedFortune.symbols
+        .map((symbol) => getCardBySymbol(symbol))
+        .filter(Boolean) as CardData[])
+    : selectedCardDetails;
+  const isResultView = Boolean(displayedFortune);
+
   const openHistory = () => {
     if (!hasToken) {
       setIsAuthDialogOpen(true);
@@ -265,10 +270,9 @@ export default function TheReading() {
     setIsHistoryDialogOpen(true);
   };
 
-  const openTodayFortune = () => {
+  const revealSelectedCards = (nextSelectedOrder: string[]) => {
     if (todayFortune) {
       setActiveFortune(todayFortune);
-      setIsResultDialogOpen(true);
       return;
     }
 
@@ -277,18 +281,21 @@ export default function TheReading() {
       return;
     }
 
-    if (selectedCardDetails.length !== 3) {
-      toast.error("Choose three cards to reveal your fortune.");
+    if (nextSelectedOrder.length !== 3) {
       return;
     }
 
-    revealMutation.mutate(selectedCardDetails.map((card) => card.symbol));
+    const nextSelectedCards = nextSelectedOrder
+      .map((id) => CARDS_DATA.find((card) => card.id === id))
+      .filter(Boolean) as CardData[];
+
+    revealMutation.mutate(nextSelectedCards.map((card) => card.symbol));
   };
 
   const handleCardClick = (id: string) => {
-    if (todayFortune) {
+    if (displayedFortune || todayFortune) {
       toast.message(
-        "You've already revealed today's fortune. View it from the panel.",
+        "You've already revealed a reading. View it below or browse your history.",
       );
       return;
     }
@@ -304,8 +311,15 @@ export default function TheReading() {
       return;
     }
 
-    setSelectedCards((prev) => [...prev, id]);
-    setSelectedOrder((prev) => [...prev, id]);
+    const nextSelectedCards = [...selectedCards, id];
+    const nextSelectedOrder = [...selectedOrder, id];
+
+    setSelectedCards(nextSelectedCards);
+    setSelectedOrder(nextSelectedOrder);
+
+    if (nextSelectedCards.length === 3) {
+      revealSelectedCards(nextSelectedOrder);
+    }
   };
 
   return (
@@ -331,78 +345,33 @@ export default function TheReading() {
           </p>
         </motion.div>
 
-        <AnimatePresence>
-          {(selectedOrder.length > 0 ||
-            Boolean(todayFortune) ||
-            revealMutation.isPending) && (
+        <AnimatePresence mode="wait">
+          {isResultView ? (
             <motion.div
+              key={
+                displayedFortune?._id || displayedFortune?.createdAt || "result"
+              }
+              className="relative isolate mx-auto mt-10 w-full max-w-[900px] overflow-hidden rounded-[2px] border border-[#2b3c40] bg-[#0d1719] p-5 sm:p-6"
               variants={itemVariants}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              className="mx-auto mt-6 w-full max-w-[820px] rounded-[2px] border border-[#2b3c40] bg-[linear-gradient(180deg,rgba(16,26,28,0.95),rgba(12,20,22,0.95))] p-4 sm:p-5"
+              exit={{ opacity: 0, y: -24 }}
             >
-              <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
-                <div className="max-w-[320px]">
+              <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#101a1c_0%,#0c1416_100%)]" />
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-[radial-gradient(circle_at_top,rgba(222,148,72,0.08),transparent_68%)]" />
+
+              <div className="relative z-10 flex flex-col gap-4 border-b border-[#243336] pb-5 sm:flex-row sm:items-start sm:justify-between">
+                <div>
                   <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.22em] text-[#c9803d]">
                     <Sparkles className="h-4 w-4" />
-                    <span>Ritual status</span>
+                    <span>Revealed fortune</span>
                   </div>
                   <p className="mt-3 text-[13px] leading-6 text-[#a0acab]">
-                    {todayFortune
-                      ? "Today's reading is already sealed. Re-open it or browse your history."
-                      : hasToken
-                        ? "Your chosen symbols are locked in. Reveal the omen when you are ready."
-                        : "Choose your cards first. You will need to log in before the API can reveal and save the reading."}
+                    {displayedFortune
+                      ? `${displayedFortune.symbols.join(" • ")} • ${formatFortuneDate(displayedFortune.createdAt)}`
+                      : "Your omen is loading."}
                   </p>
                 </div>
-
-                <div className="grid flex-1 gap-2 sm:grid-cols-3">
-                  {[0, 1, 2].map((slotIndex) => {
-                    const card = selectedCardDetails[slotIndex];
-
-                    return (
-                      <div
-                        key={slotIndex}
-                        className="flex items-center justify-between border border-[#334244] bg-[#171f21]/90 px-3 py-3"
-                      >
-                        <div>
-                          <p className="text-[9px] uppercase tracking-[0.22em] text-[#738381]">
-                            {slotIndex === 0
-                              ? "past"
-                              : slotIndex === 1
-                                ? "present"
-                                : "path"}
-                          </p>
-                          <p className="mt-1 font-serif text-[16px] text-[#efe4d4]">
-                            {card?.name || "Awaiting a symbol"}
-                          </p>
-                        </div>
-                        <p className="text-[10px] uppercase tracking-[0.18em] text-[#ad8f73]">
-                          {card?.symbol || "--"}
-                        </p>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div className="mt-4 flex flex-wrap gap-2">
-                <motion.button
-                  type="button"
-                  whileHover={canReveal ? { y: -2, scale: 1.01 } : undefined}
-                  whileTap={canReveal ? { scale: 0.98 } : undefined}
-                  onClick={openTodayFortune}
-                  disabled={!canReveal && !todayFortune}
-                  className="inline-flex items-center gap-2 rounded-[2px] border border-[#e2974b] bg-[#e2974b] px-4 py-2.5 text-[10px] uppercase tracking-[0.14em] text-[#1b1713] transition-opacity disabled:cursor-not-allowed disabled:opacity-45"
-                >
-                  {revealMutation.isPending ? (
-                    <LoaderCircle className="h-3.5 w-3.5 animate-spin" />
-                  ) : (
-                    <Swords className="h-3.5 w-3.5" />
-                  )}
-                  {todayFortune ? "View today's fortune" : "Reveal the omen"}
-                </motion.button>
 
                 <motion.button
                   type="button"
@@ -413,145 +382,210 @@ export default function TheReading() {
                 >
                   View history
                 </motion.button>
+              </div>
 
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSelectedCards([]);
-                    setSelectedOrder([]);
-                  }}
-                  className="rounded-[2px] border border-transparent px-2 py-2.5 text-[10px] uppercase tracking-[0.14em] text-[#7c8a89] transition-colors hover:text-[#efe4d4]"
-                >
-                  Reset picks
-                </button>
+              <div className="relative z-10 mt-6 grid gap-3 md:grid-cols-3">
+                {displayedCards.map((card, index) => (
+                  <div
+                    key={`${card.id}-${index}`}
+                    className="group flex min-h-[152px] flex-col justify-center rounded-[2px] border border-[#f0a95d] bg-[linear-gradient(180deg,rgba(58,35,24,0.98),rgba(44,26,18,0.98))] px-4 py-4 text-center shadow-[0_0_0_1px_rgba(240,169,93,0.18)]"
+                  >
+                    <p className="text-[9px] uppercase tracking-[0.22em] text-[#738381]">
+                      {index === 0 ? "past" : index === 1 ? "present" : "path"}
+                    </p>
+                    <div className="mt-4 flex flex-col items-center gap-3">
+                      <div className="relative flex h-[54px] w-[54px] items-center justify-center sm:h-[60px] sm:w-[60px]">
+                        <Image
+                          src={card.imageSrc}
+                          alt={card.name}
+                          width={60}
+                          height={60}
+                          className="h-full w-full object-contain"
+                        />
+                      </div>
+                      <div>
+                        <p className="font-serif text-[18px] text-[#efe4d4]">
+                          {card.name}
+                        </p>
+                        <p className="mt-1 text-[10px] tracking-[0.18em] text-[#c8a07b]">
+                          {card.title}
+                        </p>
+                        <p className="mt-2 text-[10px] uppercase tracking-[0.18em] text-[#ad8f73]">
+                          {card.symbol}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <motion.div
+                className="relative z-10 mt-6 space-y-4"
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, ease: EASE_OUT }}
+              >
+                {displayedFortune?.fortune
+                  .split("\n")
+                  .map((paragraph, index) =>
+                    paragraph.trim() ? (
+                      <p
+                        key={`${displayedFortune.createdAt}-${index}`}
+                        className={`leading-7 ${
+                          index === 0
+                            ? "font-serif text-[24px] text-[#dd9448]"
+                            : "text-[14px] text-[#cdd5cf]"
+                        }`}
+                      >
+                        {paragraph.trim()}
+                      </p>
+                    ) : null,
+                  )}
+              </motion.div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="picker"
+              className="relative mt-12 flex min-h-[560px] items-center justify-center"
+              variants={itemVariants}
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -24 }}
+            >
+              <div className="pointer-events-none absolute h-[220px] w-[220px] rounded-full bg-[radial-gradient(circle,rgba(28,87,96,0.24),rgba(13,24,27,0)_72%)] blur-3xl" />
+
+              <motion.div
+                className="pointer-events-none absolute h-[560px] w-[560px] rounded-full sm:h-[700px] sm:w-[700px] lg:h-[820px] lg:w-[820px]"
+                animate={{ rotate: 360 }}
+                transition={{
+                  duration: 50,
+                  ease: EASE_LINEAR,
+                  repeat: Infinity,
+                }}
+              >
+                <div className="absolute inset-0 rounded-full border border-[#37545b]/75 shadow-[0_0_120px_rgba(19,60,66,0.18)]" />
+                <div className="absolute inset-[42px] rounded-full border border-[#2d464b]/60 sm:inset-[58px] lg:inset-[72px]" />
+                <div className="absolute inset-[92px] rounded-full border border-[#25393e]/45 sm:inset-[122px] lg:inset-[150px]" />
+                <div className="absolute inset-[145px] rounded-full border border-[#213338]/35 sm:inset-[190px] lg:inset-[230px]" />
+                <div className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-[#355157]/45" />
+                <div className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-[#355157]/45" />
+                {Array.from({ length: 12 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="absolute left-1/2 top-1/2 h-[1px] w-4 origin-left bg-[#55777d]/70"
+                    style={{
+                      transform: `rotate(${i * 30}deg) translateX(clamp(276px, 30vw, 390px))`,
+                    }}
+                  />
+                ))}
+              </motion.div>
+
+              <motion.div
+                className="pointer-events-none absolute z-20 flex flex-col items-center text-center"
+                animate={{ scale: [1, 1.04, 1] }}
+                transition={{
+                  duration: 2.8,
+                  repeat: Infinity,
+                  ease: EASE_IN_OUT,
+                }}
+              >
+                <div className="font-serif text-[28px] font-light tracking-[0.18em] text-[#e9a35b]">
+                  {revealMutation.isPending ? (
+                    <LoaderCircle className="h-7 w-7 animate-spin" />
+                  ) : (
+                    `${selectedCards.length}/3`
+                  )}
+                </div>
+                <span className="mt-1 block text-[8px] uppercase tracking-[0.3em] text-[#738381]">
+                  {revealMutation.isPending ? "revealing" : "selected"}
+                </span>
+              </motion.div>
+
+              <div className="relative z-10 flex w-full max-w-[720px] flex-col items-center gap-3 sm:gap-4">
+                {CARD_ROWS.map((row, rowIndex) => (
+                  <div
+                    key={rowIndex}
+                    className="flex flex-wrap justify-center gap-3 sm:gap-4"
+                  >
+                    {row.map((card, columnIndex) => {
+                      const isSelected = selectedCards.includes(card.id);
+                      const isLocked = revealMutation.isPending;
+                      const index =
+                        CARD_ROWS.slice(0, rowIndex).reduce(
+                          (count, currentRow) => count + currentRow.length,
+                          0,
+                        ) + columnIndex;
+
+                      return (
+                        <motion.button
+                          key={card.id}
+                          type="button"
+                          onClick={() => handleCardClick(card.id)}
+                          className={`group flex h-[132px] w-[100px] cursor-pointer select-none flex-col items-center justify-center rounded-[2px] border bg-[linear-gradient(180deg,rgba(58,35,24,0.98),rgba(44,26,18,0.98))] px-2 py-3 text-center transition-all duration-200 sm:h-[152px] sm:w-[116px] ${
+                            isSelected
+                              ? "border-[#f0a95d] bg-[#4b2d1f] shadow-[0_0_0_1px_rgba(240,169,93,0.18)]"
+                              : "border-[#6a4530] hover:border-[#9b6a45]"
+                          } ${isLocked ? "cursor-not-allowed opacity-80" : ""}`}
+                          initial={{ opacity: 0, y: 18 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true, amount: 0.35 }}
+                          transition={{
+                            duration: 0.35,
+                            ease: EASE_OUT,
+                            delay: index * 0.03,
+                          }}
+                          whileHover={
+                            !isLocked ? { y: -4, scale: 1.03 } : undefined
+                          }
+                          whileTap={!isLocked ? { scale: 0.98 } : undefined}
+                          animate={
+                            isSelected
+                              ? {
+                                  y: -6,
+                                  boxShadow:
+                                    "0 0 44px rgba(240, 169, 93, 0.18)",
+                                }
+                              : { y: 0, boxShadow: "0 0 0 rgba(0,0,0,0)" }
+                          }
+                        >
+                          <div className="relative flex h-[36px] w-[36px] items-center justify-center sm:h-[80px] sm:w-[80px]">
+                            <Image
+                              src={card.imageSrc}
+                              alt={card.name}
+                              width={1000}
+                              height={1000}
+                              className="h-full w-full object-contain"
+                            />
+                          </div>
+
+                          <AnimatePresence initial={false}>
+                            {isSelected && (
+                              <motion.div
+                                initial={{ opacity: 0, y: 8 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 6 }}
+                                transition={{ duration: 0.22, ease: EASE_OUT }}
+                                className="mt-3"
+                              >
+                                <h3 className="font-serif text-[13px] leading-none tracking-[0.01em] text-[#fff3e3]">
+                                  {card.name}
+                                </h3>
+
+                                <span className="mt-1 block text-[8px] tracking-[0.18em] text-[#c8a07b]">
+                                  {card.title}
+                                </span>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </motion.button>
+                      );
+                    })}
+                  </div>
+                ))}
               </div>
             </motion.div>
           )}
         </AnimatePresence>
-
-        <motion.div
-          className="relative mt-12 flex min-h-[560px] items-center justify-center"
-          variants={itemVariants}
-        >
-          <div className="pointer-events-none absolute h-[220px] w-[220px] rounded-full bg-[radial-gradient(circle,rgba(28,87,96,0.24),rgba(13,24,27,0)_72%)] blur-3xl" />
-
-          <motion.div
-            className="pointer-events-none absolute h-[560px] w-[560px] rounded-full sm:h-[700px] sm:w-[700px] lg:h-[820px] lg:w-[820px]"
-            animate={{ rotate: 360 }}
-            transition={{ duration: 50, ease: EASE_LINEAR, repeat: Infinity }}
-          >
-            <div className="absolute inset-0 rounded-full border border-[#37545b]/75 shadow-[0_0_120px_rgba(19,60,66,0.18)]" />
-            <div className="absolute inset-[42px] rounded-full border border-[#2d464b]/60 sm:inset-[58px] lg:inset-[72px]" />
-            <div className="absolute inset-[92px] rounded-full border border-[#25393e]/45 sm:inset-[122px] lg:inset-[150px]" />
-            <div className="absolute inset-[145px] rounded-full border border-[#213338]/35 sm:inset-[190px] lg:inset-[230px]" />
-            <div className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-[#355157]/45" />
-            <div className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-[#355157]/45" />
-            {Array.from({ length: 12 }).map((_, i) => (
-              <div
-                key={i}
-                className="absolute left-1/2 top-1/2 h-[1px] w-4 origin-left bg-[#55777d]/70"
-                style={{
-                  transform: `rotate(${i * 30}deg) translateX(clamp(276px, 30vw, 390px))`,
-                }}
-              />
-            ))}
-          </motion.div>
-
-          <motion.div
-            className="pointer-events-none absolute z-20 flex flex-col items-center text-center"
-            animate={{ scale: [1, 1.04, 1] }}
-            transition={{ duration: 2.8, repeat: Infinity, ease: EASE_IN_OUT }}
-          >
-            <div className="font-serif text-[28px] font-light tracking-[0.18em] text-[#e9a35b]">
-              {todayFortune ? "1/1" : `${selectedCards.length}/3`}
-            </div>
-            <span className="mt-1 block text-[8px] uppercase tracking-[0.3em] text-[#738381]">
-              {todayFortune ? "today sealed" : "selected"}
-            </span>
-          </motion.div>
-
-          <div className="relative z-10 flex w-full max-w-[720px] flex-col items-center gap-3 sm:gap-4">
-            {CARD_ROWS.map((row, rowIndex) => (
-              <div
-                key={rowIndex}
-                className="flex flex-wrap justify-center gap-3 sm:gap-4"
-              >
-                {row.map((card, columnIndex) => {
-                  const isSelected = selectedCards.includes(card.id);
-                  const isLocked = Boolean(todayFortune);
-                  const index =
-                    CARD_ROWS.slice(0, rowIndex).reduce(
-                      (count, currentRow) => count + currentRow.length,
-                      0,
-                    ) + columnIndex;
-
-                  return (
-                    <motion.button
-                      key={card.id}
-                      type="button"
-                      onClick={() => handleCardClick(card.id)}
-                      className={`group flex h-[132px] w-[100px] cursor-pointer select-none flex-col items-center justify-center rounded-[2px] border bg-[linear-gradient(180deg,rgba(58,35,24,0.98),rgba(44,26,18,0.98))] px-2 py-3 text-center transition-all duration-200 sm:h-[152px] sm:w-[116px] ${
-                        isSelected
-                          ? "border-[#f0a95d] bg-[#4b2d1f] shadow-[0_0_0_1px_rgba(240,169,93,0.18)]"
-                          : "border-[#6a4530] hover:border-[#9b6a45]"
-                      } ${isLocked ? "cursor-not-allowed opacity-80" : ""}`}
-                      initial={{ opacity: 0, y: 18 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, amount: 0.35 }}
-                      transition={{
-                        duration: 0.35,
-                        ease: EASE_OUT,
-                        delay: index * 0.03,
-                      }}
-                      whileHover={
-                        !isLocked ? { y: -4, scale: 1.03 } : undefined
-                      }
-                      whileTap={!isLocked ? { scale: 0.98 } : undefined}
-                      animate={
-                        isSelected
-                          ? {
-                              y: -6,
-                              boxShadow: "0 0 44px rgba(240, 169, 93, 0.18)",
-                            }
-                          : { y: 0, boxShadow: "0 0 0 rgba(0,0,0,0)" }
-                      }
-                    >
-                      <div className="relative flex h-[36px] w-[36px] items-center justify-center sm:h-[42px] sm:w-[42px]">
-                        <Image
-                          src={card.imageSrc}
-                          alt={card.name}
-                          width={42}
-                          height={42}
-                          className="h-full w-full object-contain"
-                        />
-                      </div>
-
-                      <AnimatePresence initial={false}>
-                        {isSelected && (
-                          <motion.div
-                            initial={{ opacity: 0, y: 8 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 6 }}
-                            transition={{ duration: 0.22, ease: EASE_OUT }}
-                            className="mt-3"
-                          >
-                            <h3 className="font-serif text-[13px] leading-none tracking-[0.01em] text-[#fff3e3]">
-                              {card.name}
-                            </h3>
-
-                            <span className="mt-1 block text-[8px] tracking-[0.18em] text-[#c8a07b]">
-                              {card.title}
-                            </span>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </motion.button>
-                  );
-                })}
-              </div>
-            ))}
-          </div>
-        </motion.div>
       </motion.section>
 
       <Dialog open={isAuthDialogOpen} onOpenChange={setIsAuthDialogOpen}>
@@ -585,51 +619,6 @@ export default function TheReading() {
         </DialogContent>
       </Dialog>
 
-      <Dialog open={isResultDialogOpen} onOpenChange={setIsResultDialogOpen}>
-        <DialogContent className="border border-[#2b383a] bg-[#0f191c] text-[#efe4d4] sm:max-w-[760px]">
-          <DialogHeader>
-            <DialogTitle className="font-serif text-[32px] font-light text-[#efe4d4]">
-              Revealed Fortune
-            </DialogTitle>
-            <DialogDescription className="text-[12px] uppercase tracking-[0.22em] text-[#c9803d]">
-              {displayedFortune
-                ? `${displayedFortune.symbols.join(" • ")} • ${formatFortuneDate(displayedFortune.createdAt)}`
-                : "Your omen is loading"}
-            </DialogDescription>
-          </DialogHeader>
-
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={
-                displayedFortune?._id ||
-                displayedFortune?.createdAt ||
-                "fortune"
-              }
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -16 }}
-              transition={{ duration: 0.35, ease: EASE_OUT }}
-              className="max-h-[60vh] space-y-4 overflow-y-auto pr-2"
-            >
-              {displayedFortune?.fortune.split("\n").map((paragraph, index) =>
-                paragraph.trim() ? (
-                  <p
-                    key={`${displayedFortune.createdAt}-${index}`}
-                    className={`leading-7 ${
-                      index === 0
-                        ? "font-serif text-[24px] text-[#dd9448]"
-                        : "text-[14px] text-[#cdd5cf]"
-                    }`}
-                  >
-                    {paragraph.trim()}
-                  </p>
-                ) : null,
-              )}
-            </motion.div>
-          </AnimatePresence>
-        </DialogContent>
-      </Dialog>
-
       <Dialog open={isHistoryDialogOpen} onOpenChange={setIsHistoryDialogOpen}>
         <DialogContent className="border border-[#2b383a] bg-[#0f191c] text-[#efe4d4] sm:max-w-[780px]">
           <DialogHeader>
@@ -655,7 +644,6 @@ export default function TheReading() {
                   onClick={() => {
                     setActiveFortune(entry);
                     setIsHistoryDialogOpen(false);
-                    setIsResultDialogOpen(true);
                   }}
                   className="w-full border border-[#233033] bg-[#151f22]/85 p-4 text-left transition-colors hover:border-[#355056]"
                 >
