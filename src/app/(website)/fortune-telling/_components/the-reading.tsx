@@ -125,14 +125,31 @@ const CARDS_DATA: CardData[] = [
 ];
 
 const EASE_OUT = [0.22, 1, 0.36, 1] as const;
-const EASE_IN_OUT = [0.42, 0, 0.58, 1] as const;
 const EASE_LINEAR = [0, 0, 1, 1] as const;
 
-const CARD_ROWS = [
-  CARDS_DATA.slice(0, 4),
-  CARDS_DATA.slice(4, 9),
-  CARDS_DATA.slice(9, 13),
-];
+function shuffleCards(cards: CardData[]) {
+  const shuffledCards = [...cards];
+
+  for (let index = shuffledCards.length - 1; index > 0; index -= 1) {
+    const randomIndex = Math.floor(Math.random() * (index + 1));
+    [shuffledCards[index], shuffledCards[randomIndex]] = [
+      shuffledCards[randomIndex],
+      shuffledCards[index],
+    ];
+  }
+
+  return shuffledCards;
+}
+
+function createCardRows() {
+  const shuffledCards = shuffleCards(CARDS_DATA);
+
+  return [
+    shuffledCards.slice(0, 4),
+    shuffledCards.slice(4, 9),
+    shuffledCards.slice(9, 13),
+  ];
+}
 
 const sectionVariants: Variants = {
   hidden: { opacity: 0, y: 28 },
@@ -189,6 +206,7 @@ export default function TheReading() {
   const router = useRouter();
   const { data: session, status } = useSession();
   const queryClient = useQueryClient();
+  const [cardRows] = useState<CardData[][]>(() => createCardRows());
   const [selectedCards, setSelectedCards] = useState<string[]>([]);
   const [selectedOrder, setSelectedOrder] = useState<string[]>([]);
   const [isAuthDialogOpen, setIsAuthDialogOpen] = useState(false);
@@ -480,29 +498,28 @@ export default function TheReading() {
                 ))}
               </motion.div>
 
-              <motion.div
-                className="pointer-events-none absolute z-20 flex flex-col items-center text-center"
-                animate={{ scale: [1, 1.04, 1] }}
-                transition={{
-                  duration: 2.8,
-                  repeat: Infinity,
-                  ease: EASE_IN_OUT,
-                }}
-              >
-                <div className="font-serif text-[28px] font-light tracking-[0.18em] text-[#e9a35b]">
-                  {revealMutation.isPending ? (
-                    <LoaderCircle className="h-7 w-7 animate-spin" />
-                  ) : (
-                    `${selectedCards.length}/3`
-                  )}
-                </div>
-                <span className="mt-1 block text-[8px] uppercase tracking-[0.3em] text-[#738381]">
-                  {revealMutation.isPending ? "revealing" : "selected"}
-                </span>
-              </motion.div>
-
               <div className="relative z-10 flex w-full max-w-[720px] flex-col items-center gap-3 sm:gap-4">
-                {CARD_ROWS.map((row, rowIndex) => (
+                <motion.div
+                  className="mb-2 flex min-h-[32px] items-center justify-center text-center"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, ease: EASE_OUT }}
+                >
+                  {revealMutation.isPending ? (
+                    <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.24em] text-[#d7a167]">
+                      <LoaderCircle className="h-4 w-4 animate-spin" />
+                      <span>Revealing your reading</span>
+                    </div>
+                  ) : (
+                    <p className="text-[10px] uppercase tracking-[0.24em] text-[#7d8a88]">
+                      {selectedCards.length === 0
+                        ? "Choose any three cards"
+                        : `${selectedCards.length} of 3 cards chosen`}
+                    </p>
+                  )}
+                </motion.div>
+
+                {cardRows.map((row, rowIndex) => (
                   <div
                     key={rowIndex}
                     className="flex flex-wrap justify-center gap-3 sm:gap-4"
@@ -511,10 +528,12 @@ export default function TheReading() {
                       const isSelected = selectedCards.includes(card.id);
                       const isLocked = revealMutation.isPending;
                       const index =
-                        CARD_ROWS.slice(0, rowIndex).reduce(
-                          (count, currentRow) => count + currentRow.length,
-                          0,
-                        ) + columnIndex;
+                        cardRows
+                          .slice(0, rowIndex)
+                          .reduce(
+                            (count, currentRow) => count + currentRow.length,
+                            0,
+                          ) + columnIndex;
 
                       return (
                         <motion.button
