@@ -256,9 +256,9 @@ export default function PantheonCombinedSection() {
                   >
                     {god.name}
                   </div>
-                  <div className="text-[8px] font-bold tracking-widest uppercase mt-1 text-stone-400">
+                  {/* <div className="text-[8px] font-bold tracking-widest uppercase mt-1 text-stone-400">
                     {god.title}
-                  </div>
+                  </div> */}
                 </div>
               </button>
             );
