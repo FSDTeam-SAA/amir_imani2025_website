@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { Cinzel_Decorative } from "next/font/google";
 import { Menu, LogOut, Search, ShoppingCart, User2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,6 +30,44 @@ const navigationItems = [
   { name: "Fortune Telling", href: "/fortune-telling" },
   { name: "Contact", href: "/contact" },
 ];
+
+const fortuneWordmarkFont = Cinzel_Decorative({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
+
+function renderNavLabel(name: string, isFortunePage: boolean) {
+  if (name !== "Fortune Telling") {
+    return name;
+  }
+
+  return (
+    <span
+      className={`relative inline-flex flex-col items-center leading-[0.9] ${
+        isFortunePage ? "text-[#f6d7ab]" : "text-[#7c4a24]"
+      }`}
+    >
+      <span
+        className={`${fortuneWordmarkFont.className} bg-gradient-to-b bg-clip-text text-[0.98em] font-bold uppercase tracking-[0.16em] text-transparent drop-shadow-[0_2px_10px_rgba(205,140,66,0.22)] ${
+          isFortunePage
+            ? "from-[#fff2db] via-[#f4cb90] to-[#c88439]"
+            : "from-[#b56f3a] via-[#7d4727] to-[#4c2c18]"
+        }`}
+      >
+        Fortune
+      </span>
+      <span
+        className={`${fortuneWordmarkFont.className} -mt-0.5 bg-gradient-to-b bg-clip-text text-[0.9em] font-bold uppercase tracking-[0.22em] text-transparent ${
+          isFortunePage
+            ? "from-[#fde8c3] via-[#eab96d] to-[#b8722b]"
+            : "from-[#9a5f33] via-[#6f4022] to-[#432312]"
+        }`}
+      >
+        Telling
+      </span>
+    </span>
+  );
+}
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -125,7 +164,7 @@ export default function Navbar() {
                         : "hover:text-primary hover:bg-white/30"
                     }`}
                   >
-                    {item.name}
+                    {renderNavLabel(item.name, isFortunePage)}
                   </Link>
                 );
               })}
@@ -183,7 +222,9 @@ export default function Navbar() {
                         variant="ghost"
                         size="icon"
                         className={`relative bg-transparent transition-colors ${
-                          isFortunePage ? "hover:bg-white/10" : "hover:bg-white/20"
+                          isFortunePage
+                            ? "hover:bg-white/10"
+                            : "hover:bg-white/20"
                         }`}
                         aria-label="User menu"
                       >
@@ -392,7 +433,7 @@ export default function Navbar() {
                                 } block px-4 py-3 rounded-lg hover:bg-primary/5 transition-colors duration-200`}
                                 onClick={() => setIsOpen(false)}
                               >
-                                {item.name}
+                                {renderNavLabel(item.name, isFortunePage)}
                               </Link>
                             );
                           })}
