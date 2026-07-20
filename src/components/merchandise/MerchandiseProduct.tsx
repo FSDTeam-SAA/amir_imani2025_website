@@ -84,7 +84,8 @@ const MerchandiseProduct = () => {
           return;
         }
 
-        const response = await productService.getMerchandiseByCategory(selectedCategory);
+        const response =
+          await productService.getMerchandiseByCategory(selectedCategory);
         if (response.success) {
           setProducts(response.data);
         } else {
@@ -102,28 +103,24 @@ const MerchandiseProduct = () => {
   }, [allProducts, loading, selectedCategory]);
 
   const categoryCounts = useMemo(() => {
-    const counts = allProducts.reduce<Record<string, number>>((acc, product) => {
-      const category = product.category || "UNCATEGORIZED";
-      acc[category] = (acc[category] || 0) + 1;
-      return acc;
-    }, {});
+    const counts = allProducts.reduce<Record<string, number>>(
+      (acc, product) => {
+        const category = product.category || "UNCATEGORIZED";
+        acc[category] = (acc[category] || 0) + 1;
+        return acc;
+      },
+      {},
+    );
 
     return counts;
   }, [allProducts]);
 
   const categories = useMemo(() => {
-    const availableCategories = categoryDisplayOrder.filter((category) => {
-      if (category === "ALL") {
-        return allProducts.length > 0;
-      }
-
-      return (categoryCounts[category] || 0) > 0;
-    });
-
-    return availableCategories.map((category) => ({
+    return categoryDisplayOrder.map((category) => ({
       id: category,
       label: category,
-      count: category === "ALL" ? allProducts.length : categoryCounts[category] || 0,
+      count:
+        category === "ALL" ? allProducts.length : categoryCounts[category] || 0,
     }));
   }, [allProducts.length, categoryCounts]);
 
@@ -144,7 +141,7 @@ const MerchandiseProduct = () => {
   const handleAddToCart = async (
     e: React.MouseEvent,
     product: Product,
-    redirect: boolean = false
+    redirect: boolean = false,
   ) => {
     e.preventDefault();
     e.stopPropagation();
@@ -233,7 +230,9 @@ const MerchandiseProduct = () => {
                   }`}
                 >
                   <span>{cat.label}</span>
-                  <span className={`text-[10px] ${isActive ? "text-gray-400" : "text-gray-500"}`}>
+                  <span
+                    className={`text-[10px] ${isActive ? "text-gray-400" : "text-gray-500"}`}
+                  >
                     {cat.count}
                   </span>
                 </button>
@@ -243,10 +242,15 @@ const MerchandiseProduct = () => {
 
           <div className="flex items-center gap-4 self-end text-sm md:self-auto">
             <span className="text-gray-500">
-              <strong className="font-medium text-gray-900">{sortedProducts.length}</strong> products
+              <strong className="font-medium text-gray-900">
+                {sortedProducts.length}
+              </strong>{" "}
+              products
             </span>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-gray-400">SORT</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-gray-400">
+                SORT
+              </span>
               <div className="relative inline-block">
                 <select
                   className="cursor-pointer appearance-none border-b border-transparent bg-transparent py-1 pl-1 pr-8 font-medium text-gray-900 transition-colors hover:border-gray-400 focus:outline-none"
