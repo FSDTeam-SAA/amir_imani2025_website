@@ -27,7 +27,10 @@ const ProductPageView = ({ product }: ProductPageViewProps) => {
         <ProductHero product={product} />
         <ProductDetails product={product} />
         {product.productType === "card" && (
-          <MediaSection videoLink={product.videoLink} />
+          <MediaSection
+            productName={product.productName}
+            videoLink={product.videoLink}
+          />
         )}
       </main>
     </div>
