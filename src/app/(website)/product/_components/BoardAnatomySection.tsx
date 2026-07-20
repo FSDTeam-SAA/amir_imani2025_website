@@ -36,7 +36,7 @@ export default function BoardAnatomySection() {
           */}
           <div className="relative w-full aspect-[4/3] max-w-[640px] drop-shadow-[0_20px_50px_rgba(0,0,0,0.06)]">
             <Image
-              src="/gmaeDetails.png" // <-- Replace this path with your uploaded image file path
+              src="/gamedetails.svg" // <-- Replace this path with your uploaded image file path
               alt="Doundo Board Anatomy Illustration"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"

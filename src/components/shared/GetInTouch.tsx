@@ -142,9 +142,8 @@ const GetInTouch = () => {
           Let&apos;s <span className="text-[#577b8a]">Talk.</span>
         </h2>
         <p className="text-xs md:text-[13px] text-[#777777] leading-relaxed max-w-md mx-auto">
-         Have a question, partnership idea, or just
-want to say hello? We&apos;d love to hear from
-you.
+          Have a question, partnership idea, or just want to say hello?
+          We&apos;d love to hear from you.
         </p>
       </div>
 
@@ -170,10 +169,9 @@ you.
                     Address
                   </span>
                   <p className="text-xs text-[#cccccc] leading-relaxed font-light">
-                  DoUndo Corp.
+                    DoUndo Corp.
                     <br />
-                   Unit 277, 7025 Markham Road,
-Markham, Ontario
+                    Unit 277, 7025 Markham Road, Markham, Ontario
                     <br />
                     Canada - L3S 0C3
                   </p>
@@ -193,7 +191,7 @@ Markham, Ontario
                     href="mailto:hello@doundo.com"
                     className="text-xs text-[#cccccc] hover:text-white transition-colors font-light"
                   >
-                   Info@doundogames.com
+                    Info@doundogames.com
                   </a>
                 </div>
               </div>
