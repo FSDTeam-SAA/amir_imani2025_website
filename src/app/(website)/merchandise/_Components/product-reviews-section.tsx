@@ -34,7 +34,9 @@ export default function ProductReviewsSection({
   const { data: session, status } = useSession();
   const [reviews, setReviews] = useState<ProductReview[]>([]);
   const [summary, setSummary] = useState<ProductReviewSummary>(emptySummary);
-  const [eligibility, setEligibility] = useState<ReviewEligibility | null>(null);
+  const [eligibility, setEligibility] = useState<ReviewEligibility | null>(
+    null,
+  );
   const [selectedRating, setSelectedRating] = useState(5);
   const [reviewText, setReviewText] = useState("");
   const [guestName, setGuestName] = useState("");
@@ -43,12 +45,8 @@ export default function ProductReviewsSection({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const isAuthenticated = Boolean(session?.user?.id);
-  const reviewerName = isAuthenticated
-    ? guestName.trim()
-    : guestName.trim();
-  const reviewerEmail = isAuthenticated
-    ? guestEmail.trim()
-    : guestEmail.trim();
+  const reviewerName = isAuthenticated ? guestName.trim() : guestName.trim();
+  const reviewerEmail = isAuthenticated ? guestEmail.trim() : guestEmail.trim();
   const canSubmitReview = isAuthenticated
     ? Boolean(eligibility?.canReview) &&
       reviewerName.length >= 2 &&
@@ -59,9 +57,7 @@ export default function ProductReviewsSection({
     if (!isAuthenticated) return;
 
     const fallbackName =
-      session?.user?.name?.trim() ||
-      session?.user?.email?.split("@")[0] ||
-      "";
+      session?.user?.name?.trim() || session?.user?.email?.split("@")[0] || "";
     const fallbackEmail = session?.user?.email?.trim() || "";
 
     setGuestName((current) => current || fallbackName);
@@ -90,16 +86,16 @@ export default function ProductReviewsSection({
     const run = async () => {
       setIsLoading(true);
       try {
-        const reviewsResponse = await reviewService.getProductReviews(productId);
+        const reviewsResponse =
+          await reviewService.getProductReviews(productId);
         if (!isMounted) return;
 
         setReviews(reviewsResponse.data.reviews);
         setSummary(reviewsResponse.data.summary);
 
         if (isAuthenticated) {
-          const eligibilityResponse = await reviewService.getReviewEligibility(
-            productId
-          );
+          const eligibilityResponse =
+            await reviewService.getReviewEligibility(productId);
           if (!isMounted) return;
           setEligibility(eligibilityResponse.data);
         } else {
@@ -137,7 +133,7 @@ export default function ProductReviewsSection({
 
     if (eligibility?.review) {
       return `You already submitted a review. Current status: ${eligibility.review.status}.`;
-    } 
+    }
 
     return "You can submit your review now. Check your name and email before sending.";
   }, [eligibility, isAuthenticated, status]);
@@ -175,7 +171,7 @@ export default function ProductReviewsSection({
       const axiosError = error as AxiosError<{ message?: string }>;
       toast.error(
         axiosError.response?.data?.message ||
-          "Could not submit your review. Please try again."
+          "Could not submit your review. Please try again.",
       );
     } finally {
       setIsSubmitting(false);
@@ -183,7 +179,7 @@ export default function ProductReviewsSection({
   };
 
   return (
-    <section className="border-t border-[#EFEFEF] bg-[#FFFDF8]">
+    <section className="border-t  bg-[#fcf8ef]">
       <div className="container mx-auto grid gap-8 px-4 py-12 lg:grid-cols-[minmax(0,1.2fr)_420px]">
         <div>
           <div className="flex flex-wrap items-end justify-between gap-4">
@@ -196,7 +192,7 @@ export default function ProductReviewsSection({
               </h2>
             </div>
 
-            <div className="rounded-2xl border border-[#EFEFEF] bg-white px-5 py-4">
+            <div className="rounded-2xl border bg-[#fcf8ef]/50 px-5 py-4">
               <p className="text-3xl font-bold text-[#111111]">
                 {summary.averageRating.toFixed(1)}
               </p>
@@ -210,7 +206,7 @@ export default function ProductReviewsSection({
 
           <div className="mt-6 space-y-4">
             {isLoading ? (
-              <div className="flex items-center gap-2 rounded-2xl border border-[#EFEFEF] bg-white p-6 text-sm text-[#666666]">
+              <div className="flex items-center gap-2 rounded-2xl border bg-[#fcf8ef]/50 p-6 text-sm text-[#666666]">
                 <Loader2 className="h-4 w-4 animate-spin" />
                 Loading reviews...
               </div>
@@ -218,7 +214,7 @@ export default function ProductReviewsSection({
               reviews.map((review) => (
                 <article
                   key={review.id}
-                  className="rounded-2xl border border-[#EFEFEF] bg-white p-6"
+                  className="rounded-2xl border bg-[#fcf8ef]/50 p-6"
                 >
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
@@ -238,13 +234,14 @@ export default function ProductReviewsSection({
               ))
             ) : (
               <div className="rounded-2xl border border-dashed border-[#E4D5B7] bg-white p-6 text-sm text-[#666666]">
-                No published reviews yet. Be the first verified buyer to share one.
+                No published reviews yet. Be the first verified buyer to share
+                one.
               </div>
             )}
           </div>
         </div>
 
-        <aside className="rounded-[28px] border border-[#E9DFC9] bg-white p-6 shadow-[0px_20px_50px_rgba(0,0,0,0.04)]">
+        <aside className="rounded-[28px] border bg-[#fcf8ef]/50 p-6 shadow-[0px_20px_50px_rgba(0,0,0,0.04)]">
           <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">
             Leave a review
           </p>
@@ -279,7 +276,9 @@ export default function ProductReviewsSection({
               href="/login"
               className="mt-3 inline-flex text-sm font-semibold text-primary underline underline-offset-4"
             >
-              {isAuthenticated ? "Signed in? Update account if needed" : "Already have an account? Log in"}
+              {isAuthenticated
+                ? "Signed in? Update account if needed"
+                : "Already have an account? Log in"}
             </Link>
           </div>
 
@@ -387,7 +386,9 @@ export default function ProductReviewsSection({
               {isSubmitting ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
               ) : null}
-              {canSubmitReview ? "Submit review" : "Complete the form to review"}
+              {canSubmitReview
+                ? "Submit review"
+                : "Complete the form to review"}
             </Button>
           </form>
         </aside>
@@ -396,13 +397,7 @@ export default function ProductReviewsSection({
   );
 }
 
-function StarRow({
-  rating,
-  size,
-}: {
-  rating: number;
-  size: "sm" | "md";
-}) {
+function StarRow({ rating, size }: { rating: number; size: "sm" | "md" }) {
   const starClass = size === "md" ? "h-4 w-4" : "h-3.5 w-3.5";
 
   return (
