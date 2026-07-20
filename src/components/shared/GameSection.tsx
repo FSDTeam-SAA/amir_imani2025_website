@@ -1,13 +1,79 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowUpRight, MoveRight } from "lucide-react";
+import { Product } from "@/lib/types/ecommerce";
+import { productService } from "@/lib/api/product-service";
+
+const FEATURED_PRODUCT_ROUTE = "/product/695057098548e119f5fa7cfd";
 
 export default function GameSection() {
+  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFeaturedProducts = async () => {
+      try {
+        const response = await productService.getCards();
+        if (response.success) {
+          const homeProducts = (response.data || []).filter(
+            (product) => product.addHome
+          );
+          setFeaturedProducts(homeProducts.slice(0, 2));
+        }
+      } catch (error) {
+        console.error("Failed to fetch featured games:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchFeaturedProducts();
+  }, []);
+
+  const primaryProduct = featuredProducts[0];
+  const secondaryProduct = featuredProducts[1];
+
+  const primaryTitle = primaryProduct?.productName || "DoUndo: The Card Game";
+  const primarySubtitle =
+    primaryProduct?.feature ||
+    "Strategy & Perception";
+  const primaryDescription =
+    primaryProduct?.description ||
+    "The original game that started it all. Use your thirteen symbols to outread, outmaneuver, and outlast your opponent in a battle of archetypes.";
+
+  const secondaryTitle = secondaryProduct?.productName || "The Myth Game";
+  const secondaryDescription =
+    secondaryProduct?.description ||
+    "Weave stories using symbols as characters, conflicts, and resolutions. A narrative game for 2-8 players.";
+
+  const primaryImage =
+    primaryProduct?.imgs?.[0] ||
+    primaryProduct?.img ||
+    "/images/univers1.jpeg";
+  const secondaryImage =
+    secondaryProduct?.imgs?.[0] ||
+    secondaryProduct?.img ||
+    "/images/univers2.jpeg";
+
+  const cardContent = isLoading
+    ? {
+        title: "DoUndo: The Card Game",
+        subtitle: "Strategy & Perception",
+        description:
+          "The original game that started it all. Use your thirteen symbols to outread, outmaneuver, and outlast your opponent in a battle of archetypes.",
+      }
+    : {
+        title: primaryTitle,
+        subtitle: primarySubtitle,
+        description: primaryDescription,
+      };
+
   return (
-    <section className="bg-[#F8F0DD] text-stone-900  py-20 px-6 md:px-12 lg:px-20  flex flex-col justify-center font-sans">
-      <div className="container ">
-        {/* Header Grid Section */}
+    <section className="bg-[#F8F0DD] text-stone-900 py-20 px-6 md:px-12 lg:px-20 flex flex-col justify-center font-sans">
+      <div className="container">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end mb-12">
           <div>
             <span className="text-[#E97443] text-xs font-bold tracking-[0.25em] uppercase block mb-3">
@@ -25,90 +91,74 @@ export default function GameSection() {
           </div>
         </div>
 
-        {/* Cards Grid Section */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-          {/* Left BIG Card (univers1.jpeg) - Takes 2 columns */}
-          <div className="lg:col-span-2 rounded-md min-h-[550px] flex flex-col justify-between relative overflow-hidden group shadow-xl">
-            {/* Background Image */}
+          <Link
+            href={FEATURED_PRODUCT_ROUTE}
+            className="lg:col-span-2 rounded-md min-h-137.5 flex flex-col justify-between relative overflow-hidden group shadow-xl"
+          >
             <Image
-              src="/images/univers1.jpeg" // Public folder এ রাখা ইমেজের পাথ
-              alt="DoUndo: The Card Game Background"
+              src={primaryImage}
+              alt={primaryTitle}
               fill
               className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
               priority
             />
-            {/* Overlay to ensure text readability */}
             <div className="absolute inset-0 bg-black/40 z-0" />
 
-            {/* Card Content */}
             <div className="p-8 md:p-12 mt-auto relative z-10 max-w-xl w-full">
-              {/* Card Meta */}
               <div className="uppercase text-[#5EA3A3] text-xs font-bold tracking-widest mb-6">
-                Strategy & Perception
+                {cardContent.subtitle}
               </div>
               <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
-                DoUndo: The Card Game
+                {cardContent.title}
               </h3>
-              <p className="text-stone-200 text-sm md:text-base mb-6 leading-relaxed">
-                The original game that started it all. Use your thirteen symbols
-                to outread, outmaneuver, and outlast your opponent in a battle
-                of archetypes.
-              </p>
-              <Link
-                href="/explore-game"
-                className="inline-flex items-center gap-2 text-[#E97443] text-xs font-bold tracking-widest uppercase hover:text-[#e97443]/80 transition-colors group/btn"
-              >
+              {/* <p className="text-stone-200 text-sm md:text-base mb-6 leading-relaxed">
+                {cardContent.description}
+              </p> */}
+              <span className="inline-flex items-center gap-2 text-[#E97443] text-xs font-bold tracking-widest uppercase group/btn">
                 Explore the Game
                 <MoveRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
-              </Link>
+              </span>
             </div>
-          </div>
+          </Link>
 
-          {/* Right SMALL Card (univers2.jpeg) - Takes 1 column */}
-          <div className="rounded-md min-h-[420px] flex flex-col justify-between relative overflow-hidden group shadow-xl">
-            {/* Background Image */}
+          <Link
+            href={FEATURED_PRODUCT_ROUTE}
+            className="rounded-md min-h-105 flex flex-col justify-between relative overflow-hidden group shadow-xl"
+          >
             <Image
-              src="/images/univers2.jpeg" // Public folder এ রাখা ইমেজের পাথ
-              alt="The Myth Game Background"
+              src={secondaryImage}
+              alt={secondaryTitle}
               fill
               className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
               priority
             />
-            {/* Overlay to ensure text readability */}
             <div className="absolute inset-0 bg-black/40 z-0" />
 
-            {/* Card Content */}
-            <div className="p-8 mt-auto relative z-10 w-full h-full flex flex-col justify-between min-h-[420px]">
-              {/* Top Badge Tag */}
+            <div className="p-8 mt-auto relative z-10 w-full h-full flex flex-col justify-between min-h-105">
               <div className="flex justify-between items-start w-full">
                 <span className="uppercase text-[#5EA3A3] text-xs font-bold tracking-widest">
-                  Next Chapter
+                  {secondaryProduct ? "Featured Game" : "Next Chapter"}
                 </span>
                 <span className="bg-stone-900/80 backdrop-blur-sm text-[#5EA3A3] text-[10px] font-bold tracking-widest px-2 py-1 rounded uppercase border border-stone-700/50">
-                  Coming 2026
+                  {secondaryProduct ? "Now Available" : "Coming 2026"}
                 </span>
               </div>
 
-              {/* Bottom Info */}
               <div className="mt-auto">
                 <h3 className="text-2xl font-bold text-white mb-4">
-                  The Myth Game
+                  {secondaryTitle}
                 </h3>
                 <p className="text-stone-200 text-sm mb-6 leading-relaxed">
-                  Weave stories using symbols as characters, conflicts, and
-                  resolutions. A narrative game for 2-8 players. Coming next
-                  year.
+                  {secondaryDescription}
                 </p>
-                <Link
-                  href="/join-waitlist"
-                  className="inline-flex items-center gap-1 text-[#E97443] text-xs font-bold tracking-widest uppercase hover:text-[#e97443]/80 transition-colors group/btn"
-                >
-                  Join Waitlist
+                <span className="inline-flex items-center gap-1 text-[#E97443] text-xs font-bold tracking-widest uppercase group/btn">
+                  Discover More
                   <ArrowUpRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
-                </Link>
+                </span>
               </div>
             </div>
-          </div>
+          </Link>
         </div>
       </div>
     </section>
