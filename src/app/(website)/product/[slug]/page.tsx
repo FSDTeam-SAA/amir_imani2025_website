@@ -11,7 +11,7 @@ import RightToLeftMarquee from "@/components/shared/LeftToRightMarquee";
 import GameRulesSection from "../_components/GameRulesSection";
 import BoardAnatomySection from "../_components/BoardAnatomySection";
 import PressReactionsSection from "../_components/PressReactionsSection";
-import MaterialsSection from "../_components/MaterialsSection";
+// import MaterialsSection from "../_components/MaterialsSection";
 
 export default function ProductPage() {
   const params = useParams();
@@ -110,7 +110,7 @@ export default function ProductPage() {
           <GameRulesSection
             title={product.ruleTitle}
             rules={product.rulls?.filter(
-              (rule) => rule?.num || rule?.title || rule?.description
+              (rule) => rule?.num || rule?.title || rule?.description,
             )}
           />
         )}
@@ -124,16 +124,16 @@ export default function ProductPage() {
           productName={product.productName}
           videoLink={product.videoLink}
         />
-        <MaterialsSection
+        {/* <MaterialsSection
           title={product.garmentTitle}
           items={materialItems}
-        />
+        /> */}
         <ProductDetails product={product} />
         {shouldShowCardSections && (
           <PressReactionsSection
             title={product.passandplayTittle}
             items={product.passandplay?.filter(
-              (item) => item?.message || item?.name || item?.type
+              (item) => item?.message || item?.name || item?.type,
             )}
           />
         )}
