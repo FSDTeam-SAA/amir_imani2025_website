@@ -14,6 +14,7 @@ export interface Product {
     | string;
   feature: string;
   description: string;
+  addHome?: boolean;
   videoLink?: string;
   img?: string; // Keep for backward compatibility or if API still returns it as primary
   imgs?: string[];
