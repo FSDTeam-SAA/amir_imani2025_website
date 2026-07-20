@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Linkedin } from 'lucide-react';
+import Link from 'next/link';
 
 // Custom icons to replicate the bottom button UI elements
 const CopyIcon = () => (
@@ -93,14 +94,14 @@ export default function MeetOurTeam() {
               </p>
 
               {/* Action/Social Buttons at Bottom */}
-              <div className="flex gap-2 mt-auto">
+              <Link href={founder.link} target='_blank' className="flex gap-2 mt-auto">
                 <button 
-                  className="w-7 h-7 flex items-center justify-center "
+                  className="w-7 h-7  cursor-pointer flex items-center justify-center "
                   aria-label="LinkedIn"
                 >
                   <Linkedin/>
                 </button>
-              </div>
+              </Link>
             </div>
           </div>
         ))}

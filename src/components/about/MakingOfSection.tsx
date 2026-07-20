@@ -3,18 +3,71 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+const gridItems = [
+  {
+    title: "STUDIO",
+    image: "/about/logo.jpg",
+    className: "col-span-12 md:col-span-6 row-span-2",
+  },
+  {
+    title: "PROTOTYPE",
+    image: "/about/GameBox_v2.jpg",
+    className: "col-span-12 sm:col-span-6 md:col-span-3",
+  },
+  {
+    title: "SYMBOLS",
+    image: "/about/Symbols.jpg",
+    className: "col-span-12 sm:col-span-6 md:col-span-3 row-span-2",
+  },
+  {
+    title: "SKETCHES",
+    image: "/about/Icons.jpg",
+    className: "col-span-12 sm:col-span-6 md:col-span-3",
+  },
+  {
+    title: "BOX DESIGN",
+    image: "/about/GameBox.jpg",
+    className: "col-span-12 md:col-span-6",
+  },
+  {
+    title: "PROCESS",
+    image: "/about/Symbols_2.jpg",
+    className: "col-span-12 sm:col-span-6 md:col-span-3",
+  },
+  {
+    title: "STUDIO DAY",
+    image: "/about/Symbols_3.jpg",
+    className: "col-span-12 sm:col-span-6 md:col-span-3",
+  }
+];
 
 export default function MakingOfSection() {
-  const [selectedImage, setSelectedImage] = useState<{
-    title: string;
-    image: string;
-  } | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const selectedImage = selectedIndex === null ? null : gridItems[selectedIndex];
+
+  const showPreviousImage = () => {
+    setSelectedIndex((currentIndex) =>
+      currentIndex === null
+        ? null
+        : (currentIndex - 1 + gridItems.length) % gridItems.length
+    );
+  };
+
+  const showNextImage = () => {
+    setSelectedIndex((currentIndex) =>
+      currentIndex === null ? null : (currentIndex + 1) % gridItems.length
+    );
+  };
 
   useEffect(() => {
     if (!selectedImage) return;
 
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setSelectedImage(null);
+      if (event.key === 'Escape') setSelectedIndex(null);
+      if (event.key === 'ArrowLeft') showPreviousImage();
+      if (event.key === 'ArrowRight') showNextImage();
     };
 
     const previousOverflow = document.body.style.overflow;
@@ -26,45 +79,6 @@ export default function MakingOfSection() {
       window.removeEventListener('keydown', handleEscape);
     };
   }, [selectedImage]);
-
-  // Data for the bento grid items to keep code clean and modular
-  const gridItems = [
-    {
-      title: "STUDIO",
-      image: "/about/logo.jpg",
-      className: "col-span-12 md:col-span-6 row-span-2",
-    },
-    {
-      title: "PROTOTYPE",
-      image: "/about/GameBox_v2.jpg",
-      className: "col-span-12 sm:col-span-6 md:col-span-3",
-    },
-    {
-      title: "SYMBOLS",
-      image: "/about/Symbols.jpg",
-      className: "col-span-12 sm:col-span-6 md:col-span-3 row-span-2",
-    },
-    {
-      title: "SKETCHES",
-      image: "/about/Icons.jpg",
-      className: "col-span-12 sm:col-span-6 md:col-span-3",
-    },
-    {
-      title: "BOX DESIGN",
-      image: "/about/GameBox.jpg",
-      className: "col-span-12 md:col-span-6",
-    },
-    {
-      title: "PROCESS",
-      image: "/about/Symbols_2.jpg",
-      className: "col-span-12 sm:col-span-6 md:col-span-3",
-    },
-    {
-      title: "STUDIO DAY",
-      image: "/about/Symbols_3.jpg",
-      className: "col-span-12 sm:col-span-6 md:col-span-3",
-    }
-  ];
 
   return (
     <section className="bg-[#110f0c] text-white font-sans px-6 py-20 md:py-28">
@@ -92,7 +106,7 @@ export default function MakingOfSection() {
           <button
             type="button"
             key={index}
-            onClick={() => setSelectedImage(item)}
+            onClick={() => setSelectedIndex(index)}
             aria-label={`Open ${item.title} image`}
             className={`${item.className} relative rounded-md p-6 flex flex-col text-left justify-between overflow-hidden group cursor-zoom-in transition-all duration-300 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#577b8a]`}
           >
@@ -110,9 +124,9 @@ export default function MakingOfSection() {
             <div></div>
 
             {/* Label at the bottom-left */}
-            <span className="text-[10px] font-bold tracking-[0.15em] text-white/70 uppercase relative z-10">
+            {/* <span className="text-[10px] font-bold tracking-[0.15em] text-white/70 uppercase relative z-10">
               {item.title}
-            </span>
+            </span> */}
           </button>
         ))}
       </div>
@@ -125,7 +139,7 @@ export default function MakingOfSection() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            onClick={() => setSelectedImage(null)}
+            onClick={() => setSelectedIndex(null)}
             role="dialog"
             aria-modal="true"
             aria-label={`${selectedImage.title} image preview`}
@@ -147,15 +161,33 @@ export default function MakingOfSection() {
                 priority
               />
 
-              <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/80 to-transparent px-6 pb-5 pt-14 pointer-events-none">
-                <span className="text-xs font-bold tracking-[0.2em] text-white uppercase">
-                  {selectedImage.title}
-                </span>
-              </div>
+              <button
+                type="button"
+                onClick={showPreviousImage}
+                className="absolute left-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/60 text-white backdrop-blur transition hover:scale-105 hover:bg-black focus-visible:outline-2 focus-visible:outline-white md:left-5 md:h-12 md:w-12"
+                aria-label="Show previous image"
+              >
+                <ChevronLeft className="h-6 w-6" aria-hidden="true" />
+              </button>
 
               <button
                 type="button"
-                onClick={() => setSelectedImage(null)}
+                onClick={showNextImage}
+                className="absolute right-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/60 text-white backdrop-blur transition hover:scale-105 hover:bg-black focus-visible:outline-2 focus-visible:outline-white md:right-5 md:h-12 md:w-12"
+                aria-label="Show next image"
+              >
+                <ChevronRight className="h-6 w-6" aria-hidden="true" />
+              </button>
+
+              {/* <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/80 to-transparent px-6 pb-5 pt-14 pointer-events-none">
+                <span className="text-xs font-bold tracking-[0.2em] text-white uppercase">
+                  {selectedImage.title}
+                </span>
+              </div> */}
+
+              <button
+                type="button"
+                onClick={() => setSelectedIndex(null)}
                 className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/60 text-xl text-white backdrop-blur transition hover:scale-105 hover:bg-black focus-visible:outline-2 focus-visible:outline-white"
                 aria-label="Close image preview"
               >

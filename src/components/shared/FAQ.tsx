@@ -94,6 +94,7 @@ export default function FAQPixelPerfect() {
             return (
               <motion.div
                 key={index}
+                onMouseEnter={() => setOpenIndex(index)}
                 variants={{
                   hidden: { opacity: 0, y: 16 },
                   visible: { opacity: 1, y: 0 },
@@ -103,6 +104,7 @@ export default function FAQPixelPerfect() {
               >
                 <button
                   onClick={() => toggleFAQ(index)}
+                  onFocus={() => setOpenIndex(index)}
                   aria-expanded={isOpen}
                   aria-controls={`faq-answer-${index}`}
                   className="group flex w-full items-center justify-between py-4.5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E97443]/40 focus-visible:ring-offset-2"
