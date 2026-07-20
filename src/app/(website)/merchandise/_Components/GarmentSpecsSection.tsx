@@ -1,37 +1,38 @@
 "use client";
 
+import { ProductHeroProps } from "@/components/merchandise/merchandiseSingleProduct/MerchandiseSingleCard";
 import React from "react";
 
-export default function GarmentSpecsSection() {
+export default function GarmentSpecsSection({ product }: ProductHeroProps) {
   const specsData = [
     {
       label: "MATERIAL",
-      title: "100% organic cotton",
+      title: product.garmentsMATERIAL || "N/A",
       desc: "GOTS certified, Portuguese grown",
     },
     {
       label: "WEIGHT",
-      title: "240 gsm",
+      title: product.garmentWEIGHT || "N/A",
       desc: "Heavyweight, structured drape",
     },
     {
       label: "FIT",
-      title: "Relaxed, true to size",
+      title: product.garmentFit || "N/A",
       desc: "Size up for an oversized silhouette",
     },
     {
       label: "PRINT",
-      title: "Hand screen-print",
+      title: product.garmentPRINT || "N/A",
       desc: "Water-based, low-impact inks",
     },
     {
       label: "MADE IN",
-      title: "Porto, Portugal",
+      title: product.garmentMADeIN || "N/A",
       desc: "Small-batch, limited run of 200",
     },
     {
       label: "CARE",
-      title: "Cold wash, line dry",
+      title: product.garmentCARE || "N/A",
       desc: "Turn inside out · no tumble",
     },
   ];
@@ -46,7 +47,7 @@ export default function GarmentSpecsSection() {
             THE GARMENT
           </span>
           <h2 className="text-3xl md:text-4xl font-normal tracking-tight text-stone-950">
-            Made to earn its wear.
+            {product?.garmentTitle}
           </h2>
         </div>
 

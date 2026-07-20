@@ -17,7 +17,7 @@ import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { Skeleton } from "@/components/ui/skeleton";
 
-interface ProductHeroProps {
+export interface ProductHeroProps {
   product: Product;
 }
 
@@ -183,34 +183,36 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
             )}
           </div>
 
-          <div
-            className="flex w-full gap-3 overflow-x-auto p-1 no-scrollbar"
-            aria-label="Product image thumbnails"
-          >
-            {images.map((img, index) => (
-              <button
-                type="button"
-                key={`${img}-${index}`}
-                className={`relative aspect-square min-w-18 flex-1 basis-0 overflow-hidden rounded-md border-2 transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
-                  selectedImage === img || (!selectedImage && index === 0)
-                    ? "border-primary shadow-md"
-                    : "border-gray-200 hover:border-primary/50"
-                }`}
-                aria-label={`View image ${index + 1} of ${product.productName}`}
-                aria-pressed={
-                  selectedImage === img || (!selectedImage && index === 0)
-                }
-                onClick={() => setSelectedImage(img)}
-              >
-                <Image
-                  src={img}
-                  alt={`${product.productName} thumbnail ${index + 1}`}
-                  fill
-                  className="object-cover"
-                />
-              </button>
-            ))}
-          </div>
+          {images.length > 1 && (
+            <div
+              className="flex w-full gap-3 overflow-x-auto p-1 no-scrollbar"
+              aria-label="Product image thumbnails"
+            >
+              {images.map((img, index) => (
+                <button
+                  type="button"
+                  key={`${img}-${index}`}
+                  className={`relative aspect-square min-w-18 flex-1 basis-0 overflow-hidden rounded-md border-2 transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
+                    selectedImage === img || (!selectedImage && index === 0)
+                      ? "border-primary shadow-md"
+                      : "border-gray-200 hover:border-primary/50"
+                  }`}
+                  aria-label={`View image ${index + 1} of ${product.productName}`}
+                  aria-pressed={
+                    selectedImage === img || (!selectedImage && index === 0)
+                  }
+                  onClick={() => setSelectedImage(img)}
+                >
+                  <Image
+                    src={img}
+                    alt={`${product.productName} thumbnail ${index + 1}`}
+                    fill
+                    className="object-cover"
+                  />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Right Column: Product Info */}
