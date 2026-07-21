@@ -175,7 +175,7 @@ beneath the surface.
 
         <div className="mb-14">
          <Link href={"/about-us"}>
-          <button className="bg-[#E97443] hover:bg-[#d66332] text-white text-xs font-bold tracking-[0.25em] uppercase px-9 py-4.5 transition-all duration-200 rounded-none flex items-center gap-3 group shadow-lg">
+          <button className="bg-[#F04D2A] hover:bg-[#d66332] text-white text-xs font-bold tracking-[0.25em] uppercase px-9 py-4.5 transition-all duration-200 rounded-none flex items-center gap-3 group shadow-lg">
             BEGIN YOUR READING
             <span className="text-xs transition-transform group-hover:translate-x-1 duration-200">✦</span>
           </button>

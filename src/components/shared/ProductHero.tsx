@@ -192,7 +192,7 @@ export default function ProductHero({ product }: ProductHeroProps) {
               {hasSizes && (
                 <fieldset className="flex flex-col gap-2">
                   <legend className="text-xs font-semibold uppercase tracking-wider text-[#8B8B8B]">
-                    Size <span className="text-red-500">*</span>
+                    Size <span className="text-[#E96A3D]">*</span>
                   </legend>
                   <div className="flex flex-wrap gap-2" role="radiogroup">
                     {product.size!.map((size) => (
@@ -242,7 +242,7 @@ export default function ProductHero({ product }: ProductHeroProps) {
           {/* Bottom Control Row: Price, Quantity, Add to Cart, Action Link */}
           <div className="flex flex-wrap items-center gap-6 pt-4">
             {/* Terracotta Styled Price */}
-            <p className="text-3xl md:text-4xl font-normal text-[#B3634B]">
+            <p className="text-3xl md:text-4xl font-normal text-[#E96A3D]">
               ${displayPrice.toFixed(2)} <span className="text-base font-light tracking-normal text-gray-500">{currency}</span>
             </p>
 
@@ -271,7 +271,7 @@ export default function ProductHero({ product }: ProductHeroProps) {
             <Button
               onClick={handleAddToCart}
               disabled={isAdding}
-              className="px-8 h-11 bg-[#B3634B] hover:bg-[#9C523D] !rounded-none text-white text-xs font-medium uppercase tracking-wider transition-all transform active:scale-[0.98] disabled:opacity-50"
+              className="px-8 h-11 bg-[#E96A3D] hover:bg-[#9C523D] !rounded-none text-white text-xs font-medium uppercase tracking-wider transition-all transform active:scale-[0.98] disabled:opacity-50"
             >
               {isAdding ? "Adding..." : "Add to Cart"}
             </Button>
@@ -327,7 +327,6 @@ export default function ProductHero({ product }: ProductHeroProps) {
             ))}
           </nav>
         </div>
-
       </div>
     </section>
   );

@@ -85,7 +85,7 @@ export default function MeetOurTeam() {
                 {founder.name}
               </h3>
               
-              <span className="text-[10px] tracking-wider font-bold text-[#c2593f] block mt-1 mb-3 uppercase">
+              <span className="text-[10px] tracking-wider font-bold text-[#E96A3D] block mt-1 mb-3 uppercase">
                 {founder.role}
               </span>
               

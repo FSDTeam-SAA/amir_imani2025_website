@@ -51,7 +51,7 @@ one shared universe.
           <div>
             <Link
               href="/about-us"
-              className="inline-block bg-[#E97443] hover:bg-[#d66332] text-white text-xs font-bold tracking-[0.2em] uppercase px-9 py-4 transition-colors duration-200 rounded-none shadow-md"
+              className="inline-block bg-[#F04D2A] hover:bg-[#d66332] text-white text-xs font-bold tracking-[0.2em] uppercase px-9 py-4 transition-colors duration-200 rounded-none shadow-md"
             >
               Read Our Story
             </Link>
