@@ -37,7 +37,7 @@ export default function FAQAccordionSection() {
   };
 
   return (
-    <section className="bg-[#FAF6EE] text-[#171513] py-24 px-6 md:px-12 lg:px-24 w-full font-sans antialiased">
+    <section className="bg-[#F8F0DD] text-[#171513] py-24 px-6 md:px-12 lg:px-24 w-full font-sans antialiased">
       <div className=" container mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
         
         {/* Left Side: Header Content (Takes 5 Columns) */}

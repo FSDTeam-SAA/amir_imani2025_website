@@ -48,13 +48,13 @@ export default function MeetOurTeam() {
     <section className="bg-[#f5f0dd] text-[#222222] font-sans px-6 py-20 md:py-28">
       <div className="container mx-auto text-center mb-16 md:mb-24">
         {/* Top Mini Tag */}
-        <span className="text-[10px] tracking-[0.2em] font-bold text-[#E28755] uppercase block mb-4">
+        <span className="text-[10px] tracking-[0.2em] font-bold text-[#E96A3D] uppercase block mb-4">
           The People
         </span>
         
         {/* Main Header */}
         <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
-          Meet Our <span className="text-[#E28755]">Founders.</span>
+          Meet Our <span className="text-[#E96A3D]">Founders.</span>
         </h2>
         
         {/* Subtitle Description */}
@@ -74,7 +74,7 @@ export default function MeetOurTeam() {
                 alt={founder.name}
                 fill
                 priority
-                className={` aspect-square ${index === 1 ? 'grayscale' : ''}`} 
+                className={`object-cover  ${index === 1 ? 'grayscale' : ''}`} 
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>
@@ -85,7 +85,7 @@ export default function MeetOurTeam() {
                 {founder.name}
               </h3>
               
-              <span className="text-[10px] tracking-wider font-bold text-[#c2593f] block mt-1 mb-3 uppercase">
+              <span className="text-[10px] tracking-wider font-bold text-[#E96A3D] block mt-1 mb-3 uppercase">
                 {founder.role}
               </span>
               

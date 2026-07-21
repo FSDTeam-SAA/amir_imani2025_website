@@ -19,7 +19,7 @@ export default function GameRulesSection({
     >
       <div className="mb-6">
         <p className="text-[11px] font-bold tracking-[0.2em] text-[#5C6B73] uppercase">
-          How to Play
+          How to Play 
         </p>
       </div>
 

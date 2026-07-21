@@ -80,7 +80,7 @@ export default function Hero() {
               <Button
                 asChild
                 variant={"outline"}
-                className="group relative cursor-pointer px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg font-semibold uppercase tracking-wider inline-flex items-center gap-3 shadow-xl hover:shadow-2xl transition-all duration-300 bg-[#E97443] hover:bg-[#E97443]/80 text-white rounded-md border-none"
+                className="group relative cursor-pointer px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg font-semibold uppercase tracking-wider inline-flex items-center gap-3 shadow-xl hover:shadow-2xl transition-all duration-300 bg-[#F04D2A] hover:bg-[#E97443]/80 text-white rounded-md border-none"
               >
                 <motion.button whileHover={hoverScale} whileTap={tapScale}>
                   Explore Games

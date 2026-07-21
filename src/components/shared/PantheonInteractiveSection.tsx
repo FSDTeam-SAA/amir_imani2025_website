@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Image from "next/image";
 
 const pantheonData = [
@@ -51,7 +51,6 @@ legacy • vision • endurance
 Asgard is not just a sky kingdom, but a memory of who you were before pain changed you. Its
 shape is a roof, rising like a shelter built inside you. This card is about return, not to the past but
 to the self before the world made you forget.`,
-
     iconImage: "/shapes/asgrad.svg",
     cardImage: "/card/Cards-3.jpg",
     color: "#F6D021",
@@ -190,7 +189,7 @@ thunder. Own it.`,
     cardImage: "/card/Cards-012.jpg",
     color: "#795548",
   },
-   {
+  {
     id: "Ziggy",
     name: "Ziggy",
     title: "Ziggy",
@@ -206,40 +205,54 @@ chaos • disruption • revelation`,
 
 export default function PantheonCombinedSection() {
   const [activeGod, setActiveGod] = useState(pantheonData[2]);
+  const detailsRef = useRef<HTMLDivElement | null>(null);
+
+  const handleCardClick = (god: (typeof pantheonData)[0]) => {
+    setActiveGod(god);
+
+    if (window.innerWidth < 768 && detailsRef.current) {
+      detailsRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
 
   return (
     <section className="bg-[#faf7f0] text-stone-900 py-16 px-4 md:px-12 lg:px-24 min-h-screen flex items-center justify-center font-sans antialiased">
-      <div className=" mx-auto container">
+      <div className="mx-auto container">
         {/* Header Section */}
         <div className="mb-10">
           <span className="text-stone-400 text-[10px] font-bold tracking-[0.25em] uppercase block mb-3">
             THE PANTHEON
           </span>
           <h2 className="text-3xl md:text-4xl font-normal tracking-tight text-stone-950 mb-4 max-w-2xl leading-tight">
-   Thirteen symbols. One shared language
-of play.
+            Thirteen symbols. One shared language of play.
           </h2>
           <p className="text-stone-500 text-xs md:text-sm max-w-2xl leading-relaxed">
-  Inspired by myths, philosophies, and
-ancient traditions, these symbols
-reappear across different games, worlds,
-and experiences inside DoUndo.
+            Inspired by myths, philosophies, and ancient traditions, these
+            symbols reappear across different games, worlds, and experiences
+            inside DoUndo.
           </p>
         </div>
 
-        {/* 7 items on the first row, 6 on the second */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-7 border border-stone-200/60 bg-white shadow-xs mb-16">
-          {pantheonData.map((god) => {
+        {/* Clean Flex-Grid Container (No ghost borders on empty space) */}
+        <div className="flex flex-wrap shadow-xs mb-16">
+          {pantheonData.map((god, index) => {
             const isActive = activeGod.id === god.id;
+            const is7thColumn = (index + 1) % 7 === 0;
+            const isLastItem = index === pantheonData.length - 1;
+
             return (
               <button
                 key={god.id}
-                onClick={() => setActiveGod(god)}
-                className={`flex flex-col items-center justify-between p-5 min-h-[170px] border border-stone-100 transition-all duration-300 relative focus:outline-none group ${
-                  isActive
-                    ? "bg-[#171513] text-white border-[#171513] z-10 shadow-lg"
-                    : "bg-[#FAF6EE]/30 hover:bg-[#FAF6EE]/80 text-stone-900"
-                }`}
+                onClick={() => handleCardClick(god)}
+                className={`flex flex-col items-center justify-between p-5 min-h-[170px] transition-all duration-300 relative focus:outline-none group 
+                  w-1/2 sm:w-1/3 md:w-[calc(100%/7)]
+                  border-t border-l border-b border-stone-200/60
+                  ${is7thColumn || isLastItem ? "md:border-r" : "md:border-r-0"} 
+                  ${
+                    isActive
+                      ? "bg-[#171513] text-white border-[#171513] z-10 shadow-lg"
+                      : "bg-[#FAF6EE]/30 hover:bg-[#FAF6EE]/80 text-stone-900"
+                  }`}
               >
                 {/* Top Mini Icon Grid */}
                 <div className="flex-1 flex items-center justify-center relative w-16 h-16 md:w-[72px] md:h-[72px]">
@@ -254,13 +267,12 @@ and experiences inside DoUndo.
                 {/* Name Labels */}
                 <div className="text-center w-full mt-3">
                   <div
-                    className={`text-xs font-bold tracking-wide ${isActive ? "text-white" : "text-stone-950"}`}
+                    className={`text-xs font-bold tracking-wide ${
+                      isActive ? "text-white" : "text-stone-950"
+                    }`}
                   >
                     {god.name}
                   </div>
-                  {/* <div className="text-[8px] font-bold tracking-widest uppercase mt-1 text-stone-400">
-                    {god.title}
-                  </div> */}
                 </div>
               </button>
             );
@@ -268,7 +280,10 @@ and experiences inside DoUndo.
         </div>
 
         {/* Bottom Preview Section */}
-        <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-7  md:gap-8 lg:gap-12">
+        <div
+          ref={detailsRef}
+          className="grid grid-cols-1 items-center gap-10 md:grid-cols-7 md:gap-8 lg:gap-12 scroll-mt-6"
+        >
           {/* Left: Selected card image */}
           <div className="flex justify-center md:col-span-3 md:justify-start">
             <div className="relative aspect-[11/15] w-full max-w-[520px] overflow-hidden shadow-xl">
@@ -285,7 +300,7 @@ and experiences inside DoUndo.
           </div>
 
           {/* Right Text Details */}
-          <div className="space-y-4 md:col-span-4 ">
+          <div className="space-y-4 md:col-span-4">
             <span className="text-[#5EA3A3] text-xs font-mono font-semibold tracking-wider block">
               {activeGod.number}
             </span>
@@ -298,11 +313,10 @@ and experiences inside DoUndo.
               — {activeGod.subtitle}
             </div>
 
-            <p className="text-stone-600 text-sm md:text-base leading-relaxed  pt-2">
+            <p className="text-stone-600 text-sm md:text-base leading-relaxed pt-2">
               {activeGod.description}
             </p>
           </div>
-
         </div>
       </div>
     </section>

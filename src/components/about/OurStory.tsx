@@ -16,7 +16,7 @@ const OurStory = () => {
         }}
       >
         <div className="max-w-3xl mx-auto">
-          <span className="text-[10px] uppercase tracking-[0.2em] text-[#C4A484] block mb-3 font-semibold">
+          <span className="text-[10px] uppercase tracking-[0.2em] text-[#E28755] block mb-3 font-semibold">
             ABOUT US
           </span>
           <h1 className="text-4xl md:text-5xl font-light tracking-tight mb-2">

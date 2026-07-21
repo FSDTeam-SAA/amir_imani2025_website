@@ -1,10 +1,10 @@
 import { useState, useCallback, useMemo, useRef, useEffect } from "react";
 import { Cart, CartItem } from "@/lib/types/ecommerce";
 import { debounce } from "@/lib/utils/debounce";
+import { getProductPrice } from "@/lib/utils/product-price";
 
 interface UseCartLogicOptions {
   cart: Cart | null;
-  currency?: "USD" | "CAD";
   onUpdateQuantity: (params: {
     productId: string;
     quantity: number;
@@ -38,7 +38,6 @@ export const getCartItemKey = (
  */
 export const useCartLogic = ({
   cart,
-  currency = "USD",
   onUpdateQuantity,
   onRemoveFromCart,
 }: UseCartLogicOptions) => {
@@ -145,13 +144,10 @@ export const useCartLogic = ({
     return items.reduce((acc, item: CartItem) => {
       const key = getCartItemKey(item?.productId?._id, item.color, item.size);
       const quantity = localQuantities[key] ?? item.quantity;
-      const price =
-        currency === "CAD"
-          ? (item?.productId?.ca_price ?? 0)
-          : (item?.productId?.price ?? 0);
+      const { amount: price } = getProductPrice(item?.productId);
       return acc + price * quantity;
     }, 0);
-  }, [currency, items, localQuantities]);
+  }, [items, localQuantities]);
 
   return {
     items,
