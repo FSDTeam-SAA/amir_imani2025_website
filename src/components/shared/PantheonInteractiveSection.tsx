@@ -191,9 +191,9 @@ thunder. Own it.`,
     color: "#795548",
   },
    {
-    id: "ZIGI",
-    name: "ZIGI",
-    title: "ZIGI",
+    id: "Ziggy",
+    name: "Ziggy",
+    title: "Ziggy",
     subtitle: "PILLAR OF AXIS",
     number: "No. 13 / 13",
     description: `The darkness that reveals the hidden self.

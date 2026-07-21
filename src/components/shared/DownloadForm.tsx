@@ -68,8 +68,8 @@ const DownloadForm = ({ gameName }: { gameName: string }) => {
   };
 
   return (
-    <section className="w-full flex justify-center my-10 lg:my-20 lg:px-8 rounded-2xl">
-      <div className="w-full lg:max-w-2xl rounded-xl bg-secondary p-6 shadow-sm">
+    <section className="w-full flex justify-center my-10 lg:my-20 lg:px-8 !rounded-none ">
+      <div className="w-full lg:max-w-2xl rounded-none bg-secondary p-6 shadow-sm">
         <h2 className="text-center text-gray-600 text-lg font-semibold mb-6">
           EMAIL FOR DOWNLOAD 
         </h2>
@@ -117,7 +117,7 @@ const DownloadForm = ({ gameName }: { gameName: string }) => {
             {/* Submit */}
             <Button
               type="submit"
-              className="w-full rounded-full bg-primary hover:bg-primary/80 text-white"
+              className="w-full !rounded-none bg-primary hover:bg-primary/80 text-white"
             >
               Submit
             </Button>

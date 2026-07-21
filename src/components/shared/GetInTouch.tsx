@@ -139,7 +139,7 @@ const GetInTouch = () => {
           Get in Touch
         </span>
         <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
-          Let&apos;s <span className="text-[#577b8a]">Talk.</span>
+          Let&apos;s <span className="text-[#c2593f]">Talk.</span>
         </h2>
         <p className="text-xs md:text-[13px] text-[#777777] leading-relaxed max-w-md mx-auto">
           Have a question, partnership idea, or just want to say hello?
@@ -388,7 +388,7 @@ const GetInTouch = () => {
             <Button
               type="submit"
               disabled={isPending}
-              className="bg-[#ba6143] text-white font-bold tracking-wider text-[10px] uppercase px-6 py-3 rounded shadow-sm hover:bg-[#a35237] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed h-auto"
+              className="bg-[#ba6143] text-white font-bold tracking-wider text-[10px] uppercase px-6 py-3 !rounded-none shadow-sm hover:bg-[#a35237] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed h-auto"
             >
               {isPending ? "Sending..." : "Send Message"}
             </Button>

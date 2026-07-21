@@ -366,7 +366,7 @@ export default function ProductReviewsSection({
                 maxLength={1000}
                 required
                 rows={6}
-                className="w-full rounded-2xl border border-[#E5E7EB] bg-white px-4 py-3 text-sm text-[#111111] outline-none transition focus:border-primary focus:ring-4 focus:ring-[#F04D2A]/10"
+                className="w-full  border border-[#E5E7EB] bg-white px-4 py-3 text-sm text-[#111111] outline-none transition focus:border-primary focus:ring-4 focus:ring-[#F04D2A]/10"
                 placeholder="Tell future buyers about the fit, quality, comfort, or overall experience."
               />
               <p className="mt-2 text-xs text-[#8B8B8B]">
@@ -381,7 +381,7 @@ export default function ProductReviewsSection({
                 !canSubmitReview ||
                 reviewText.trim().length < 10
               }
-              className="h-11 w-full bg-primary text-white hover:bg-[#111111]"
+              className="h-11 w-full !rounded-none bg-primary text-white hover:bg-[#111111]"
             >
               {isSubmitting ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
