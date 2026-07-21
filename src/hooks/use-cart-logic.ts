@@ -4,6 +4,7 @@ import { debounce } from "@/lib/utils/debounce";
 
 interface UseCartLogicOptions {
   cart: Cart | null;
+  currency?: "USD" | "CAD";
   onUpdateQuantity: (params: {
     productId: string;
     quantity: number;
@@ -37,6 +38,7 @@ export const getCartItemKey = (
  */
 export const useCartLogic = ({
   cart,
+  currency = "USD",
   onUpdateQuantity,
   onRemoveFromCart,
 }: UseCartLogicOptions) => {
@@ -143,9 +145,13 @@ export const useCartLogic = ({
     return items.reduce((acc, item: CartItem) => {
       const key = getCartItemKey(item?.productId?._id, item.color, item.size);
       const quantity = localQuantities[key] ?? item.quantity;
-      return acc + (item?.productId?.price || 0) * quantity;
+      const price =
+        currency === "CAD"
+          ? (item?.productId?.ca_price ?? 0)
+          : (item?.productId?.price ?? 0);
+      return acc + price * quantity;
     }, 0);
-  }, [items, localQuantities]);
+  }, [currency, items, localQuantities]);
 
   return {
     items,

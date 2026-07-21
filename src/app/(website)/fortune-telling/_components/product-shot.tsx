@@ -25,13 +25,15 @@ export default function ProductShot() {
           </span>
 
           <h2 className="font-serif text-[40px] font-light leading-[1.02] tracking-[-0.04em] text-[#f3e9da] sm:text-[48px]">
-            The wheel lives on a table, too.
+          The symbols became a game.
           </h2>
 
           <p className="text-[13px] leading-[1.8] text-[#a7b2ae]">
-            DoUndo is a board card game built around these same twelve symbols —
-            one language, many games. Strategy, perception, imagination, story.
-            Bring the circle into the room.
+          DoUndo is a strategic card game built
+around twelve symbolic archetypes. A
+game of psychology, deduction, and
+layered decision making. Bring the circle to
+the table.
           </p>
 
           <div className="flex flex-wrap gap-3 pt-1 text-[10px] uppercase tracking-[0.12em]">
@@ -43,7 +45,7 @@ export default function ProductShot() {
                 href="/product/695057098548e119f5fa7cfd"
                 className="block rounded-[2px] border border-[#e2974b] bg-[#e2974b] px-4 py-2.5 font-medium text-[#1b1713] transition-colors hover:bg-[#ed9f50]"
               >
-                Shop the game
+                Explore the Game
               </Link>
             </motion.div>
             <motion.div

@@ -216,12 +216,14 @@ export default function PantheonCombinedSection() {
             THE PANTHEON
           </span>
           <h2 className="text-3xl md:text-4xl font-normal tracking-tight text-stone-950 mb-4 max-w-2xl leading-tight">
-            Thirteen gods. Six cards each. One shared language of play.
+   Thirteen symbols. One shared language
+of play.
           </h2>
           <p className="text-stone-500 text-xs md:text-sm max-w-2xl leading-relaxed">
-            Every symbol in Doundo draws from a living tradition — Norse, Vedic,
-            Greek, Egyptian, Mesopotamian, Persian, Daoist. They are not
-            decoration. They are the vocabulary of the match.
+  Inspired by myths, philosophies, and
+ancient traditions, these symbols
+reappear across different games, worlds,
+and experiences inside DoUndo.
           </p>
         </div>
 

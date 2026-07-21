@@ -4,6 +4,8 @@ import React from "react";
 import { ShieldCheck, Loader2, Tag, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import CurrencySelect from "@/components/shared/CurrencySelect";
+import { Currency } from "@/hooks/use-currency";
 
 interface OrderSummaryProps {
   subtotal: number;
@@ -20,6 +22,8 @@ interface OrderSummaryProps {
   isDisabled?: boolean;
   shippingCountry?: "CA" | "US";
   onShippingCountryChange?: (country: "CA" | "US") => void;
+  currency?: Currency;
+  onCurrencyChange?: (currency: Currency) => void;
 }
 
 const OrderSummary = React.memo(function OrderSummary({
@@ -37,6 +41,8 @@ const OrderSummary = React.memo(function OrderSummary({
   isDisabled,
   shippingCountry,
   onShippingCountryChange,
+  currency = "USD",
+  onCurrencyChange,
 }: OrderSummaryProps) {
   const discount = Math.min(couponDiscount, subtotal);
   const total = Math.max(0, subtotal - discount) + shipping;
@@ -46,6 +52,12 @@ const OrderSummary = React.memo(function OrderSummary({
       <h2 className="text-lg md:text-xl font-bold text-[#111111] mb-8">Order Summary</h2>
 
       <div className="space-y-4 mb-8">
+        {onCurrencyChange ? (
+          <label className="flex items-center justify-between gap-4 text-sm font-medium text-[#333333]">
+            Currency
+            <CurrencySelect currency={currency} onChange={onCurrencyChange} />
+          </label>
+        ) : null}
         {shippingCountry ? (
           <label className="block text-sm font-medium text-[#333333]">
             Shipping destination
@@ -63,12 +75,12 @@ const OrderSummary = React.memo(function OrderSummary({
         ) : null}
         <div className="flex justify-between items-center text-sm font-medium">
           <span className="text-[#333333]">Subtotal</span>
-          <span className="text-[#111111]">${subtotal.toFixed(2)}</span>
+          <span className="text-[#111111]">${subtotal.toFixed(2)} {currency}</span>
         </div>
         <div className="flex justify-between items-center text-sm font-medium">
           <span className="text-gray-500">Shipping</span>
           <span className="text-gray-500">
-            {shipping === 0 ? "Free" : `+ $${shipping.toFixed(2)} CAD`}
+            {shipping === 0 ? "Free" : `+ $${shipping.toFixed(2)} ${currency}`}
           </span>
         </div> 
         {discount > 0 ? (
@@ -80,9 +92,9 @@ const OrderSummary = React.memo(function OrderSummary({
       </div>
 
       <div className="mb-8 rounded-xl bg-[#FBFBFB] px-4 py-3 text-xs leading-5 text-[#666666]">
-        <p>Canada: Flat rate $9.99 CAD</p>
-        <p>USA: Flat rate $19.99 CAD</p>
-        <p>Free shipping on orders of $150.00 CAD or more</p>
+        <p>Canada: Flat rate $9.99 {currency}</p>
+        <p>USA: Flat rate $19.99 {currency}</p>
+        <p>Free shipping on orders of $150.00 {currency} or more</p>
       </div>
 
       <div className="mb-8 rounded-2xl border border-[#EFEFEF] bg-[#FBFBFB] p-4">
@@ -137,7 +149,7 @@ const OrderSummary = React.memo(function OrderSummary({
         <div className="flex justify-between items-center">
           <span className="text-lg md:text-xl font-bold text-[#111111]">Total</span>
           <span className="text-xl font-bold text-[#FF7F50]">
-            ${total.toFixed(2)}
+            ${total.toFixed(2)} {currency}
           </span>
         </div>
       </div>

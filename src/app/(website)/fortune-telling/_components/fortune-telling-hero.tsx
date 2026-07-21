@@ -26,10 +26,10 @@ export default function FortuneTellingHero() {
         <div className="relative z-10 max-w-[820px]">
           <div className="mb-6 flex flex-wrap items-center gap-2 text-[9px] uppercase tracking-[0.22em] text-[#768483]">
             <span className="rounded-full border border-[#203236] px-3 py-1">
-              Doundo Fortune Telling
+              DOUNDO FORTUNE TELLING
             </span>
             <span className="rounded-full border border-[#203236] px-3 py-1">
-              13 symbols • 3 draws • 1 reading
+              13 SYMBOLS . 3 DRAWS . 1 READING Thirteen Symbols Wait.
             </span>
           </div>
 
@@ -41,10 +41,10 @@ export default function FortuneTellingHero() {
           </h1>
 
           <p className="mt-6 max-w-[560px] text-[14px] leading-[1.8] text-[#a7b2ae] sm:text-[15px]">
-            A quiet ritual from the DoUndo universe. Thirteen archetypes wait on
-            the wheel — Ahura, Ares, Asgard, Enki, Gaia, Hera, Laozi, Mitra,
-            Setna, Shaman, Shiva, Titan, Zigi. Draw the past, the present, and
-            what waits on the path.
+            A quiet ritual from the world of DoUndo. Thirteen archetypes wait
+            within the circle, each carrying a different force, memory, or
+            warning. Draw the past, uncover the present, and glimpse what waits
+            ahead.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3 text-[10px] uppercase tracking-[0.12em]">
@@ -55,7 +55,7 @@ export default function FortuneTellingHero() {
               whileTap={{ scale: 0.98 }}
               className="rounded-[2px] border border-[#e2974b] bg-[#e2974b] px-4 py-2.5 font-medium text-[#1b1713] transition-colors hover:bg-[#ed9f50]"
             >
-              Begin the reading
+              Enter The Circle
             </motion.button>
             <motion.button
               type="button"
@@ -64,7 +64,7 @@ export default function FortuneTellingHero() {
               whileTap={{ scale: 0.98 }}
               className="rounded-[2px] border border-[#4f5d5e] px-4 py-2.5 text-[#ced4ce] transition-colors hover:border-[#68777a]"
             >
-              How it works
+              Reading Guide
             </motion.button>
           </div>
         </div>

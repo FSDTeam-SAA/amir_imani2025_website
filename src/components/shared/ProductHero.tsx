@@ -7,6 +7,8 @@ import Image from "next/image";
 import { Product } from "@/lib/types/ecommerce";
 import { useCart } from "@/provider/cart-provider";
 import { toast } from "sonner";
+import CurrencySelect from "@/components/shared/CurrencySelect";
+import { useCurrency } from "@/hooks/use-currency";
 
 interface ProductHeroProps {
   product: Product;
@@ -20,6 +22,8 @@ export default function ProductHero({ product }: ProductHeroProps) {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
 
   const { addToCart } = useCart();
+  const { currency, setCurrency } = useCurrency();
+  const displayPrice = currency === "CAD" ? (product.ca_price ?? 0) : product.price;
 
   // Memoized values
   const isMerchandise = useMemo(
@@ -240,9 +244,12 @@ export default function ProductHero({ product }: ProductHeroProps) {
           {/* Bottom Control Row: Price, Quantity, Add to Cart, Action Link */}
           <div className="flex flex-wrap items-center gap-6 pt-4">
             {/* Terracotta Styled Price */}
-            <p className="text-3xl md:text-4xl font-normal text-[#B3634B]">
-              ${product.price} <span className="text-base font-light tracking-normal text-gray-500">USD</span>
-            </p>
+            <div className="flex items-center gap-3">
+              <p className="text-3xl md:text-4xl font-normal text-[#B3634B]">
+                ${displayPrice.toFixed(2)} <span className="text-base font-light tracking-normal text-gray-500">{currency}</span>
+              </p>
+              <CurrencySelect currency={currency} onChange={setCurrency} />
+            </div>
 
             {/* Quantity Selector Counter */}
             <div className="flex items-center border border-gray-300 rounded-md bg-white overflow-hidden h-11">

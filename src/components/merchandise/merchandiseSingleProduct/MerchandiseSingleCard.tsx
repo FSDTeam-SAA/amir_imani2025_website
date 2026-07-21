@@ -16,6 +16,8 @@ import { useCart } from "@/provider/cart-provider";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { Skeleton } from "@/components/ui/skeleton";
+import CurrencySelect from "@/components/shared/CurrencySelect";
+import { useCurrency } from "@/hooks/use-currency";
 
 export interface ProductHeroProps {
   product: Product;
@@ -23,6 +25,8 @@ export interface ProductHeroProps {
 
 const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
   const [quantity, setQuantity] = useState(1);
+  const { currency, setCurrency } = useCurrency();
+  const displayPrice = currency === "CAD" ? (product.ca_price ?? 0) : product.price;
   const [isAdding, setIsAdding] = useState(false);
   const [selectColor, setSelectColor] = useState<string | null>(null);
   const [selectSize, setSelectSize] = useState<string | null>(null);
@@ -228,8 +232,9 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
           <h1 className="text-4xl lg:text-[40px] font-bold text-[#111111] mt-4 mb-2 leading-tight">
             {product.productName}
           </h1>
-          <div className="text-3xl font-bold text-[#111111] mb-6">
-            ${product.price}
+          <div className="mb-6 flex items-center gap-3 text-3xl font-bold text-[#111111]">
+            <span>${displayPrice.toFixed(2)} <span className="text-base font-normal text-gray-500">{currency}</span></span>
+            <CurrencySelect currency={currency} onChange={setCurrency} />
           </div>
 
           {/* Summary / Features */}

@@ -164,11 +164,13 @@ export default function MixedGalaxySymbols() {
         </div>
 
         <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6 leading-[1.15]">
-          Let the Symbols<br />Speak to You
+          Let the Symbols <br/> Speak to You
         </h2>
 
         <p className="text-stone-300 text-sm md:text-base leading-relaxed max-w-md mb-9 font-normal antialiased">
-          Each symbol carries a deeper current. In Fortune Telling, you don&apos;t play a game — you ask a question, draw from the thirteen, and listen to what they reveal about your path.
+         Ask a question. Choose three symbols.
+Discover the patterns and tensions hidden
+beneath the surface.
         </p>
 
         <div className="mb-14">
@@ -181,7 +183,7 @@ export default function MixedGalaxySymbols() {
         </div>
 
         <div className="text-stone-500 text-xs italic tracking-wide mt-auto font-serif">
-          A ritual, not a prediction. A reflection, not a forecast.
+         A reflection, not a prediction.
         </div>
       </div>
 
