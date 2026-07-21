@@ -6,7 +6,7 @@ const PrivacyPolicy = () => {
       <div className="container mx-auto px-4 overflow-hidden">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-semibold text-primary-foreground leading-[150%] mb-2">
+          <h1 className="text-4xl md:text-5xl font-semibold text-primary leading-[150%] mb-2">
             Privacy policy
           </h1>
         </div>
@@ -15,7 +15,7 @@ const PrivacyPolicy = () => {
         <div className="space-y-8">
           {/* Intro */}
           <div className="space-y-4">
-            <h3 className="font-inter font-semibold text-2xl leading-[150%] text-[#0E1D2B]">
+            <h3 className="font-inter font-semibold text-2xl leading-[150%] text-primary">
               Privacy Policy – DoUndo Corp.
             </h3>
             <p className="text-[#6C757D] text-xl leading-[150%] font-normal">
@@ -352,7 +352,7 @@ const PrivacyPolicy = () => {
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                         info@doundogames.com
+                          info@doundogames.com
                         </Link>
                       </span>
                     </li>
@@ -383,7 +383,7 @@ const Section = ({
   content: React.ReactNode;
 }) => (
   <div className="space-y-4">
-    <h3 className="font-inter font-semibold text-2xl leading-[150%] text-[#0E1D2B]">
+    <h3 className="font-inter font-semibold text-2xl leading-[150%] text-primary">
       {title}
     </h3>
     {content}
@@ -401,7 +401,7 @@ const SubSection = ({
   items: string[];
 }) => (
   <div>
-    <h4 className="font-inter font-semibold text-xl leading-[150%] text-[#0E1D2B] mb-2">
+    <h4 className="font-inter font-semibold text-xl leading-[150%] text-primary mb-2">
       {title}
     </h4>
     {description && (
