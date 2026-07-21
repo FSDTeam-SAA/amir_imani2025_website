@@ -54,7 +54,7 @@ export default function MeetOurTeam() {
         
         {/* Main Header */}
         <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
-          Meet Our <span className="text-[#6096b4]">Founders.</span>
+          Meet Our <span className="text-[#E28755]">Founders.</span>
         </h2>
         
         {/* Subtitle Description */}
@@ -74,7 +74,7 @@ export default function MeetOurTeam() {
                 alt={founder.name}
                 fill
                 priority
-                className={`object-cover ${index === 1 ? 'grayscale' : ''}`} 
+                className={` aspect-square ${index === 1 ? 'grayscale' : ''}`} 
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>

@@ -112,7 +112,7 @@ Laozi sits by a river and says nothing, but somehow changes everything. His shap
 quiet fire, and a small window through which another world can be seen. This card suggests
 that stillness, not action, brings transformation.`,
     iconImage: "/symbol_LAOZI.png",
-    cardImage: "/shapes/laozi.svg",
+    cardImage: "/card/Cards-7.jpg",
     color: "#E67E22",
   },
   {
@@ -191,9 +191,9 @@ thunder. Own it.`,
     color: "#795548",
   },
    {
-    id: "ZIGI",
-    name: "ZIGI",
-    title: "ZIGI",
+    id: "Ziggy",
+    name: "Ziggy",
+    title: "Ziggy",
     subtitle: "PILLAR OF AXIS",
     number: "No. 13 / 13",
     description: `The darkness that reveals the hidden self.

@@ -21,6 +21,18 @@ export default function ProductCard({
   addingToCartId,
 }: ProductCardProps) {
   const isAddingToCart = addingToCartId === product?._id;
+  const badgeLabels = {
+    new_arrival: "New Arrival",
+    most_popular: "Most Popular",
+    best_seller: "Best Seller",
+    limited_edition: "Limited Edition",
+  } as const;
+  const badgeLabel =
+    product.productType === "marchandice" &&
+    product.merchandiseBadge &&
+    product.merchandiseBadge !== "none"
+      ? badgeLabels[product.merchandiseBadge]
+      : null;
 
   return (
     <Link
@@ -44,11 +56,13 @@ export default function ProductCard({
           />
 
           {/* Badge */}
-          <div className="absolute top-4 left-4 z-20">
-            <span className="bg-primary text-white text-[12px] font-semibold uppercase tracking-wider px-3 py-1 rounded-full shadow-lg">
-              New Arrival
-            </span>
-          </div>
+          {badgeLabel && (
+            <div className="absolute top-4 left-4 z-20">
+              <span className="bg-primary text-white text-[12px] font-semibold uppercase tracking-wider px-3 py-1 shadow-lg">
+                {badgeLabel}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Product Info - Below image on all screen sizes */}
@@ -65,7 +79,7 @@ export default function ProductCard({
           <div className="flex flex-row gap-3 transition-all duration-300">
             <Button
               variant="secondary"
-              className="flex-1 hover:bg-amber-100 bg-white border text-primary-foreground font-semibold"
+              className="flex-1 !rounded-none hover:bg-amber-100 bg-white border text-primary-foreground font-semibold"
               onClick={(e) => handleAddToCart(e, product)}
               disabled={isAddingToCart}
             >
@@ -78,7 +92,7 @@ export default function ProductCard({
               )}
             </Button>
             <Button
-              className="flex-1 bg-primary hover:bg-primary/80 text-white font-semibold"
+              className="flex-1 !rounded-none bg-primary hover:bg-primary/80 text-white font-semibold"
               onClick={(e) => handleAddToCart(e, product, true)}
               disabled={addingToCartId === product?._id}
             >

@@ -386,3 +386,9 @@ Link {
   border-top: 1px solid #e5e7eb;
   margin: 2rem 0;
 }
+
+/* Public website buttons use a consistent rectangular shape. */
+.website-shell button,
+.website-shell [data-slot="button"] {
+  border-radius: 0 !important;
+}

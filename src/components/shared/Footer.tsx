@@ -193,13 +193,6 @@ export default function Footer() {
               </ul>
             </nav>
           </div>
-
-          {/* Additional Info */}
-          {/* <div className="mt-4 pt-4 border-t border-white/10 text-center">
-            <p className="text-xs text-white/60">
-              Made with ❤️ for amazing digital experiences
-            </p>
-          </div> */}
         </div>
       </div>
     </footer>

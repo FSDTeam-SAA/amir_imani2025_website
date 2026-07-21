@@ -280,7 +280,7 @@ const MerchandiseProduct = () => {
             No products found in this category yet.
           </p>
         ) : (
-          <div className="flex flex-wrap items-center gap-5">
+          <div className="flex flex-wrap items-center justify-between gap-5">
             {sortedProducts.map((product) => (
               <ProductCard
                 key={product._id}

@@ -116,9 +116,9 @@ const CARDS_DATA: CardData[] = [
     imageSrc: "/shapes/titan.svg",
   },
   {
-    id: "zigi",
-    symbol: "ZIGI",
-    name: "Zigi",
+    id: "Ziggy",
+    symbol: "Ziggy",
+    name: "Ziggy",
     title: "Veil",
     imageSrc: "/shapes/zigi.svg",
   },
