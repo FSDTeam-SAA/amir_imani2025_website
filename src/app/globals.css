@@ -138,6 +138,17 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+.prose,
+.prose p,
+.prose li,
+.prose span,
+.prose div {
+  word-break: normal !important;
+  overflow-wrap: break-word !important;
+  white-space: normal !important;
+  hyphens: none !important;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

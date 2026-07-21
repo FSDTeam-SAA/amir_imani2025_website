@@ -134,7 +134,7 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
         <div className="flex w-full  max-w-[480px] flex-col gap-3 mx-auto lg:ml-0 lg:min-h-0 lg:mb-8">
           {/* Thumbnail big Image  */}
           <div
-            className="relative w-full aspect-square overflow-hidden rounded-md lg:aspect-auto lg:min-h-0 lg:flex-1"
+            className="relative w-full aspect-square overflow-hidden lg:aspect-auto lg:min-h-0 lg:flex-1"
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
           >
@@ -196,7 +196,7 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
                 <button
                   type="button"
                   key={`${img}-${index}`}
-                  className={`relative aspect-square min-w-18 flex-1 basis-0 overflow-hidden rounded-md border-2 transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
+                  className={`relative aspect-square min-w-18 flex-1 basis-0 overflow-hidden  border-2 transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
                     selectedImage === img || (!selectedImage && index === 0)
                       ? "border-primary shadow-md"
                       : "border-gray-200 hover:border-primary/50"

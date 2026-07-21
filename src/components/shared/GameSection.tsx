@@ -94,7 +94,7 @@ export default function GameSection() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
           <Link
             href={FEATURED_PRODUCT_ROUTE}
-            className="lg:col-span-2 rounded-md min-h-137.5 flex flex-col justify-between relative overflow-hidden group shadow-xl"
+            className="lg:col-span-2  min-h-137.5 flex flex-col justify-between relative overflow-hidden group shadow-xl"
           >
             <Image
               src={primaryImage}
@@ -124,7 +124,7 @@ export default function GameSection() {
 
           <Link
             href={FEATURED_PRODUCT_ROUTE}
-            className="rounded-md min-h-105 flex flex-col justify-between relative overflow-hidden group shadow-xl"
+            className=" min-h-105 flex flex-col justify-between relative overflow-hidden group shadow-xl"
           >
             <Image
               src={secondaryImage}

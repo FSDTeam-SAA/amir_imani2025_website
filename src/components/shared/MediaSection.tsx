@@ -40,7 +40,7 @@ export default function MediaSection({
         Learn {productName} in the time it takes to shuffle.
       </h2>
 
-      <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-[0px_20px_40px_rgba(0,0,0,0.08)] bg-gray-100 mb-8">
+      <div className="relative w-full aspect-video  overflow-hidden shadow-[0px_20px_40px_rgba(0,0,0,0.08)] bg-gray-100 mb-8">
         {embedUrl ? (
           <iframe
             src={embedUrl}
