@@ -6,8 +6,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 
 const EASE_OUT = [0.22, 1, 0.36, 1] as const;
-const EASE_IN_OUT = [0.42, 0, 0.58, 1] as const;
-
 export default function ProductShot() {
   return (
     <motion.section
@@ -25,15 +23,13 @@ export default function ProductShot() {
           </span>
 
           <h2 className="font-serif text-[40px] font-light leading-[1.02] tracking-[-0.04em] text-[#f3e9da] sm:text-[48px]">
-          The symbols became a game.
+            The symbols became a game.
           </h2>
 
           <p className="text-[13px] leading-[1.8] text-[#a7b2ae]">
-          DoUndo is a strategic card game built
-around twelve symbolic archetypes. A
-game of psychology, deduction, and
-layered decision making. Bring the circle to
-the table.
+            DoUndo is a strategic card game built around twelve symbolic
+            archetypes. A game of psychology, deduction, and layered decision
+            making. Bring the circle to the table.
           </p>
 
           <div className="flex flex-wrap gap-3 pt-1 text-[10px] uppercase tracking-[0.12em]">
@@ -63,11 +59,7 @@ the table.
         </div>
 
         <div className="flex justify-center lg:justify-end">
-          <motion.div
-            className="w-full max-w-[430px] border border-[#4d321f] bg-[#21150f] px-4 py-3 shadow-[0_24px_90px_rgba(0,0,0,0.25)]"
-            animate={{ y: [0, -4, 0] }}
-            transition={{ duration: 5, ease: EASE_IN_OUT, repeat: Infinity }}
-          >
+          <div className="w-full max-w-[430px] border border-[#4d321f] bg-[#21150f] px-4 py-3 shadow-[0_24px_90px_rgba(0,0,0,0.25)]">
             <div className="relative aspect-[1.5] overflow-hidden border border-[#6b4a34] bg-[#2a1b14]">
               <Image
                 src="/doundo.jpg"
@@ -76,7 +68,7 @@ the table.
                 className="object-cover"
               />
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </motion.section>
