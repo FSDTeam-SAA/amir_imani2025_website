@@ -26,7 +26,7 @@ import {
   calculateShippingCad,
   ShippingCountry,
 } from "@/lib/utils/shipping";
-import { useCurrency } from "@/hooks/use-currency";
+import { getProductPrice } from "@/lib/utils/product-price";
 
 export default function CartPage() {
   const router = useRouter();
@@ -37,7 +37,6 @@ export default function CartPage() {
   const [isApplyingCoupon, setIsApplyingCoupon] = React.useState(false);
   const [shippingCountry, setShippingCountry] =
     React.useState<ShippingCountry>("CA");
-  const { currency, setCurrency } = useCurrency();
 
   // Fetch cart data
   const { data: cart, isLoading } = useCartQuery();
@@ -55,7 +54,6 @@ export default function CartPage() {
     handleRemove,
   } = useCartLogic({
     cart: cart || null,
-    currency,
     onUpdateQuantity: updateQuantity,
     onRemoveFromCart: removeFromCart,
   });
@@ -149,6 +147,7 @@ export default function CartPage() {
             {items.length > 0 ? (
               <div className="flex flex-col item-between">
                 {items.map((item) => {
+                  const itemPrice = getProductPrice(item?.productId);
                   const key = getCartItemKey(
                     item?.productId?._id,
                     item.color,
@@ -160,8 +159,8 @@ export default function CartPage() {
                       id={item?.productId?._id}
                       title={item?.productId?.productName}
                       description={item?.productId?.description}
-                      price={currency === "CAD" ? (item?.productId?.ca_price ?? 0) : item?.productId?.price}
-                      currency={currency}
+                      price={itemPrice.amount}
+                      currency={itemPrice.currency}
                       color={item.color}
                       size={item.size}
                       imageUrl={
@@ -207,8 +206,7 @@ export default function CartPage() {
             <OrderSummary
               subtotal={subtotal}
               shipping={shipping}
-              currency={currency}
-              onCurrencyChange={setCurrency}
+              currency={getProductPrice(items[0]?.productId).currency}
               shippingCountry={shippingCountry}
               onShippingCountryChange={setShippingCountry}
               couponCode={couponCode}

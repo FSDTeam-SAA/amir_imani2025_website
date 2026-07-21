@@ -7,6 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useCart } from "@/provider/cart-provider";
 import { toast } from "sonner";
 import ProductCard from "../shared/product-card";
+import { getProductPrice } from "@/lib/utils/product-price";
 
 const ChevronDownIcon = () => (
   <svg
@@ -128,11 +129,15 @@ const MerchandiseProduct = () => {
     const items = [...products];
 
     if (sortBy === "low-to-high") {
-      return items.sort((a, b) => a.price - b.price);
+      return items.sort(
+        (a, b) => getProductPrice(a).amount - getProductPrice(b).amount,
+      );
     }
 
     if (sortBy === "high-to-low") {
-      return items.sort((a, b) => b.price - a.price);
+      return items.sort(
+        (a, b) => getProductPrice(b).amount - getProductPrice(a).amount,
+      );
     }
 
     return items;
@@ -213,7 +218,7 @@ const MerchandiseProduct = () => {
   }
 
   return (
-    <section className="my-10 md:my-16">
+    <section className="py-10 md:mt-16">
       <div className="container mx-auto px-4">
         <div className="mb-8 flex flex-col gap-4 border-b border-gray-100 pb-5 md:flex-row md:items-center md:justify-between">
           <div className="flex flex-wrap items-center gap-2.5">

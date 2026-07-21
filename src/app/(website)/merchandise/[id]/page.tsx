@@ -105,7 +105,7 @@ export default function MerchandiseDetailsPage() {
   }
 
   return (
-    <main className="bg-[#fcf8efb0]">
+    <main className="bg-[#faf7f0]">
       <div className="container mx-auto px-4">
         <MerchandiseSingleCard product={product} />
       </div>

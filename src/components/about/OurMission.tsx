@@ -32,12 +32,12 @@ const AboutSectionOnly = () => {
         <div className="lg:col-span-5 flex flex-col space-y-8">
           {/* Titles */}
           <div className="space-y-1">
-            <span className="text-[10px] md:text-xs font-bold text-[#E28755] tracking-[0.25em] block uppercase">
+            <span className="text-[10px] md:text-xs font-bold text-[#E96A3D] tracking-[0.25em] block uppercase">
               {storyData.aboutTag}
             </span>
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 leading-none">
               {storyData.aboutTitle}
-              <span className="block text-[#5F8D9E] mt-1">{storyData.aboutTitleHighlight}</span>
+              <span className="block text-[#0EA5B8] mt-1">{storyData.aboutTitleHighlight}</span>
             </h2>
           </div>
 
@@ -59,7 +59,7 @@ const AboutSectionOnly = () => {
           
           {/* Paragraph 1 with Big Drop Cap 'D' */}
           <p className="relative">
-            <span className="text-5xl md:text-6xl font-bold text-[#E28755] float-left mr-2.5 h-12 md:h-14 flex items-center leading-none">
+            <span className="text-5xl md:text-6xl font-bold text-[#E96A3D] float-left mr-2.5 h-12 md:h-14 flex items-center leading-none">
               D
             </span>
             <strong>{storyData.aboutDescription[0].substring(0, 5)}</strong>

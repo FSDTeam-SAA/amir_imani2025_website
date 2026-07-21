@@ -25,7 +25,7 @@ const Hero1 = ({
         }}
       >
         <div className="flex flex-col items-center justify-center px-4">
-          <span className="mb-3 block text-[10px] font-semibold uppercase tracking-[0.2em] text-[#C4A484]">
+          <span className="mb-3 block text-[10px] font-semibold uppercase tracking-[0.2em] text-[#0EA5B8]">
             {title}
           </span>
 
@@ -33,7 +33,7 @@ const Hero1 = ({
             {subtitle}
           </h1>
 
-          <h2 className="mb-6 text-4xl font-bold tracking-tight text-[#E28755] md:text-5xl">
+          <h2 className="mb-6 text-4xl font-bold tracking-tight text-[#E96A3D] md:text-5xl">
             {text}
           </h2>
 

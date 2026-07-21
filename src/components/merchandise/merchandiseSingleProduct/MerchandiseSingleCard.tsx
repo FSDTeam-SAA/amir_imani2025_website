@@ -16,8 +16,7 @@ import { useCart } from "@/provider/cart-provider";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { Skeleton } from "@/components/ui/skeleton";
-import CurrencySelect from "@/components/shared/CurrencySelect";
-import { useCurrency } from "@/hooks/use-currency";
+import { getProductPrice } from "@/lib/utils/product-price";
 
 export interface ProductHeroProps {
   product: Product;
@@ -25,8 +24,7 @@ export interface ProductHeroProps {
 
 const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
   const [quantity, setQuantity] = useState(1);
-  const { currency, setCurrency } = useCurrency();
-  const displayPrice = currency === "CAD" ? (product.ca_price ?? 0) : product.price;
+  const { amount: displayPrice, currency } = getProductPrice(product);
   const [isAdding, setIsAdding] = useState(false);
   const [selectColor, setSelectColor] = useState<string | null>(null);
   const [selectSize, setSelectSize] = useState<string | null>(null);
@@ -128,7 +126,7 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
     }
   };
   return (
-    <section className="py-12 lg:py-16">
+    <section className="py-12 lg:py-16 ">
       <div className="grid grid-cols-1 lg:grid-cols-2  items-start lg:items-stretch">
         {/* Left Column: Product Image */}
         <div className="flex w-full  max-w-[480px] flex-col gap-3 mx-auto lg:ml-0 lg:min-h-0 lg:mb-8">
@@ -221,20 +219,17 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
 
         {/* Right Column: Product Info */}
         <div className="flex flex-col text-left ">
-          {/* Badge */}
-          <div className="mb-4">
-            <span className="inline-block bg-[#FFF4D6] text-[#111111] text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-sm">
-              New!
-            </span>
-          </div>
-
           {/* Title and Price */}
           <h1 className="text-4xl lg:text-[40px] font-bold text-[#111111] mt-4 mb-2 leading-tight">
             {product.productName}
           </h1>
-          <div className="mb-6 flex items-center gap-3 text-3xl font-bold text-[#111111]">
-            <span>${displayPrice.toFixed(2)} <span className="text-base font-normal text-gray-500">{currency}</span></span>
-            <CurrencySelect currency={currency} onChange={setCurrency} />
+          <div className="mb-6 text-3xl font-bold text-[#111111]">
+            <span>
+              ${displayPrice.toFixed(2)}{" "}
+              <span className="text-base font-normal text-gray-500">
+                {currency}
+              </span>
+            </span>
           </div>
 
           {/* Summary / Features */}
@@ -280,9 +275,9 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
                             </div>
 
                             {/* Color Name */}
-                            <span className="text-sm font-medium capitalize">
+                            {/* <span className="text-sm font-medium capitalize">
                               {color.replace("#", "")}
-                            </span>
+                            </span> */}
                           </button>
                         ))}
                       </div>

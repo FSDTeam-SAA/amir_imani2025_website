@@ -4,8 +4,7 @@ import React from "react";
 import { ShieldCheck, Loader2, Tag, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import CurrencySelect from "@/components/shared/CurrencySelect";
-import { Currency } from "@/hooks/use-currency";
+import { ProductCurrency } from "@/lib/utils/product-price";
 
 interface OrderSummaryProps {
   subtotal: number;
@@ -22,8 +21,7 @@ interface OrderSummaryProps {
   isDisabled?: boolean;
   shippingCountry?: "CA" | "US";
   onShippingCountryChange?: (country: "CA" | "US") => void;
-  currency?: Currency;
-  onCurrencyChange?: (currency: Currency) => void;
+  currency?: ProductCurrency;
 }
 
 const OrderSummary = React.memo(function OrderSummary({
@@ -42,7 +40,6 @@ const OrderSummary = React.memo(function OrderSummary({
   shippingCountry,
   onShippingCountryChange,
   currency = "USD",
-  onCurrencyChange,
 }: OrderSummaryProps) {
   const discount = Math.min(couponDiscount, subtotal);
   const total = Math.max(0, subtotal - discount) + shipping;
@@ -52,12 +49,6 @@ const OrderSummary = React.memo(function OrderSummary({
       <h2 className="text-lg md:text-xl font-bold text-[#111111] mb-8">Order Summary</h2>
 
       <div className="space-y-4 mb-8">
-        {onCurrencyChange ? (
-          <label className="flex items-center justify-between gap-4 text-sm font-medium text-[#333333]">
-            Currency
-            <CurrencySelect currency={currency} onChange={onCurrencyChange} />
-          </label>
-        ) : null}
         {shippingCountry ? (
           <label className="block text-sm font-medium text-[#333333]">
             Shipping destination

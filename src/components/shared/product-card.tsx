@@ -4,6 +4,7 @@ import { ShoppingCart } from "lucide-react";
 import { Product } from "@/lib/types/ecommerce";
 import Image from "next/image";
 import Link from "next/link";
+import { getProductPrice } from "@/lib/utils/product-price";
 
 interface ProductCardProps {
   product: Product;
@@ -21,6 +22,7 @@ export default function ProductCard({
   addingToCartId,
 }: ProductCardProps) {
   const isAddingToCart = addingToCartId === product?._id;
+  const productPrice = getProductPrice(product);
   const badgeLabels = {
     new_arrival: "New Arrival",
     most_popular: "Most Popular",
@@ -73,7 +75,7 @@ export default function ProductCard({
               {product?.productName}
             </h3>
             <p className="text-primary-foreground text-base font-semibold whitespace-nowrap">
-              ${product?.price}
+              ${productPrice.amount.toFixed(2)} {productPrice.currency}
             </p>
           </div>
 
