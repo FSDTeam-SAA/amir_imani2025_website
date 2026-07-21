@@ -3,6 +3,12 @@ export interface Product {
   productName: string;
   price: number;
   ca_price?: number;
+  merchandiseBadge?:
+    | "none"
+    | "new_arrival"
+    | "most_popular"
+    | "best_seller"
+    | "limited_edition";
   productType?: "card" | "marchandice";
   category?:
     | "ALL"
