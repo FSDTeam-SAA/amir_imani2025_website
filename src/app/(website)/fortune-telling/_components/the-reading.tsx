@@ -8,7 +8,7 @@ import { useSession } from "next-auth/react";
 import { AnimatePresence, motion, type Variants } from "framer-motion";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { LoaderCircle, ScrollText, Sparkles } from "lucide-react";
+import { LoaderCircle, ScrollText, Sparkles, Stars } from "lucide-react";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -167,6 +167,11 @@ const sectionVariants: Variants = {
 const itemVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: EASE_OUT } },
+};
+
+const cardFaceTransition = {
+  duration: 0.55,
+  ease: EASE_OUT,
 };
 
 function isSameLocalDay(dateString: string) {
@@ -344,13 +349,13 @@ export default function TheReading() {
     <>
       <motion.section
         id="fortune-reading"
-        className="relative scroll-mt-28 text-[#f2eadf]"
+        className="relative scroll-mt-28 px-1 text-[#f2eadf] sm:px-0"
         variants={sectionVariants}
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, amount: 0.2 }}
       >
-        <motion.div className="space-y-3" variants={itemVariants}>
+        <motion.div className="space-y-3 !mb-24" variants={itemVariants}>
           <span className="block text-[9px] uppercase tracking-[0.26em] text-[#c9803d]">
             — the reading —
           </span>
@@ -369,7 +374,7 @@ export default function TheReading() {
               key={
                 displayedFortune?._id || displayedFortune?.createdAt || "result"
               }
-              className="relative isolate mx-auto mt-10 w-full max-w-[900px] overflow-hidden rounded-[2px] border border-[#2b3c40] bg-[#0d1719] p-5 sm:p-6"
+              className="relative isolate mx-auto mt-10 w-full max-w-[900px] overflow-hidden rounded-[2px] border border-[#2b3c40] bg-[#0d1719] p-4 sm:p-6"
               variants={itemVariants}
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
@@ -402,7 +407,7 @@ export default function TheReading() {
                 </motion.button>
               </div>
 
-              <div className="relative z-10 mt-6 grid gap-3 md:grid-cols-3">
+              <div className="relative z-10 mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {displayedCards.map((card, index) => (
                   <div
                     key={`${card.id}-${index}`}
@@ -464,16 +469,16 @@ export default function TheReading() {
           ) : (
             <motion.div
               key="picker"
-              className="relative mt-12 flex min-h-[560px] items-center justify-center"
+              className="relative mt-10 flex min-h-[480px] items-center justify-center sm:mt-12 sm:min-h-[560px]"
               variants={itemVariants}
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -24 }}
             >
-              <div className="pointer-events-none absolute h-[220px] w-[220px] rounded-full bg-[radial-gradient(circle,rgba(28,87,96,0.24),rgba(13,24,27,0)_72%)] blur-3xl" />
+              <div className="pointer-events-none absolute h-[180px] w-[180px] rounded-full bg-[radial-gradient(circle,rgba(28,87,96,0.24),rgba(13,24,27,0)_72%)] blur-3xl sm:h-[220px] sm:w-[220px]" />
 
               <motion.div
-                className="pointer-events-none absolute h-[560px] w-[560px] rounded-full sm:h-[700px] sm:w-[700px] lg:h-[820px] lg:w-[820px]"
+                className="pointer-events-none absolute h-[320px] w-[320px] rounded-full sm:h-[620px] sm:w-[620px] lg:h-[820px] lg:w-[820px]"
                 animate={{ rotate: 360 }}
                 transition={{
                   duration: 50,
@@ -482,9 +487,9 @@ export default function TheReading() {
                 }}
               >
                 <div className="absolute inset-0 rounded-full border border-[#37545b]/75 shadow-[0_0_120px_rgba(19,60,66,0.18)]" />
-                <div className="absolute inset-[42px] rounded-full border border-[#2d464b]/60 sm:inset-[58px] lg:inset-[72px]" />
-                <div className="absolute inset-[92px] rounded-full border border-[#25393e]/45 sm:inset-[122px] lg:inset-[150px]" />
-                <div className="absolute inset-[145px] rounded-full border border-[#213338]/35 sm:inset-[190px] lg:inset-[230px]" />
+                <div className="absolute inset-[28px] rounded-full border border-[#2d464b]/60 sm:inset-[58px] lg:inset-[72px]" />
+                <div className="absolute inset-[58px] rounded-full border border-[#25393e]/45 sm:inset-[122px] lg:inset-[150px]" />
+                <div className="absolute inset-[92px] rounded-full border border-[#213338]/35 sm:inset-[190px] lg:inset-[230px]" />
                 <div className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-[#355157]/45" />
                 <div className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-[#355157]/45" />
                 {Array.from({ length: 12 }).map((_, i) => (
@@ -492,15 +497,15 @@ export default function TheReading() {
                     key={i}
                     className="absolute left-1/2 top-1/2 h-[1px] w-4 origin-left bg-[#55777d]/70"
                     style={{
-                      transform: `rotate(${i * 30}deg) translateX(clamp(276px, 30vw, 390px))`,
+                      transform: `rotate(${i * 30}deg) translateX(clamp(158px, 26vw, 390px))`,
                     }}
                   />
                 ))}
               </motion.div>
 
-              <div className="relative z-10 flex w-full max-w-[720px] flex-col items-center gap-3 sm:gap-4">
+              <div className="relative z-10 flex w-full max-w-[720px] flex-col items-center gap-3 px-1 sm:gap-4 sm:px-0">
                 <motion.div
-                  className="mb-2 flex min-h-[32px] items-center justify-center text-center"
+                  className="mb-2 flex min-h-[32px] items-center justify-center rounded-full border border-[#30474c] bg-[#122024]/70 px-4 py-2 text-center shadow-[0_12px_32px_rgba(8,17,20,0.28)] backdrop-blur-sm sm:rounded-none sm:border-0 sm:bg-transparent sm:px-4 sm:py-0 sm:shadow-none sm:backdrop-blur-0"
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, ease: EASE_OUT }}
@@ -522,7 +527,13 @@ export default function TheReading() {
                 {cardRows.map((row, rowIndex) => (
                   <div
                     key={rowIndex}
-                    className="flex flex-wrap justify-center gap-3 sm:gap-4"
+                    className={`relative flex w-full flex-nowrap justify-center ${
+                      rowIndex === 1
+                        ? "-mt-1 sm:mt-0"
+                        : rowIndex === 2
+                          ? "-mt-2 sm:mt-0"
+                          : ""
+                    } sm:flex-wrap sm:gap-x-4 sm:gap-y-4`}
                   >
                     {row.map((card, columnIndex) => {
                       const isSelected = selectedCards.includes(card.id);
@@ -540,7 +551,11 @@ export default function TheReading() {
                           key={card.id}
                           type="button"
                           onClick={() => handleCardClick(card.id)}
-                          className={`group flex h-[132px] w-[100px] cursor-pointer select-none flex-col items-center justify-center rounded-[2px] border bg-[linear-gradient(180deg,rgba(58,35,24,0.98),rgba(44,26,18,0.98))] px-2 py-3 text-center transition-all duration-200 sm:h-[152px] sm:w-[116px] ${
+                          className={`group relative h-[118px] cursor-pointer select-none rounded-[2px] border bg-[linear-gradient(180deg,rgba(58,35,24,0.98),rgba(44,26,18,0.98))] text-center transition-all duration-200 [perspective:1200px] sm:h-[152px] sm:w-[116px] ${
+                            row.length === 5 ? "w-[72px]" : "w-[86px]"
+                          } ${columnIndex > 0 ? (row.length === 5 ? "-ml-2.5" : "-ml-2") : ""} ${
+                            columnIndex % 2 === 1 ? "mt-3" : "mt-0"
+                          } sm:ml-0 sm:mt-0 ${
                             isSelected
                               ? "border-[#f0a95d] bg-[#4b2d1f] shadow-[0_0_0_1px_rgba(240,169,93,0.18)]"
                               : "border-[#6a4530] hover:border-[#9b6a45]"
@@ -567,35 +582,78 @@ export default function TheReading() {
                               : { y: 0, boxShadow: "0 0 0 rgba(0,0,0,0)" }
                           }
                         >
-                          <div className="relative flex h-[36px] w-[36px] items-center justify-center sm:h-[80px] sm:w-[80px]">
-                            <Image
-                              src={card.imageSrc}
-                              alt={card.name}
-                              width={1000}
-                              height={1000}
-                              className="h-full w-full object-contain"
-                            />
-                          </div>
+                          <motion.div
+                            className="relative h-full w-full"
+                            animate={{ rotateY: isSelected ? 180 : 0 }}
+                            transition={cardFaceTransition}
+                            style={{ transformStyle: "preserve-3d" }}
+                          >
+                            <div
+                              className="absolute inset-0 flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-[2px] px-3 py-4"
+                              style={{ backfaceVisibility: "hidden" }}
+                            >
+                              <div className="pointer-events-none absolute inset-x-3 top-3 h-px bg-[linear-gradient(90deg,transparent,rgba(224,177,112,0.55),transparent)]" />
+                              <div className="pointer-events-none absolute inset-x-3 bottom-3 h-px bg-[linear-gradient(90deg,transparent,rgba(224,177,112,0.2),transparent)]" />
+                              <div className="pointer-events-none absolute inset-2 border border-[#9e704d]/20" />
+                              <div className="grid grid-cols-3 gap-3 text-[#f1c486] opacity-90">
+                                {Array.from({ length: 6 }).map(
+                                  (_, starIndex) => (
+                                    <Stars
+                                      key={starIndex}
+                                      className={
+                                        starIndex % 2 === 0
+                                          ? "h-[14px] w-[14px]"
+                                          : "h-[10px] w-[10px]"
+                                      }
+                                    />
+                                  ),
+                                )}
+                              </div>
+                              <p className="mt-4 text-[8px] uppercase tracking-[0.28em] text-[#b68560]">
+                                Tap to reveal
+                              </p>
+                            </div>
 
-                          <AnimatePresence initial={false}>
-                            {isSelected && (
+                            <div
+                              className="absolute inset-0 flex h-full w-full flex-col items-center justify-center rounded-[2px] px-3 py-4"
+                              style={{
+                                backfaceVisibility: "hidden",
+                                transform: "rotateY(180deg)",
+                              }}
+                            >
+                              <div className="relative flex h-[42px] w-[42px] items-center justify-center sm:h-[72px] sm:w-[72px]">
+                                <Image
+                                  src={card.imageSrc}
+                                  alt={card.name}
+                                  width={1000}
+                                  height={1000}
+                                  className="h-full w-full object-contain"
+                                />
+                              </div>
+
                               <motion.div
-                                initial={{ opacity: 0, y: 8 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: 6 }}
-                                transition={{ duration: 0.22, ease: EASE_OUT }}
-                                className="mt-3"
+                                initial={false}
+                                animate={{
+                                  opacity: isSelected ? 1 : 0,
+                                  y: isSelected ? 0 : 8,
+                                }}
+                                transition={{
+                                  duration: 0.22,
+                                  ease: EASE_OUT,
+                                  delay: isSelected ? 0.16 : 0,
+                                }}
+                                className="mt-2 sm:mt-3"
                               >
-                                <h3 className="font-serif text-[13px] leading-none tracking-[0.01em] text-[#fff3e3]">
+                                <h3 className="font-serif text-[11px] leading-none tracking-[0.01em] text-[#fff3e3] sm:text-[13px]">
                                   {card.name}
                                 </h3>
 
-                                <span className="mt-1 block text-[8px] tracking-[0.18em] text-[#c8a07b]">
+                                <span className="mt-1 block text-[7px] tracking-[0.14em] text-[#c8a07b] sm:text-[8px] sm:tracking-[0.18em]">
                                   {card.title}
                                 </span>
                               </motion.div>
-                            )}
-                          </AnimatePresence>
+                            </div>
+                          </motion.div>
                         </motion.button>
                       );
                     })}
