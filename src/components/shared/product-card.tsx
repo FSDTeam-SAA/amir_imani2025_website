@@ -44,7 +44,7 @@ export default function ProductCard({
       }`}
       className="group block w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.34rem)] max-w-[400px]"
     >
-      <div className="relative overflow-hidden  border border-gray-100 bg-secondary transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+      <div className="relative overflow-hidden  border  transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
         {/* Image Container */}
         <div className="relative w-full aspect-square overflow-hidden">
           <Image
@@ -67,7 +67,8 @@ export default function ProductCard({
 
         {/* Product Info - Below image on all screen sizes */}
         <div className="flex flex-col gap-3 p-4">
-          <div className="flex items-center justify-between gap-2">
+          <div className="flex flex-col gap-2">
+            <p className="text-sm text-gray-400">{product.category}</p>
             <h3 className="text-lg md:text-xl font-bold text-primary-foreground line-clamp-2">
               {product?.productName}
             </h3>
