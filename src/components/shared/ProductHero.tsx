@@ -252,7 +252,7 @@ export default function ProductHero({ product }: ProductHeroProps) {
             </div>
 
             {/* Quantity Selector Counter */}
-            <div className="flex items-center border border-gray-300 rounded-md bg-white overflow-hidden h-11">
+            <div className="flex items-center border border-gray-300 !rounded-none bg-white overflow-hidden h-11">
               <button
                 onClick={() => handleQuantityChange(-1)}
                 disabled={isAdding || quantity <= 1}
@@ -276,7 +276,7 @@ export default function ProductHero({ product }: ProductHeroProps) {
             <Button
               onClick={handleAddToCart}
               disabled={isAdding}
-              className="px-8 h-11 bg-[#B3634B] hover:bg-[#9C523D] text-white rounded-full text-xs font-medium uppercase tracking-wider transition-all transform active:scale-[0.98] disabled:opacity-50"
+              className="px-8 h-11 bg-[#B3634B] hover:bg-[#9C523D] !rounded-none text-white text-xs font-medium uppercase tracking-wider transition-all transform active:scale-[0.98] disabled:opacity-50"
             >
               {isAdding ? "Adding..." : "Add to Cart"}
             </Button>

@@ -19,7 +19,7 @@ export default function CurrencySelect({
       value={currency}
       disabled={disabled}
       onChange={(event) => onChange(event.target.value as Currency)}
-      className="h-10 rounded-full border border-[#E5E5E5] bg-white px-4 text-sm font-semibold outline-none focus:border-primary disabled:cursor-not-allowed disabled:opacity-60"
+      className="h-10 !rounded-none border border-[#E5E5E5] bg-white px-4 text-sm font-semibold outline-none focus:border-primary disabled:cursor-not-allowed disabled:opacity-60"
     >
       <option value="USD">USD</option>
       <option value="CAD">CAD</option>

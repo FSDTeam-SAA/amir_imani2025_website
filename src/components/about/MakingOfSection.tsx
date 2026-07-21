@@ -85,18 +85,18 @@ export default function MakingOfSection() {
       {/* Header Container */}
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-start gap-6 mb-12 md:mb-16">
         <div>
-          <span className="text-[10px] tracking-[0.2em] font-bold text-[#577b8a] uppercase block mb-3">
+          <span className="text-[10px] tracking-[0.2em] font-bold text-[#c2593f] uppercase block mb-3">
             Behind the Scenes
           </span>
           <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight max-w-md">
-            The Making <br /> of <span className="text-[#577b8a]">DoUndo.</span>
+            The Making <br /> of <span className="text-[#c2593f]">DoUndo.</span>
           </h2>
         </div>
         
         <div className="md:max-w-xs md:pt-8">
-          <p className="text-xs md:text-sm text-[#888888] leading-relaxed font-light">
+          {/* <p className="text-xs md:text-sm text-[#888888] leading-relaxed font-light">
             A glimpse into the studio — sketches, prototypes, photo shoots, and the moments where ideas become objects you can hold.
-          </p>
+          </p> */}
         </div>
       </div>
 

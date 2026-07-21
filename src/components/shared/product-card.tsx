@@ -45,7 +45,7 @@ export default function ProductCard({
 
           {/* Badge */}
           <div className="absolute top-4 left-4 z-20">
-            <span className="bg-primary text-white text-[12px] font-semibold uppercase tracking-wider px-3 py-1 rounded-full shadow-lg">
+            <span className="bg-primary text-white text-[12px] font-semibold uppercase tracking-wider px-3 py-1  shadow-lg">
               New Arrival
             </span>
           </div>
@@ -65,7 +65,7 @@ export default function ProductCard({
           <div className="flex flex-row gap-3 transition-all duration-300">
             <Button
               variant="secondary"
-              className="flex-1 hover:bg-amber-100 bg-white border text-primary-foreground font-semibold"
+              className="flex-1 !rounded-none hover:bg-amber-100 bg-white border text-primary-foreground font-semibold"
               onClick={(e) => handleAddToCart(e, product)}
               disabled={isAddingToCart}
             >
@@ -78,7 +78,7 @@ export default function ProductCard({
               )}
             </Button>
             <Button
-              className="flex-1 bg-primary hover:bg-primary/80 text-white font-semibold"
+              className="flex-1 !rounded-none bg-primary hover:bg-primary/80 text-white font-semibold"
               onClick={(e) => handleAddToCart(e, product, true)}
               disabled={addingToCartId === product?._id}
             >

@@ -30,7 +30,7 @@ export default function RootLayout({
         <TanstackProvider>
           <Provider>
             <CartProvider>
-              <div className="min-h-screen flex flex-col text-primary-foreground">
+              <div className="website-shell min-h-screen flex flex-col text-primary-foreground">
                 <Navbar />
                 <main className={`flex-1 ${!isHome ? "pt-16 lg:pt-20" : ""}`}>
                   {children}

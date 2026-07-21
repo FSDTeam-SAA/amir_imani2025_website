@@ -65,7 +65,7 @@ export default function NewsletterForm({
             type="email"
             placeholder="Enter your email"
             {...register("email")}
-            className="w-full rounded-none px-4 py-3 bg-white border-white/20 text-primary-foreground placeholder-gray-500 focus:ring-2 focus:ring-white/30"
+            className="w-full px-4 py-3 rounded-none bg-white border-white/20 text-primary-foreground placeholder-gray-500 focus:ring-2 focus:ring-white/30"
             aria-label="Email address"
             aria-invalid={!!errors.email}
             aria-describedby={errors.email ? "email-error" : undefined}
