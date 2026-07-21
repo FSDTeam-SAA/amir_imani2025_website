@@ -9,22 +9,22 @@ const STEPS_DATA = [
   {
     number: "01",
     title: "Settle",
-    desc: "Close the tabs. Take one breath that you feel.",
+    desc: "Close the noise. Take one breath you can feel.",
   },
   {
     number: "02",
     title: "Hold a question",
-    desc: "Specific is better than clever. The wheel can tell the difference.",
+    desc: "The clearer the question, the deeper the reading.",
   },
   {
     number: "03",
     title: "Choose three",
-    desc: "First card is the past that carried you. Second is the present. Third is the path.",
+    desc: " The first reflects the past. The second reveals the present. The third points toward what comes next.",
   },
   {
     number: "04",
     title: "Read slowly",
-    desc: "The reading is a mirror, not a map. The omen is the only instruction.",
+    desc: "This is not prediction. It is reflection. Let the symbols speak.",
   },
 ];
 
@@ -41,10 +41,11 @@ export default function FourSteps() {
       <div className="space-y-10">
         <div className="space-y-3">
           <span className="block text-[9px] uppercase tracking-[0.26em] text-[#c9803d]">
-            — the ritual —
+           READING GUIDE
           </span>
           <h2 className="font-serif text-[42px] font-light leading-none tracking-[-0.04em] text-[#f3e9da] sm:text-[52px]">
-            Four steps, one circle.
+           One Circle.
+A simple path. A deeper reading.
           </h2>
         </div>
 

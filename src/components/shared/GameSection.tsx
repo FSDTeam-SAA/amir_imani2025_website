@@ -141,7 +141,7 @@ export default function GameSection() {
                   {secondaryProduct ? "Featured Game" : "Next Chapter"}
                 </span>
                 <span className="bg-stone-900/80 backdrop-blur-sm text-[#5EA3A3] text-[10px] font-bold tracking-widest px-2 py-1 rounded uppercase border border-stone-700/50">
-                  {secondaryProduct ? "Now Available" : "Coming 2026"}
+                  {secondaryProduct ? "Now Available" : "Coming 2027"}
                 </span>
               </div>
 

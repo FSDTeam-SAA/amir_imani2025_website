@@ -355,11 +355,11 @@ export default function TheReading() {
             — the reading —
           </span>
           <h2 className="font-serif text-[44px] font-light leading-none tracking-[-0.04em] text-[#f3e9da] sm:text-[56px]">
-            Step into the circle.
+            The circle is open.
           </h2>
           <p className="max-w-[460px] text-[14px] leading-[1.8] text-[#a7b2ae]">
-            Tap a card to claim it. Your first is the past, your second is the
-            present, your third is what comes.
+            Choose three symbols. Your first reflects the past. Your second
+            reveals the present. Your third points toward what comes next.
           </p>
         </motion.div>
 
