@@ -6,7 +6,7 @@ const TermCondition = () => {
       <div className="container mx-auto px-4 overflow-hidden">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-semibold text-primary-foreground leading-[150%] mb-2">
+          <h1 className="text-4xl md:text-5xl font-semibold text-primary leading-[150%] mb-2">
             Terms & Conditions
           </h1>
         </div>
@@ -15,7 +15,7 @@ const TermCondition = () => {
         <div className="space-y-8">
           {/* Intro */}
           <div className="space-y-4">
-            <h3 className="font-inter font-semibold text-2xl leading-[150%] text-[#0E1D2B]">
+            <h3 className="font-inter font-semibold text-2xl leading-[150%] text-primary">
               Terms & Conditions – DoUndo Corp.
             </h3>
             <p className="text-[#6C757D] text-xl leading-[150%] font-normal">
@@ -27,7 +27,7 @@ const TermCondition = () => {
           <div className="space-y-8">
             {/* Section 1 */}
             <div className="space-y-4">
-              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-[#0E1D2B]">
+              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-primary">
                 1. Agreement to Terms
               </h3>
               <p className="text-[#6C757D] text-xl leading-[150%] font-normal">
@@ -45,7 +45,7 @@ const TermCondition = () => {
 
             {/* Section 2 */}
             <div className="space-y-4">
-              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-[#0E1D2B]">
+              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-primary">
                 2. Intellectual Property Rights
               </h3>
               <p className="text-[#6C757D] text-xl leading-[150%] font-normal mb-4">
@@ -77,7 +77,7 @@ const TermCondition = () => {
 
             {/* Section 3 */}
             <div className="space-y-4">
-              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-[#0E1D2B]">
+              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-primary">
                 3. Use of the Site
               </h3>
               <p className="text-[#6C757D] text-xl leading-[150%] font-normal mb-4">
@@ -108,7 +108,7 @@ const TermCondition = () => {
 
             {/* Section 4 */}
             <div className="space-y-4">
-              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-[#0E1D2B]">
+              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-primary">
                 4. Product Information and Availability
               </h3>
               <p className="text-[#6C757D] text-xl leading-[150%] font-normal mb-4">
@@ -133,7 +133,7 @@ const TermCondition = () => {
 
             {/* Section 5 */}
             <div className="space-y-4">
-              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-[#0E1D2B]">
+              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-primary">
                 5. Orders, Pricing, and Payments
               </h3>
               <p className="text-[#6C757D] text-xl leading-[150%] font-normal mb-4">
@@ -177,7 +177,7 @@ const TermCondition = () => {
               </p>
             </div>
             <div className="space-y-4">
-              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-[#0E1D2B]">
+              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-primary">
                 6. Contact
               </h3>
               <p className="text-[#6C757D] text-xl leading-[150%] font-normal mb-4">
@@ -192,7 +192,7 @@ const TermCondition = () => {
                       href="mailto:info@doundogames.com"
                       className="text-blue-600 hover:underline"
                     >
-                     info@doundogames.com
+                      info@doundogames.com
                     </a>
                   </span>
                 </li>

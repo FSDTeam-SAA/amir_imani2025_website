@@ -184,7 +184,7 @@ export default function ProductReviewsSection({
         <div>
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">
+              <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#3A8B91]">
                 Customer reviews
               </p>
               <h2 className="mt-2 text-2xl font-bold text-[#111111]">
@@ -242,7 +242,7 @@ export default function ProductReviewsSection({
         </div>
 
         <aside className=" border bg-[#fcf8ef]/50 p-6 shadow-[0px_20px_50px_rgba(0,0,0,0.04)]">
-          <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">
+          <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#3A8B91]">
             Leave a review
           </p>
           <h3 className="mt-2 text-2xl font-bold text-[#111111]">
@@ -274,7 +274,7 @@ export default function ProductReviewsSection({
             <p>{reviewGateMessage}</p>
             <Link
               href="/login"
-              className="mt-3 inline-flex text-sm font-semibold text-primary underline underline-offset-4"
+              className="mt-3 inline-flex text-sm font-semibold text-[#3A8B91] underline underline-offset-4"
             >
               {isAuthenticated
                 ? "Signed in? Update account if needed"
@@ -381,7 +381,7 @@ export default function ProductReviewsSection({
                 !canSubmitReview ||
                 reviewText.trim().length < 10
               }
-              className="h-11 w-full !rounded-none bg-primary text-white hover:bg-[#111111]"
+              className="h-11 w-full !rounded-none bg-[#3A8B91] text-white hover:bg-[#111111]"
             >
               {isSubmitting ? (
                 <Loader2 className="h-4 w-4 animate-spin" />

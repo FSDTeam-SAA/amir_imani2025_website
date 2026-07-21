@@ -37,7 +37,8 @@ export default function NewsletterForm({
   });
 
   const mutation = useMutation({
-    mutationFn: (data: FormValues) => subscribeToNewsletter({ email: data.email }),
+    mutationFn: (data: FormValues) =>
+      subscribeToNewsletter({ email: data.email }),
     onSuccess: (data) => {
       toast.success(data.message || "Successfully subscribed to newsletter.");
       reset();

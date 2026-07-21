@@ -112,7 +112,7 @@ Laozi sits by a river and says nothing, but somehow changes everything. His shap
 quiet fire, and a small window through which another world can be seen. This card suggests
 that stillness, not action, brings transformation.`,
     iconImage: "/symbol_LAOZI.png",
-    cardImage: "/shapes/laozi.svg",
+    cardImage: "/card/Cards-7.jpg",
     color: "#E67E22",
   },
   {
