@@ -388,7 +388,7 @@ const GetInTouch = () => {
             <Button
               type="submit"
               disabled={isPending}
-              className="bg-[#ba6143] text-white font-bold !rounded-none tracking-wider text-[10px] uppercase px-6 py-3  shadow-sm hover:bg-[#a35237] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed h-auto"
+              className="bg-[#ba6143] text-white font-bold tracking-wider text-[10px] uppercase px-6 py-3  shadow-sm hover:bg-[#a35237] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed h-auto !rounded-none"
             >
               {isPending ? "Sending..." : "Send Message"}
             </Button>
