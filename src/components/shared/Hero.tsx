@@ -36,7 +36,7 @@ export default function Hero() {
           animate="visible"
         >
           <motion.p
-            className="mb-3 text-[10px] sm:text-xs font-bold uppercase tracking-[0.32em] text-[#0EA5B8]"
+            className="mb-3 text-[10px] sm:text-xs font-bold uppercase tracking-[0.32em] text-primary"
             variants={fadeInUp}
           >
             A Universe of Games for Curious Minds

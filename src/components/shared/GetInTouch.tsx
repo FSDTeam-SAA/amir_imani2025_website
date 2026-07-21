@@ -135,11 +135,11 @@ const GetInTouch = () => {
     <section className="bg-[#faf7f0] space-y-20  text-[#222222] font-sans px-4 py-20 md:py-28 flex flex-col items-center w-full">
       {/* Header Info */}
       <div className="mx-auto text-center mb-12 md:mb-16">
-        <span className="text-[10px] tracking-[0.2em] font-bold text-[#bba185] uppercase block mb-3">
+        <span className="text-[10px] tracking-[0.2em] font-bold text-primary uppercase block mb-3">
           Get in Touch
         </span>
-        <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-primary">
-          Let&apos;s <span className="text-[#577b8a]">Talk.</span>
+        <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-black">
+          Let&apos;s <span className="text-primary">Talk.</span>
         </h2>
         <p className="text-xs md:text-[13px] text-[#777777] leading-relaxed max-w-md mx-auto">
           Have a question, partnership idea, or just want to say hello?
@@ -161,7 +161,7 @@ const GetInTouch = () => {
             <div className="space-y-8">
               {/* Address */}
               <div className="flex items-start gap-4">
-                <div className="w-8 h-8 -full border border-neutral-800 bg-neutral-900 flex items-center justify-center shrink-0 mt-0.5 text-[#ba6143]">
+                <div className="w-8 h-8 -full border border-neutral-800 bg-neutral-900 flex items-center justify-center shrink-0 mt-0.5 text-primary">
                   <MapPinIcon />
                 </div>
                 <div>
@@ -180,7 +180,7 @@ const GetInTouch = () => {
 
               {/* Email */}
               <div className="flex items-start gap-4">
-                <div className="w-8 h-8 -full border border-neutral-800 bg-neutral-900 flex items-center justify-center shrink-0 mt-0.5 text-[#ba6143]">
+                <div className="w-8 h-8 -full border border-neutral-800 bg-neutral-900 flex items-center justify-center shrink-0 mt-0.5 text-primary">
                   <MailIcon />
                 </div>
                 <div>
@@ -388,7 +388,7 @@ const GetInTouch = () => {
             <Button
               type="submit"
               disabled={isPending}
-              className="bg-[#ba6143] text-white font-bold tracking-wider text-[10px] uppercase px-6 py-3  shadow-sm hover:bg-[#a35237] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed h-auto !rounded-none"
+              className="bg-primary text-white font-bold tracking-wider text-[10px] uppercase px-6 py-3  shadow-sm hover:bg-primary/85 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed h-auto !rounded-none"
             >
               {isPending ? "Sending..." : "Send Message"}
             </Button>
