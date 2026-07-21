@@ -32,7 +32,7 @@ export default function FourSteps() {
   return (
     <motion.section
       id="fortune-ritual"
-      className="text-[#f2eadf] scroll-mt-28"
+      className="text-[#f2eadf] scroll-mt-28 !mt-10"
       initial={{ opacity: 0, y: 28 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
