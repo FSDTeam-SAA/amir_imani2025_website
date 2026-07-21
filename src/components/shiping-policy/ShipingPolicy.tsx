@@ -6,7 +6,7 @@ const ShipingPolicy = () => {
       <div className="container mx-auto px-4 overflow-hidden">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-semibold text-primary-foreground leading-[150%] mb-2">
+          <h1 className="text-4xl md:text-5xl font-semibold text-primary leading-[150%] mb-2">
             Shipping Policy
           </h1>
         </div>
@@ -17,7 +17,7 @@ const ShipingPolicy = () => {
           <div className="space-y-8">
             {/* Section 6 */}
             <div className="space-y-4">
-              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-[#0E1D2B]">
+              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-primary">
                 1. Shipping and Delivery
               </h3>
               <p className="text-[#6C757D] text-xl leading-[150%] font-normal">
@@ -33,7 +33,7 @@ const ShipingPolicy = () => {
 
             {/* Section 7 */}
             <div className="space-y-4">
-              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-[#0E1D2B]">
+              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-primary">
                 2. Returns, Refunds, and Replacements
               </h3>
               <p className="text-[#6C757D] text-xl leading-[150%] font-normal mb-4">
@@ -61,7 +61,7 @@ const ShipingPolicy = () => {
 
             {/* Section 8 */}
             <div className="space-y-4">
-              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-[#0E1D2B]">
+              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-primary">
                 3. Pre-orders and Special Campaigns
               </h3>
               <p className="text-[#6C757D] text-xl leading-[150%] font-normal mb-4">
@@ -85,7 +85,7 @@ const ShipingPolicy = () => {
 
             {/* Section 9 */}
             <div className="space-y-4">
-              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-[#0E1D2B]">
+              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-primary">
                 4. Game Experience and No Professional Advice
               </h3>
               <p className="text-[#6C757D] text-xl leading-[150%] font-normal">
@@ -118,7 +118,7 @@ const ShipingPolicy = () => {
 
             {/* Section 10 */}
             <div className="space-y-4">
-              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-[#0E1D2B]">
+              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-primary">
                 5. Disclaimer of Warranties
               </h3>
               <p className="text-[#6C757D] text-xl leading-[150%] font-normal mb-4">
@@ -142,7 +142,7 @@ const ShipingPolicy = () => {
 
             {/* Section 11 */}
             <div className="space-y-4">
-              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-[#0E1D2B]">
+              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-primary">
                 6. Limitation of Liability
               </h3>
               <p className="text-[#6C757D] text-xl leading-[150%] font-normal mb-4">
@@ -177,7 +177,7 @@ const ShipingPolicy = () => {
 
             {/* Section 12 */}
             <div className="space-y-4">
-              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-[#0E1D2B]">
+              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-primary">
                 7. Indemnification
               </h3>
               <p className="text-[#6C757D] text-xl leading-[150%] font-normal">
@@ -204,7 +204,7 @@ const ShipingPolicy = () => {
 
             {/* Section 13 */}
             <div className="space-y-4">
-              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-[#0E1D2B]">
+              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-primary">
                 8. Third-Party Links
               </h3>
               <p className="text-[#6C757D] text-xl leading-[150%] font-normal">
@@ -216,7 +216,7 @@ const ShipingPolicy = () => {
 
             {/* Section 14 */}
             <div className="space-y-4">
-              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-[#0E1D2B]">
+              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-primary">
                 9. Governing Law and Jurisdiction
               </h3>
               <p className="text-[#6C757D] text-xl leading-[150%] font-normal">
@@ -232,7 +232,7 @@ const ShipingPolicy = () => {
 
             {/* Section 15 */}
             <div className="space-y-4">
-              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-[#0E1D2B]">
+              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-primary">
                 10. Changes to These Terms
               </h3>
               <p className="text-[#6C757D] text-xl leading-[150%] font-normal">
@@ -245,7 +245,7 @@ const ShipingPolicy = () => {
 
             {/* Section 16 */}
             <div className="space-y-4">
-              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-[#0E1D2B]">
+              <h3 className="font-inter font-semibold text-2xl leading-[150%] text-primary">
                 11. Contact
               </h3>
               <p className="text-[#6C757D] text-xl leading-[150%] font-normal mb-4">
