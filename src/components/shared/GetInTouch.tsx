@@ -138,7 +138,7 @@ const GetInTouch = () => {
         <span className="text-[10px] tracking-[0.2em] font-bold text-[#bba185] uppercase block mb-3">
           Get in Touch
         </span>
-        <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
+        <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-primary">
           Let&apos;s <span className="text-[#577b8a]">Talk.</span>
         </h2>
         <p className="text-xs md:text-[13px] text-[#777777] leading-relaxed max-w-md mx-auto">
@@ -161,7 +161,7 @@ const GetInTouch = () => {
             <div className="space-y-8">
               {/* Address */}
               <div className="flex items-start gap-4">
-                <div className="w-8 h-8 rounded-full border border-neutral-800 bg-neutral-900 flex items-center justify-center shrink-0 mt-0.5 text-[#ba6143]">
+                <div className="w-8 h-8 -full border border-neutral-800 bg-neutral-900 flex items-center justify-center shrink-0 mt-0.5 text-[#ba6143]">
                   <MapPinIcon />
                 </div>
                 <div>
@@ -180,7 +180,7 @@ const GetInTouch = () => {
 
               {/* Email */}
               <div className="flex items-start gap-4">
-                <div className="w-8 h-8 rounded-full border border-neutral-800 bg-neutral-900 flex items-center justify-center shrink-0 mt-0.5 text-[#ba6143]">
+                <div className="w-8 h-8 -full border border-neutral-800 bg-neutral-900 flex items-center justify-center shrink-0 mt-0.5 text-[#ba6143]">
                   <MailIcon />
                 </div>
                 <div>
@@ -199,7 +199,7 @@ const GetInTouch = () => {
           </div>
 
           {/* Subdued ambient glowing background */}
-          <div className="absolute -bottom-16 -right-16 w-48 h-48 bg-[#ba6143]/10 blur-[50px] rounded-full pointer-events-none" />
+          <div className="absolute -bottom-16 -right-16 w-48 h-48 bg-[#ba6143]/10 blur-[50px] -full pointer-events-none" />
         </div>
 
         {/* Right Panel: Functional Form */}
@@ -229,7 +229,7 @@ const GetInTouch = () => {
                   placeholder="First Name"
                   value={formData.firstName}
                   onChange={handleChange}
-                  className={`w-full bg-[#fcfaf4] border rounded px-3 py-2 text-xs text-[#222222] placeholder-neutral-400 focus:outline-none transition-colors ${
+                  className={`w-full bg-[#fcfaf4] border  px-3 py-2 text-xs text-[#222222] placeholder-neutral-400 focus:outline-none transition-colors ${
                     errors.firstName
                       ? "border-red-500 ring-1 ring-red-500"
                       : "border-neutral-200/60 focus:border-neutral-400"
@@ -254,7 +254,7 @@ const GetInTouch = () => {
                   placeholder="Last Name"
                   value={formData.lastName}
                   onChange={handleChange}
-                  className={`w-full bg-[#fcfaf4] border rounded px-3 py-2 text-xs text-[#222222] placeholder-neutral-400 focus:outline-none transition-colors ${
+                  className={`w-full bg-[#fcfaf4] border  px-3 py-2 text-xs text-[#222222] placeholder-neutral-400 focus:outline-none transition-colors ${
                     errors.lastName
                       ? "border-red-500 ring-1 ring-red-500"
                       : "border-neutral-200/60 focus:border-neutral-400"
@@ -278,7 +278,7 @@ const GetInTouch = () => {
                   placeholder="you@email.com"
                   value={formData.email}
                   onChange={handleChange}
-                  className={`w-full bg-[#fcfaf4] border rounded px-3 py-2 text-xs text-[#222222] placeholder-neutral-400 focus:outline-none transition-colors ${
+                  className={`w-full bg-[#fcfaf4] border  px-3 py-2 text-xs text-[#222222] placeholder-neutral-400 focus:outline-none transition-colors ${
                     errors.email
                       ? "border-red-500 ring-1 ring-red-500"
                       : "border-neutral-200/60 focus:border-neutral-400"
@@ -302,7 +302,7 @@ const GetInTouch = () => {
                   placeholder="+1 (123) 456-7890"
                   value={formData.phone}
                   onChange={handleChange}
-                  className={`w-full bg-[#fcfaf4] border rounded px-3 py-2 text-xs text-[#222222] placeholder-neutral-400 focus:outline-none transition-colors ${
+                  className={`w-full bg-[#fcfaf4] border  px-3 py-2 text-xs text-[#222222] placeholder-neutral-400 focus:outline-none transition-colors ${
                     errors.phone
                       ? "border-red-500 ring-1 ring-red-500"
                       : "border-neutral-200/60 focus:border-neutral-400"
@@ -328,7 +328,7 @@ const GetInTouch = () => {
                 placeholder="Tell us how we can help..."
                 value={formData.message}
                 onChange={handleChange}
-                className={`w-full bg-[#fcfaf4] border rounded px-3 py-2 text-xs text-[#222222] placeholder-neutral-400 focus:outline-none transition-colors resize-none ${
+                className={`w-full bg-[#fcfaf4] border  px-3 py-2 text-xs text-[#222222] placeholder-neutral-400 focus:outline-none transition-colors resize-none ${
                   errors.message
                     ? "border-red-500 ring-1 ring-red-500"
                     : "border-neutral-200/60 focus:border-neutral-400"
@@ -360,7 +360,7 @@ const GetInTouch = () => {
                       }));
                     }
                   }}
-                  className="w-3.5 h-3.5 accent-[#ba6143] border-neutral-300 rounded cursor-pointer"
+                  className="w-3.5 h-3.5 accent-[#ba6143] border-neutral-300  cursor-pointer"
                 />
                 <label
                   htmlFor="privacy"
@@ -388,7 +388,7 @@ const GetInTouch = () => {
             <Button
               type="submit"
               disabled={isPending}
-              className="bg-[#ba6143] text-white font-bold tracking-wider text-[10px] uppercase px-6 py-3 rounded shadow-sm hover:bg-[#a35237] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed h-auto"
+              className="bg-[#ba6143] text-white font-bold tracking-wider text-[10px] uppercase px-6 py-3  shadow-sm hover:bg-[#a35237] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed h-auto"
             >
               {isPending ? "Sending..." : "Send Message"}
             </Button>
@@ -396,7 +396,7 @@ const GetInTouch = () => {
         </form>
       </div>
 
-      <div className="w-full container h-[350px] md:h-[450px] rounded-lg overflow-hidden ">
+      <div className="w-full container h-[350px] md:h-[450px] -lg overflow-hidden ">
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d963.6179371730356!2d-79.27375832139533!3d43.83166698826154!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4d6bbc2dca6db%3A0xdcb08ca7548aaf0c!2s7011%20McCowan%20Rd%2C%20Markham%2C%20ON%20L3S%203L7%2C%20Canada!5e0!3m2!1sen!2sbd!4v1767039079283!5m2!1sen!2sbd"
           width="100%"
