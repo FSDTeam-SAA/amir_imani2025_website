@@ -1,18 +1,23 @@
 "use client";
 
 import BlogCard, { BlogCardSkeleton } from "@/components/blog/blog-card";
+import Hero1 from "@/components/shared/Hero1";
 import { useBlogs } from "@/hooks/use-blogs";
 
 const BlogsPage = () => {
   const { data, isLoading, error } = useBlogs();
 
   return (
-    <div className="min-h-screen bg-white pt-12">
-      {/* <BlogHero /> */}
+    <div className="min-h-screen bg-white">
+      <Hero1
+        image="/hero.jpg"
+        title=""
+        subtitle=""
+        description=""
+        text="Explore Our Blogs"
+      />
 
-      <h1 className="text-4xl font-bold text-center">Explore Our Blogs</h1>
-
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto py-20">
         {isLoading ? (
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
             {[...Array(6)].map((_, i) => (
