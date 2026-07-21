@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Blog } from "@/lib/types/blog";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
+import { Button } from "../ui/button";
 
 interface BlogCardProps {
   blog: Blog;
@@ -49,7 +50,6 @@ const BlogCard = ({ blog }: BlogCardProps) => {
             <h3 className="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors line-clamp-2">
               {blog.title}
             </h3>
-            <ArrowUpRight className="h-6 w-6 shrink-0 transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 cursor-pointer group-hover:text-primary" />
           </Link>
         </div>
 
@@ -58,6 +58,15 @@ const BlogCard = ({ blog }: BlogCardProps) => {
           dangerouslySetInnerHTML={{ __html: blog.description }}
         />
       </div>
+      <Link
+        href={`/blogs/${blog._id}`}
+        className=""
+      >
+        <Button className="w-full">
+          Read more
+          <ArrowRight className="ml-2 h-4 w-4" />
+        </Button>
+      </Link>
     </div>
   );
 };

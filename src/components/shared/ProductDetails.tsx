@@ -19,7 +19,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
       id="product-details"
       className="my-16 md:my-24 px-4 md:px-8 container mx-auto font-sans"
     >
-      <div className="bg-gradient-to-br from-[#12181A] via-[#161D20] to-[#0D1113] text-[#FAF8F5] rounded-2xl p-8 md:p-12 lg:p-16 shadow-2xl overflow-hidden">
+      <div className="bg-gradient-to-br from-[#12181A] via-[#161D20] to-[#0D1113] text-[#FAF8F5] p-8 md:p-12 lg:p-16 shadow-2xl overflow-hidden">
         <div
           className={`grid grid-cols-1 ${
             isCard ? "lg:grid-cols-12" : "lg:grid-cols-1"

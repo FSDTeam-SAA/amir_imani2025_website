@@ -108,7 +108,7 @@ export default function MakingOfSection() {
             key={index}
             onClick={() => setSelectedIndex(index)}
             aria-label={`Open ${item.title} image`}
-            className={`${item.className} relative rounded-md p-6 flex flex-col text-left justify-between overflow-hidden group cursor-zoom-in transition-all duration-300 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#577b8a]`}
+            className={`${item.className} relative  p-6 flex flex-col text-left justify-between overflow-hidden group cursor-zoom-in transition-all duration-300 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#577b8a]`}
           >
             <Image
               src={item.image}

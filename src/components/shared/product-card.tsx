@@ -32,7 +32,7 @@ export default function ProductCard({
       }`}
       className="group block w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.34rem)] max-w-[400px]"
     >
-      <div className="relative overflow-hidden rounded-2xl border border-gray-100 bg-secondary transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+      <div className="relative overflow-hidden  border border-gray-100 bg-secondary transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
         {/* Image Container */}
         <div className="relative w-full aspect-square overflow-hidden">
           <Image

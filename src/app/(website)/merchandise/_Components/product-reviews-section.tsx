@@ -192,7 +192,7 @@ export default function ProductReviewsSection({
               </h2>
             </div>
 
-            <div className="rounded-2xl border bg-[#fcf8ef]/50 px-5 py-4">
+            <div className=" border bg-[#fcf8ef]/50 px-5 py-4">
               <p className="text-3xl font-bold text-[#111111]">
                 {summary.averageRating.toFixed(1)}
               </p>
@@ -206,7 +206,7 @@ export default function ProductReviewsSection({
 
           <div className="mt-6 space-y-4">
             {isLoading ? (
-              <div className="flex items-center gap-2 rounded-2xl border bg-[#fcf8ef]/50 p-6 text-sm text-[#666666]">
+              <div className="flex items-center gap-2 border bg-[#fcf8ef]/50 p-6 text-sm text-[#666666]">
                 <Loader2 className="h-4 w-4 animate-spin" />
                 Loading reviews...
               </div>
@@ -214,7 +214,7 @@ export default function ProductReviewsSection({
               reviews.map((review) => (
                 <article
                   key={review.id}
-                  className="rounded-2xl border bg-[#fcf8ef]/50 p-6"
+                  className=" border bg-[#fcf8ef]/50 p-6"
                 >
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
@@ -233,7 +233,7 @@ export default function ProductReviewsSection({
                 </article>
               ))
             ) : (
-              <div className="rounded-2xl border border-dashed border-[#E4D5B7] bg-white p-6 text-sm text-[#666666]">
+              <div className=" border border-dashed border-[#E4D5B7] bg-white p-6 text-sm text-[#666666]">
                 No published reviews yet. Be the first verified buyer to share
                 one.
               </div>
@@ -241,7 +241,7 @@ export default function ProductReviewsSection({
           </div>
         </div>
 
-        <aside className="rounded-[28px] border bg-[#fcf8ef]/50 p-6 shadow-[0px_20px_50px_rgba(0,0,0,0.04)]">
+        <aside className=" border bg-[#fcf8ef]/50 p-6 shadow-[0px_20px_50px_rgba(0,0,0,0.04)]">
           <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">
             Leave a review
           </p>
@@ -254,7 +254,7 @@ export default function ProductReviewsSection({
           </p>
 
           {eligibility?.review ? (
-            <div className="mt-6 rounded-2xl border border-[#EFEFEF] bg-[#FBFBFB] p-5">
+            <div className="mt-6  border border-[#EFEFEF] bg-[#FBFBFB] p-5">
               <div className="flex items-center justify-between gap-3">
                 <p className="text-sm font-semibold text-[#111111]">
                   Your submitted review
@@ -270,7 +270,7 @@ export default function ProductReviewsSection({
             </div>
           ) : null}
 
-          <div className="mt-6 rounded-2xl border border-dashed border-[#E4D5B7] bg-[#FFF9EC] p-5 text-sm leading-6 text-[#6B5C3E]">
+          <div className="mt-6  border border-dashed border-[#E4D5B7] bg-[#FFF9EC] p-5 text-sm leading-6 text-[#6B5C3E]">
             <p>{reviewGateMessage}</p>
             <Link
               href="/login"
@@ -297,7 +297,7 @@ export default function ProductReviewsSection({
                   value={guestName}
                   onChange={(event) => setGuestName(event.target.value)}
                   required
-                  className="w-full rounded-2xl border border-[#E5E7EB] bg-white px-4 py-3 text-sm text-[#111111] outline-none transition focus:border-primary focus:ring-4 focus:ring-[#F04D2A]/10"
+                  className="w-full  border border-[#E5E7EB] bg-white px-4 py-3 text-sm text-[#111111] outline-none transition focus:border-primary focus:ring-4 focus:ring-[#F04D2A]/10"
                   placeholder="Jane Doe"
                 />
               </div>
@@ -315,7 +315,7 @@ export default function ProductReviewsSection({
                   value={guestEmail}
                   onChange={(event) => setGuestEmail(event.target.value)}
                   required
-                  className="w-full rounded-2xl border border-[#E5E7EB] bg-white px-4 py-3 text-sm text-[#111111] outline-none transition focus:border-primary focus:ring-4 focus:ring-[#F04D2A]/10"
+                  className="w-full  border border-[#E5E7EB] bg-white px-4 py-3 text-sm text-[#111111] outline-none transition focus:border-primary focus:ring-4 focus:ring-[#F04D2A]/10"
                   placeholder="jane@example.com"
                 />
               </div>
@@ -335,7 +335,7 @@ export default function ProductReviewsSection({
                       key={value}
                       type="button"
                       onClick={() => setSelectedRating(value)}
-                      className="rounded-full p-1 transition-transform hover:scale-110"
+                      className=" p-1 transition-transform hover:scale-110"
                       aria-label={`Give ${value} star${value === 1 ? "" : "s"}`}
                     >
                       <Star

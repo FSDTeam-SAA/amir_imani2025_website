@@ -30,7 +30,7 @@ export default function PressReactionsSection({
         {items.map((item, idx) => (
           <div
             key={idx}
-            className="bg-[#F4EFE6] rounded-md p-8 flex flex-col justify-between min-h-[260px] border border-[#EAE6DF]/40 shadow-sm"
+            className="bg-[#F4EFE6]  p-8 flex flex-col justify-between min-h-[260px] border border-[#EAE6DF]/40 shadow-sm"
           >
             <div className="space-y-6">
               <div className="text-2xl font-serif text-[#4A6B6C] font-bold tracking-tighter leading-none select-none">
