@@ -37,7 +37,8 @@ export default function NewsletterForm({
   });
 
   const mutation = useMutation({
-    mutationFn: (data: FormValues) => subscribeToNewsletter({ email: data.email }),
+    mutationFn: (data: FormValues) =>
+      subscribeToNewsletter({ email: data.email }),
     onSuccess: (data) => {
       toast.success(data.message || "Successfully subscribed to newsletter.");
       reset();
@@ -64,7 +65,7 @@ export default function NewsletterForm({
             type="email"
             placeholder="Enter your email"
             {...register("email")}
-            className="w-full rounded-full px-4 py-3 bg-white border-white/20 text-primary-foreground placeholder-gray-500 focus:ring-2 focus:ring-white/30"
+            className="w-full rounded-none px-4 py-3 bg-white border-white/20 text-primary-foreground placeholder-gray-500 focus:ring-2 focus:ring-white/30"
             aria-label="Email address"
             aria-invalid={!!errors.email}
             aria-describedby={errors.email ? "email-error" : undefined}
@@ -83,7 +84,7 @@ export default function NewsletterForm({
 
         <Button
           type="submit"
-          className="rounded-full px-6 whitespace-nowrap text-white transition-colors disabled:opacity-50"
+          className="!rounded-none px-6 whitespace-nowrap text-white transition-colors disabled:opacity-50"
           disabled={mutation.isPending}
           aria-label="Subscribe to newsletter"
         >
