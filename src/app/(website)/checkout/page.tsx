@@ -26,6 +26,8 @@ import {
 import { getAppliedCoupon } from "@/lib/utils/applied-coupon";
 import { clearGuestCart } from "@/lib/utils/guest-cart";
 import { useCartQuery } from "@/hooks/use-cart-query";
+import { useCurrency } from "@/hooks/use-currency";
+import CurrencySelect from "@/components/shared/CurrencySelect";
 import { calculateShippingCad } from "@/lib/utils/shipping";
 
 const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
@@ -141,6 +143,7 @@ function CheckoutPaymentForm({
 export default function CheckoutPage() {
   const { data: session, update: updateSession } = useSession();
   const { data: cart, isLoading } = useCartQuery();
+  const { currency, setCurrency } = useCurrency();
   const [values, setValues] = useState<CheckoutFormValues>(initialValues);
   const [clientSecret, setClientSecret] = useState("");
   const [paymentId, setPaymentId] = useState("");
@@ -156,10 +159,15 @@ export default function CheckoutPage() {
   const subtotal = useMemo(
     () =>
       items.reduce(
-        (total, item) => total + (item.productId?.price || 0) * item.quantity,
+        (total, item) =>
+          total +
+          (currency === "CAD"
+            ? (item.productId?.ca_price ?? 0)
+            : (item.productId?.price ?? 0)) *
+            item.quantity,
         0
       ),
-    [items]
+    [currency, items]
   );
 
   useEffect(() => {
@@ -257,6 +265,7 @@ export default function CheckoutPage() {
         items: checkoutItems,
         shippingAddress,
         couponCode: appliedCoupon?.code?.trim() || undefined,
+        currency: currency.toLowerCase() as "usd" | "cad",
       };
 
       const response = await paymentService.createPaymentIntent(payload);
@@ -443,6 +452,10 @@ export default function CheckoutPage() {
               <h2 className="mb-5 text-lg font-bold text-[#111111]">
                 Order summary
               </h2>
+              <div className="mb-5 flex items-center justify-between text-sm font-medium">
+                <span className="text-[#666666]">Currency</span>
+                <CurrencySelect currency={currency} onChange={setCurrency} disabled={Boolean(clientSecret)} />
+              </div>
               <div className="space-y-4 text-sm">
                 <div className="flex justify-between">
                   <span className="text-[#666666]">Items</span>
@@ -453,7 +466,7 @@ export default function CheckoutPage() {
                 <div className="flex justify-between">
                   <span className="text-[#666666]">Subtotal</span>
                   <span className="font-semibold text-[#111111]">
-                    ${subtotal.toFixed(2)}
+                    ${subtotal.toFixed(2)} {currency}
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -461,7 +474,7 @@ export default function CheckoutPage() {
                   <span className="font-semibold text-[#111111]">
                     {shippingPreview === 0
                       ? "Free"
-                      : `$${shippingPreview.toFixed(2)} CAD`}
+                      : `$${shippingPreview.toFixed(2)} ${currency}`}
                   </span>
                 </div>
                 {couponDiscount > 0 ? (
@@ -475,7 +488,7 @@ export default function CheckoutPage() {
                 <div className="border-t border-[#EFEFEF] pt-4">
                   <div className="flex justify-between text-base font-bold">
                     <span>Total estimate</span>
-                    <span className="text-primary">${totalPreview.toFixed(2)}</span>
+                    <span className="text-primary">${totalPreview.toFixed(2)} {currency}</span>
                   </div>
                 </div>
               </div>

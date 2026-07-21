@@ -27,8 +27,6 @@ export default function Hero() {
         whileHover={{ scale: 1.05, transition: { duration: 0.7 } }}
       />
 
-
-
       {/* Center content */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
@@ -71,8 +69,8 @@ export default function Hero() {
             className="text-[#B0B0B0] md:text-[#B0B0B0] text-base md:text-lg lg:text-xl max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed font-light"
             variants={fadeInUp}
           >
-            DoUndo connects strategy, perception, imagination, and story through
-            thirteen symbols that tie every experience together.
+            Every DoUndo experience is connected through thirteen shared
+            symbols.
           </motion.p>
 
           {/* CTA Button */}

@@ -9,6 +9,7 @@ interface CartItemProps {
   title: string;
   description: string;
   price: number;
+  currency?: "USD" | "CAD";
   imageUrl: string;
   quantity: number;
   color?: string;
@@ -22,6 +23,7 @@ const CartItem = React.memo(function CartItem({
   title,
   description,
   price,
+  currency = "USD",
   imageUrl,
   quantity,
   color,
@@ -91,7 +93,7 @@ const CartItem = React.memo(function CartItem({
           {/* Price and Stepper */}
           <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-center gap-3 shrink-0 w-full md:w-auto mt-2 md:mt-0 border-t md:border-t-0 pt-3 md:pt-0 border-dashed border-gray-200">
             <span className="text-lg font-bold text-primary">
-              ${price?.toFixed(2)}
+              ${price?.toFixed(2)} <span className="text-xs font-normal">{currency}</span>
             </span>
 
             <div className="flex items-center border border-[#2E8F8A] rounded-md overflow-hidden h-8">

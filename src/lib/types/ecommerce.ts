@@ -2,6 +2,7 @@ export interface Product {
   _id: string;
   productName: string;
   price: number;
+  ca_price?: number;
   productType?: "card" | "marchandice";
   category?:
     | "ALL"

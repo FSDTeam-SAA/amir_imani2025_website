@@ -26,6 +26,7 @@ import {
   calculateShippingCad,
   ShippingCountry,
 } from "@/lib/utils/shipping";
+import { useCurrency } from "@/hooks/use-currency";
 
 export default function CartPage() {
   const router = useRouter();
@@ -36,6 +37,7 @@ export default function CartPage() {
   const [isApplyingCoupon, setIsApplyingCoupon] = React.useState(false);
   const [shippingCountry, setShippingCountry] =
     React.useState<ShippingCountry>("CA");
+  const { currency, setCurrency } = useCurrency();
 
   // Fetch cart data
   const { data: cart, isLoading } = useCartQuery();
@@ -53,6 +55,7 @@ export default function CartPage() {
     handleRemove,
   } = useCartLogic({
     cart: cart || null,
+    currency,
     onUpdateQuantity: updateQuantity,
     onRemoveFromCart: removeFromCart,
   });
@@ -157,7 +160,8 @@ export default function CartPage() {
                       id={item?.productId?._id}
                       title={item?.productId?.productName}
                       description={item?.productId?.description}
-                      price={item?.productId?.price}
+                      price={currency === "CAD" ? (item?.productId?.ca_price ?? 0) : item?.productId?.price}
+                      currency={currency}
                       color={item.color}
                       size={item.size}
                       imageUrl={
@@ -203,6 +207,8 @@ export default function CartPage() {
             <OrderSummary
               subtotal={subtotal}
               shipping={shipping}
+              currency={currency}
+              onCurrencyChange={setCurrency}
               shippingCountry={shippingCountry}
               onShippingCountryChange={setShippingCountry}
               couponCode={couponCode}
