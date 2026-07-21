@@ -74,7 +74,7 @@ export default function MeetOurTeam() {
                 alt={founder.name}
                 fill
                 priority
-                className={` aspect-square ${index === 1 ? 'grayscale' : ''}`} 
+                className={`object-cover  ${index === 1 ? 'grayscale' : ''}`} 
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>

@@ -38,7 +38,7 @@ export default function GarmentSpecsSection({ product }: ProductHeroProps) {
   ];
 
   return (
-    <section className="bg-[#F8F0DD] text-[#171513] py-20 px-6 md:px-12 lg:px-24 w-full font-sans antialiased">
+    <section className="bg-[#FAF6EE] text-[#171513] py-20 px-6 md:px-12 lg:px-24 w-full font-sans antialiased">
       <div className="container mx-auto">
         
         {/* Top Header Section */}
