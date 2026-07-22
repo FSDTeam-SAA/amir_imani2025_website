@@ -14,7 +14,8 @@ const AboutSectionOnly = () => {
     lastParagraph: {
       text1: "Every DoUndo experience is designed to spark ",
       boldText: "memorable shared moments that continue beyond the table,",
-      text2: " as we grow into a global brand that bridges creativity, design, and storytelling."
+      text2:
+        " as we grow into a global brand that bridges creativity, design, and storytelling.",
     },
     image: {
       src: "/about1.png", // Replace with your exact deck image path
@@ -27,7 +28,6 @@ const AboutSectionOnly = () => {
   return (
     <section className="bg-[#faf7f0] py-16 md:py-24 px-6 md:px-12 lg:px-20 min-h-screen flex items-center justify-center font-sans">
       <div className="container mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-        
         {/* Left Column: Title & Image */}
         <div className="lg:col-span-5 flex flex-col space-y-8">
           {/* Titles */}
@@ -37,26 +37,30 @@ const AboutSectionOnly = () => {
             </span>
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 leading-none">
               {storyData.aboutTitle}
-              <span className="block text-[#0EA5B8] mt-1">{storyData.aboutTitleHighlight}</span>
+              <span className="block text-[#0EA5B8] mt-1">
+                {storyData.aboutTitleHighlight}
+              </span>
             </h2>
           </div>
 
           {/* Card Deck Image Container */}
-          <div className="relative aspect-square w-full max-w-[480px] bg-[#2E2E2E] shadow-sm overflow-hidden">
+          <div className="group relative aspect-square w-full max-w-[480px] overflow-hidden bg-[#2E2E2E] shadow-sm">
             <Image
               src={storyData.image.src}
               alt={storyData.image.alt}
               width={storyData.image.width}
               height={storyData.image.height}
-              className="w-full h-full object-cover"
               priority
+              className="h-full w-full object-cover transition-all duration-700 ease-out group-hover:scale-110"
             />
+
+            {/* Optional dark overlay */}
+            <div className="absolute inset-0 bg-black/10 transition-all duration-700 group-hover:bg-black/0" />
           </div>
         </div>
 
         {/* Right Column: Text Paragraphs */}
         <div className="lg:col-span-7 space-y-6 lg:pt-[152px] text-sm md:text-[15px] text-gray-700 leading-[1.75] font-normal tracking-wide">
-          
           {/* Paragraph 1 with Big Drop Cap 'D' */}
           <p className="relative">
             <span className="text-5xl md:text-6xl font-bold text-[#E96A3D] float-left mr-2.5 h-12 md:h-14 flex items-center leading-none">
@@ -69,9 +73,11 @@ const AboutSectionOnly = () => {
           {/* Paragraph 2 with bold text */}
           <p>
             At the heart of every DoUndo project are{" "}
-            <strong className="text-gray-900 font-bold">thirteen unique symbols</strong> — a
-            system that links our games, fortune-telling practices, and accessories into
-            one shared universe.
+            <strong className="text-gray-900 font-bold">
+              thirteen unique symbols
+            </strong>{" "}
+            — a system that links our games, fortune-telling practices, and
+            accessories into one shared universe.
           </p>
 
           {/* Paragraph 3 */}
@@ -83,12 +89,12 @@ const AboutSectionOnly = () => {
           {/* Paragraph 5 with bold highlight */}
           <p>
             {storyData.lastParagraph.text1}
-            <strong className="text-gray-900 font-bold">{storyData.lastParagraph.boldText}</strong>
+            <strong className="text-gray-900 font-bold">
+              {storyData.lastParagraph.boldText}
+            </strong>
             {storyData.lastParagraph.text2}
           </p>
-          
         </div>
-
       </div>
     </section>
   );
