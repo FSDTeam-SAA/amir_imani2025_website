@@ -26,22 +26,22 @@ export default function ProductHero({ product }: ProductHeroProps) {
   // Memoized values
   const isMerchandise = useMemo(
     () => product.productType === "marchandice",
-    [product.productType]
+    [product.productType],
   );
 
   const hasSizes = useMemo(
     () => product.size && product.size.length > 0,
-    [product.size]
+    [product.size],
   );
 
   const hasColors = useMemo(
     () => product.color && product.color.length > 0,
-    [product.color]
+    [product.color],
   );
 
   const displayImage = useMemo(
     () => selectedImage || product.imgs?.[0] || product.img || "/no-image.jpg",
-    [selectedImage, product.imgs, product.img]
+    [selectedImage, product.imgs, product.img],
   );
 
   const thumbnails = useMemo(
@@ -49,42 +49,8 @@ export default function ProductHero({ product }: ProductHeroProps) {
       product.imgs && product.imgs.length > 0
         ? product.imgs
         : [product.img || "/no-image.jpg"],
-    [product.imgs, product.img]
+    [product.imgs, product.img],
   );
-
-  const facts = useMemo(() => {
-    const nextFacts = [
-      {
-        value: isMerchandise ? "Merch" : "Card",
-        label: "Type",
-      },
-      {
-        value: product.category || (isMerchandise ? "General" : "Gameplay"),
-        label: "Category",
-      },
-      {
-        value:
-          typeof product.quantity === "number"
-            ? String(product.quantity)
-            : isMerchandise
-              ? "Pre-order"
-              : `${thumbnails.length} image${thumbnails.length > 1 ? "s" : ""}`,
-        label: isMerchandise ? "Stock" : "Gallery",
-      },
-      {
-        value: product.videoLink ? "Available" : "None",
-        label: "Video",
-      },
-    ];
-
-    return nextFacts;
-  }, [
-    isMerchandise,
-    product.category,
-    product.quantity,
-    product.videoLink,
-    thumbnails.length,
-  ]);
 
   // Optimized handlers with useCallback
   const handleQuantityChange = useCallback((delta: number) => {
@@ -125,17 +91,15 @@ export default function ProductHero({ product }: ProductHeroProps) {
     setIsAdding(true);
 
     try {
-      await addToCart(
-        [
-          {
-            productId: product._id,
-            quantity,
-            ...(selectedColor && { color: selectedColor }),
-            ...(selectedSize && { size: selectedSize }),
-            product,
-          },
-        ]
-      );
+      await addToCart([
+        {
+          productId: product._id,
+          quantity,
+          ...(selectedColor && { color: selectedColor }),
+          ...(selectedSize && { size: selectedSize }),
+          product,
+        },
+      ]);
       toast.success(`${product.productName} added to cart for Pre Order!`);
     } catch (error) {
       toast.error("Failed to add to cart. Please try again.");
@@ -158,32 +122,62 @@ export default function ProductHero({ product }: ProductHeroProps) {
       aria-labelledby="product-title"
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-        
         {/* Left Column: Product Details -> Added order-2 lg:order-1 */}
         <article className="w-full flex flex-col gap-8 lg:col-span-7 lg:self-stretch lg:justify-between lg:gap-0 order-2 lg:order-1">
           <div>
             {/* Dynamic Product Name as fallback/sub-heading if needed */}
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-light text-[#1A1A1A] tracking-tight leading-[1.1] mb-6">
+            <h2 className="text-lg font-light text-[#0EA5B8] tracking-tight leading-[1.1] mb-6">
               {product.productName}
             </h2>
 
             {/* Features / Description */}
-            <p className="text-base md:text-lg text-[#4A4A4A] leading-relaxed max-w-xl font-light">
-              {product.feature || "A psychological strategy game where every move reveals more about the board — and about you. Every selection you make tells a story."}
+            <p className="text-base md:text-4xl text-[#4A4A4A] leading-[1.1] max-w-2xl font-light">
+              {product.feature ||
+                "A psychological strategy game where every move reveals more about the board — and about you. Every selection you make tells a story."}
+            </p>
+
+            <p className="text-base md:text-lg mt-6 text-[#4A4A4A] leading-relaxed max-w-xl font-light">
+              {product.gameSubtitle ||
+                "A psychological strategy game where every move reveals more about the board — and about you. Every selection you make tells a story."}
             </p>
           </div>
 
-          <div className="border-t border-b border-[#EAE6DF] py-6 grid grid-cols-4 gap-4 max-w-xl">
-            {facts.map((fact) => (
-              <div key={fact.label}>
-                <p className="text-xl md:text-2xl font-semibold text-[#1A1A1A]">
-                  {fact.value}
-                </p>
-                <p className="text-[10px] uppercase tracking-wider text-[#8A8A8A] font-medium mt-1">
-                  {fact.label}
-                </p>
-              </div>
-            ))}
+          <div className="border-y border-[#EAE6DF] py-6 grid grid-cols-4 gap-4 max-w-xl">
+            <div>
+              <p className="text-xl md:text-2xl font-semibold text-[#1A1A1A]">
+                {product?.players}
+              </p>
+              <p className="text-[10px] uppercase tracking-wider text-[#8A8A8A] font-medium mt-1">
+                PLAYERS
+              </p>
+            </div>
+
+            <div>
+              <p className="text-xl md:text-2xl font-semibold text-[#1A1A1A]">
+                {product?.minutes}
+              </p>
+              <p className="text-[10px] uppercase tracking-wider text-[#8A8A8A] font-medium mt-1">
+                MINUTES
+              </p>
+            </div>
+
+            <div>
+              <p className="text-xl md:text-2xl font-semibold text-[#1A1A1A]">
+                {product?.age}
+              </p>
+              <p className="text-[10px] uppercase tracking-wider text-[#8A8A8A] font-medium mt-1">
+               AGES
+              </p>
+            </div>
+
+            <div>
+              <p className="text-xl md:text-2xl font-semibold text-[#1A1A1A]">
+                {product?.cards}
+              </p>
+              <p className="text-[10px] uppercase tracking-wider text-[#8A8A8A] font-medium mt-1">
+                CARDS
+              </p>
+            </div>
           </div>
 
           {/* Color & Size Variant Selectors (Rendered dynamically if merchandise) */}
@@ -227,7 +221,9 @@ export default function ProductHero({ product }: ProductHeroProps) {
                         role="radio"
                         aria-checked={selectedColor === color}
                         className={`w-7 h-7 rounded-full border transition-all ${
-                          selectedColor === color ? "ring-2 ring-[#B3634B] scale-110" : "border-gray-300"
+                          selectedColor === color
+                            ? "ring-2 ring-[#B3634B] scale-110"
+                            : "border-gray-300"
                         }`}
                         style={{ backgroundColor: color.toLowerCase() }}
                         aria-label={`Select ${color}`}
@@ -243,7 +239,10 @@ export default function ProductHero({ product }: ProductHeroProps) {
           <div className="flex flex-wrap items-center gap-6 pt-4">
             {/* Terracotta Styled Price */}
             <p className="text-3xl md:text-4xl font-normal text-[#E96A3D]">
-              ${displayPrice.toFixed(2)} <span className="text-base font-light tracking-normal text-gray-500">{currency}</span>
+              ${displayPrice.toFixed(2)}{" "}
+              <span className="text-base font-light tracking-normal text-gray-500">
+                {currency}
+              </span>
             </p>
 
             {/* Quantity Selector Counter */}
@@ -280,7 +279,9 @@ export default function ProductHero({ product }: ProductHeroProps) {
             <button
               onClick={() =>
                 document
-                  .getElementById(isMerchandise ? "product-details" : "game-rules")
+                  .getElementById(
+                    isMerchandise ? "product-details" : "game-rules",
+                  )
                   ?.scrollIntoView({ behavior: "smooth", block: "start" })
               }
               className="text-xs font-bold tracking-widest text-[#1A1A1A] uppercase flex items-center gap-2 hover:opacity-80 transition-opacity ml-auto sm:ml-0"
@@ -305,7 +306,10 @@ export default function ProductHero({ product }: ProductHeroProps) {
           </div>
 
           {/* Horizontal Thumbnails Layout aligned directly beneath main image */}
-          <nav className="flex flex-wrap gap-3" aria-label="Product image thumbnails">
+          <nav
+            className="flex flex-wrap gap-3"
+            aria-label="Product image thumbnails"
+          >
             {thumbnails.map((img, index) => (
               <button
                 key={`${img}-${index}`}
