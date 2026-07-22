@@ -149,9 +149,9 @@
   hyphens: none !important;
 }
 
-* {
+/* * {
   cursor: none;
-}
+} */
 
 @layer base {
   * {

@@ -11,6 +11,8 @@ import RightToLeftMarquee from "@/components/shared/LeftToRightMarquee";
 import GameRulesSection from "../_components/GameRulesSection";
 import BoardAnatomySection from "../_components/BoardAnatomySection";
 import PressReactionsSection from "../_components/PressReactionsSection";
+import MaterialsSection from "../_components/MaterialsSection";
+import InTheBoxSection from "../_components/InTheBoxSection";
 // import MaterialsSection from "../_components/MaterialsSection";
 
 export default function ProductPage() {
@@ -124,10 +126,9 @@ export default function ProductPage() {
           productName={product.productName}
           videoLink={product.videoLink}
         />
-        {/* <MaterialsSection
-          title={product.garmentTitle}
-          items={materialItems}
-        /> */}
+
+       <InTheBoxSection product={product} />
+        
         <ProductDetails product={product} />
         {shouldShowCardSections && (
           <PressReactionsSection

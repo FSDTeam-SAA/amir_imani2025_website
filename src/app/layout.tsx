@@ -39,7 +39,7 @@ export default function RootLayout({
         <TanstackProvider>
           <Provider>
             <CartProvider>
-               <CustomCursor/>
+               {/* <CustomCursor/> */}
               {children}
               <Toaster position="top-right" richColors />
             </CartProvider>

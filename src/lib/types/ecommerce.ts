@@ -21,8 +21,23 @@ export interface Product {
     | string;
   feature: string;
   description: string;
+  gameSubtitle:string;
   addHome?: boolean;
+  players?: string
+  cards?:string
+  age?:string
+  inTheBox?: {
+    title?: string;
+    subtitle?: string;
+    boxnumbers?: {
+      number?: string;
+      title?: string;
+      subtitle?: string;
+    }[];
+  };
+  minutes?:string
   videoLink?: string;
+  homeImage?: string;
   img?: string; // Keep for backward compatibility or if API still returns it as primary
   imgs?: string[];
   colors?: string[]; // Keep for compatibility
@@ -42,6 +57,7 @@ export interface Product {
   garmentFit?: string;
   garmentPRINT?: string;
   garmentMADeIN?: string;
+  productFeatures?:string[]
   garmentCARE?: string;
 }
 

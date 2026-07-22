@@ -352,6 +352,22 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
             >
               {isAdding ? "Adding..." : "Pre-Order"} <ShoppingCart />
             </Button>
+
+            {product.productFeatures && product?.productFeatures?.length > 0 && (
+              <div className="space-y-3">
+                {product.productFeatures.map(
+                  (feature: string, index: number) => (
+                    <div
+                      key={index}
+                      className="flex items-center gap-3 text-sm text-gray-700"
+                    >
+                      <div className="h-2 w-2 rounded-full bg-black shrink-0" />
+                      <span>{feature}</span>
+                    </div>
+                  ),
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>
