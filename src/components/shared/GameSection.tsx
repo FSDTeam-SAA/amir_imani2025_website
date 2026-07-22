@@ -50,10 +50,12 @@ export default function GameSection() {
     "Weave stories using symbols as characters, conflicts, and resolutions. A narrative game for 2-8 players.";
 
   const primaryImage =
+    primaryProduct?.homeImage ||
     primaryProduct?.imgs?.[0] ||
     primaryProduct?.img ||
     "/images/univers1.jpeg";
   const secondaryImage =
+    secondaryProduct?.homeImage ||
     secondaryProduct?.imgs?.[0] ||
     secondaryProduct?.img ||
     "/images/univers2.jpeg";
@@ -141,7 +143,7 @@ export default function GameSection() {
                   {secondaryProduct ? "Featured Game" : "Next Chapter"}
                 </span>
                 <span className="bg-stone-900/80 backdrop-blur-sm text-[#5EA3A3] text-[10px] font-bold tracking-widest px-2 py-1 rounded uppercase border border-stone-700/50">
-                  {secondaryProduct ? "Now Available" : "Coming 2027"}
+                  Coming Soon
                 </span>
               </div>
 
@@ -149,9 +151,9 @@ export default function GameSection() {
                 <h3 className="text-2xl font-bold text-white mb-4">
                   {secondaryTitle}
                 </h3>
-                <p className="text-stone-200 text-sm mb-6 leading-relaxed">
+                {/* <p className="text-stone-200 text-sm mb-6 leading-relaxed">
                   {secondaryDescription}
-                </p>
+                </p> */}
                 <span className="inline-flex items-center gap-1 text-[#E97443] text-xs font-bold tracking-widest uppercase group/btn">
                   Discover More
                   <ArrowUpRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />

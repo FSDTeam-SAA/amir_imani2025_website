@@ -37,6 +37,7 @@ export interface Product {
   };
   minutes?:string
   videoLink?: string;
+  homeImage?: string;
   img?: string; // Keep for backward compatibility or if API still returns it as primary
   imgs?: string[];
   colors?: string[]; // Keep for compatibility
