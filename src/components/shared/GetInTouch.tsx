@@ -398,8 +398,8 @@ const GetInTouch = () => {
 
       <div className="w-full container h-[350px] md:h-[450px] -lg overflow-hidden ">
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d963.6179371730356!2d-79.27375832139533!3d43.83166698826154!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4d6bbc2dca6db%3A0xdcb08ca7548aaf0c!2s7011%20McCowan%20Rd%2C%20Markham%2C%20ON%20L3S%203L7%2C%20Canada!5e0!3m2!1sen!2sbd!4v1767039079283!5m2!1sen!2sbd"
-          width="100%"
+          src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d359.73567792134565!2d-79.2496912!3d43.8374736!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4d6e0dc343127%3A0x16d6cc3dede71e3a!2s7025%20Markham%20Rd%2C%20Markham%2C%20ON%20L3S%200C3%2C%20Canada!5e0!3m2!1sen!2sbd!4v1784720945786!5m2!1sen!2sbd"
+           width="100%"
           height="100%"
           style={{ border: 0 }}
           loading="lazy"
