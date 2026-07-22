@@ -135,7 +135,7 @@ const GetInTouch = () => {
     <section className="bg-[#faf7f0] space-y-20  text-[#222222] font-sans px-4 py-20 md:py-28 flex flex-col items-center w-full">
       {/* Header Info */}
       <div className="mx-auto text-center mb-12 md:mb-16">
-        <span className="text-[10px] tracking-[0.2em] font-bold text-primary uppercase block mb-3">
+        <span className="text-[10px] tracking-[0.2em] font-bold text-[#0EA5B8] uppercase block mb-3">
           Get in Touch
         </span>
         <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-black">

@@ -42,25 +42,21 @@ function renderNavLabel(name: string, isFortunePage: boolean) {
   }
 
   return (
-    <span
-      className={`relative inline-flex flex-col items-center leading-[0.9] ${
-        isFortunePage ? "text-[#f6d7ab]" : "text-[#7c4a24]"
-      }`}
-    >
+    <span className="relative inline-flex flex-col items-center leading-[0.88]">
       <span
-        className={`${fortuneWordmarkFont.className} bg-gradient-to-b bg-clip-text text-[0.98em] font-bold uppercase tracking-[0.16em] text-transparent drop-shadow-[0_2px_10px_rgba(205,140,66,0.22)] ${
+        className={`${fortuneWordmarkFont.className} bg-[linear-gradient(135deg,#6AD9E5_0%,#0EA5B8_42%,#F04D2A_100%)] bg-clip-text text-[0.98em] font-bold uppercase tracking-[0.14em] text-transparent drop-shadow-[0_4px_12px_rgba(14,29,43,0.22)] ${
           isFortunePage
-            ? "from-[#fff2db] via-[#f4cb90] to-[#c88439]"
-            : "from-[#b56f3a] via-[#7d4727] to-[#4c2c18]"
+            ? "[text-shadow:0_0_18px_rgba(14,165,184,0.16)]"
+            : "[text-shadow:0_0_14px_rgba(14,165,184,0.1)]"
         }`}
       >
         Fortune
       </span>
       <span
-        className={`${fortuneWordmarkFont.className} -mt-0.5 bg-gradient-to-b bg-clip-text text-[0.9em] font-bold uppercase tracking-[0.22em] text-transparent ${
+        className={`${fortuneWordmarkFont.className} -mt-0.5 bg-[linear-gradient(135deg,#F04D2A_0%,#0EA5B8_58%,#6AD9E5_100%)] bg-clip-text text-[0.9em] font-bold uppercase tracking-[0.2em] text-transparent drop-shadow-[0_4px_12px_rgba(14,29,43,0.22)] ${
           isFortunePage
-            ? "from-[#fde8c3] via-[#eab96d] to-[#b8722b]"
-            : "from-[#9a5f33] via-[#6f4022] to-[#432312]"
+            ? "[text-shadow:0_0_18px_rgba(240,77,42,0.14)]"
+            : "[text-shadow:0_0_14px_rgba(240,77,42,0.08)]"
         }`}
       >
         Telling

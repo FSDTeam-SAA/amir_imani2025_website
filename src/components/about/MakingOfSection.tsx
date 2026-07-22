@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
-import { AnimatePresence, motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const gridItems = [
   {
@@ -40,24 +40,25 @@ const gridItems = [
     title: "STUDIO DAY",
     image: "/about/Symbols_3.jpg",
     className: "col-span-12 sm:col-span-6 md:col-span-3",
-  }
+  },
 ];
 
 export default function MakingOfSection() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  const selectedImage = selectedIndex === null ? null : gridItems[selectedIndex];
+  const selectedImage =
+    selectedIndex === null ? null : gridItems[selectedIndex];
 
   const showPreviousImage = () => {
     setSelectedIndex((currentIndex) =>
       currentIndex === null
         ? null
-        : (currentIndex - 1 + gridItems.length) % gridItems.length
+        : (currentIndex - 1 + gridItems.length) % gridItems.length,
     );
   };
 
   const showNextImage = () => {
     setSelectedIndex((currentIndex) =>
-      currentIndex === null ? null : (currentIndex + 1) % gridItems.length
+      currentIndex === null ? null : (currentIndex + 1) % gridItems.length,
     );
   };
 
@@ -65,18 +66,18 @@ export default function MakingOfSection() {
     if (!selectedImage) return;
 
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setSelectedIndex(null);
-      if (event.key === 'ArrowLeft') showPreviousImage();
-      if (event.key === 'ArrowRight') showNextImage();
+      if (event.key === "Escape") setSelectedIndex(null);
+      if (event.key === "ArrowLeft") showPreviousImage();
+      if (event.key === "ArrowRight") showNextImage();
     };
 
     const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    window.addEventListener('keydown', handleEscape);
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleEscape);
 
     return () => {
       document.body.style.overflow = previousOverflow;
-      window.removeEventListener('keydown', handleEscape);
+      window.removeEventListener("keydown", handleEscape);
     };
   }, [selectedImage]);
 
@@ -85,14 +86,14 @@ export default function MakingOfSection() {
       {/* Header Container */}
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-start gap-6 mb-12 md:mb-16">
         <div>
-          <span className="text-[10px] tracking-[0.2em] font-bold text-[#E96A3D] uppercase block mb-3">
+          <span className="text-[10px] tracking-[0.2em] font-bold text-[#0EA5B8] uppercase block mb-3">
             Behind the Scenes
           </span>
           <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight max-w-md">
             The Making <br /> of <span className="text-[#E96A3D]">DoUndo.</span>
           </h2>
         </div>
-        
+
         <div className="md:max-w-xs md:pt-8">
           {/* <p className="text-xs md:text-sm text-[#888888] leading-relaxed font-light">
             A glimpse into the studio — sketches, prototypes, photo shoots, and the moments where ideas become objects you can hold.
@@ -149,7 +150,7 @@ export default function MakingOfSection() {
               initial={{ opacity: 0, scale: 0.9, y: 24 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.94, y: 16 }}
-              transition={{ type: 'spring', stiffness: 260, damping: 26 }}
+              transition={{ type: "spring", stiffness: 260, damping: 26 }}
               onClick={(event) => event.stopPropagation()}
             >
               <Image
