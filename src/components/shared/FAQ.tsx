@@ -62,7 +62,7 @@ export default function FAQPixelPerfect() {
         
         {/* Left Typography Block - Fixed responsive spacing and sticky behavior */}
         <div className="lg:col-span-5 lg:sticky lg:top-12 space-y-4 mb-4 lg:mb-0">
-          <span className="text-[#E97443] text-xs font-bold tracking-widest uppercase block">
+          <span className=" text-[#E96A3D] text-xs font-bold tracking-widest uppercase block">
             FAQ
           </span>
 

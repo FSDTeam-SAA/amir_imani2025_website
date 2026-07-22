@@ -5,6 +5,7 @@ import TanstackProvider from "@/provider/Tanstack-provider";
 import Provider from "@/provider/authprovider";
 import { CartProvider } from "@/provider/cart-provider";
 import { Toaster } from "sonner";
+import CustomCursor from "@/components/shared/CustomCursor";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -38,6 +39,7 @@ export default function RootLayout({
         <TanstackProvider>
           <Provider>
             <CartProvider>
+               <CustomCursor/>
               {children}
               <Toaster position="top-right" richColors />
             </CartProvider>
