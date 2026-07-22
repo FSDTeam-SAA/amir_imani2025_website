@@ -7,6 +7,91 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
 
+const stripProblematicTextChars = (text: string) =>
+  text
+    .replace(/\u00ad/g, "")
+    .replace(/[\u200b-\u200d\u2060\ufeff]/g, "")
+    .replace(/\u00a0/g, " ")
+    .replace(/&shy;/gi, "")
+    .replace(/&nbsp;/gi, " ");
+
+const normalizeBlogHtml = (html: string) => {
+  const cleanedHtml = stripProblematicTextChars(html);
+
+  if (typeof window === "undefined") {
+    return cleanedHtml;
+  }
+
+  const parser = new DOMParser();
+  const document = parser.parseFromString(cleanedHtml, "text/html");
+  const allowedClassNames = new Set(["ql-align-center", "ql-align-right"]);
+  const unwrapTags = new Set(["span", "font"]);
+
+  document.body.querySelectorAll("wbr").forEach((node) => node.remove());
+
+  const textWalker = document.createTreeWalker(
+    document.body,
+    NodeFilter.SHOW_TEXT,
+  );
+  const textNodes: Text[] = [];
+
+  while (textWalker.nextNode()) {
+    textNodes.push(textWalker.currentNode as Text);
+  }
+
+  for (const textNode of textNodes) {
+    textNode.textContent = stripProblematicTextChars(
+      textNode.textContent || "",
+    );
+  }
+
+  const nodes = Array.from(document.body.querySelectorAll<HTMLElement>("*"));
+
+  for (const node of nodes) {
+    const tagName = node.tagName.toLowerCase();
+
+    if (unwrapTags.has(tagName)) {
+      node.replaceWith(...Array.from(node.childNodes));
+      continue;
+    }
+
+    if (tagName === "div") {
+      const replacement = document.createElement("p");
+      replacement.innerHTML = node.innerHTML;
+      node.replaceWith(replacement);
+      continue;
+    }
+
+    const safeClasses = Array.from(node.classList).filter((className) =>
+      allowedClassNames.has(className),
+    );
+
+    if (safeClasses.length > 0) {
+      node.className = safeClasses.join(" ");
+    } else {
+      node.removeAttribute("class");
+    }
+
+    if (tagName !== "a" && tagName !== "img") {
+      node.removeAttribute("style");
+    }
+
+    node.removeAttribute("dir");
+
+    node.style.wordBreak = "normal";
+    node.style.overflowWrap = "normal";
+    node.style.wordWrap = "normal";
+    node.style.whiteSpace = "normal";
+    node.style.hyphens = "none";
+
+    if (node.style.textAlign === "justify") {
+      node.style.textAlign = "left";
+    }
+  }
+
+  return document.body.innerHTML;
+};
+
 const BlogDetailsSkeleton = () => {
   return (
     <div className="min-h-screen bg-white pt-40 pb-12">
@@ -59,6 +144,7 @@ const BlogDetailsPage = () => {
   }
 
   const blog = data.data;
+  const normalizedDescription = normalizeBlogHtml(blog.description);
   const formattedDate = new Date(blog.createdAt).toLocaleDateString("en-GB", {
     day: "numeric",
     month: "long",
@@ -68,7 +154,7 @@ const BlogDetailsPage = () => {
   return (
     <div className="bg-white pt-10 pb-12">
       {/* Added max-w-4xl to center and bound the whole layout */}
-      <article className="container mx-auto px-4">
+      <div className="container mx-auto">
         {/* Navigation */}
         <Link
           href="/blogs"
@@ -105,9 +191,8 @@ const BlogDetailsPage = () => {
         {/* Content - Fixed layout constraints & overflow issues */}
         <div className="w-full min-w-0 overflow-hidden">
           <div
-            className="prose prose-sm sm:prose-base md:prose-lg prose-primary max-w-none break-words overflow-x-auto 
-            prose-headings:break-words prose-p:break-words prose-pre:max-w-full prose-pre:overflow-x-auto prose-table:overflow-x-auto"
-            dangerouslySetInnerHTML={{ __html: blog.description }}
+            className="blog-content w-full min-w-0"
+            dangerouslySetInnerHTML={{ __html: normalizedDescription }}
           />
         </div>
 
@@ -127,7 +212,7 @@ const BlogDetailsPage = () => {
             )}
           </div>
         </footer>
-      </article>
+      </div>
     </div>
   );
 };

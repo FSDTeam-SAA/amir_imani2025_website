@@ -9,6 +9,16 @@ interface BlogCardProps {
   blog: Blog;
 }
 
+const getPlainPreview = (html: string) =>
+  html
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\u00ad/g, "")
+    .replace(/[\u200b-\u200d\u2060\ufeff]/g, "")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&shy;/gi, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
 const BlogCard = ({ blog }: BlogCardProps) => {
   // Format date using Intl.DateTimeFormat
   const formattedDate = new Date(blog.createdAt).toLocaleDateString("en-GB", {
@@ -16,6 +26,7 @@ const BlogCard = ({ blog }: BlogCardProps) => {
     month: "short",
     year: "numeric",
   });
+  const previewText = getPlainPreview(blog.description);
 
   return (
     <div className="group flex flex-col gap-4 ">
@@ -52,17 +63,13 @@ const BlogCard = ({ blog }: BlogCardProps) => {
             </h3>
           </Link>
         </div>
-
-        <p
-          className="text-gray-600 line-clamp-3"
-          dangerouslySetInnerHTML={{ __html: blog.description }}
-        />
+        <p className="text-gray-600 line-clamp-3">{previewText}</p>
       </div>
       <Link
         href={`/blogs/${blog._id}`}
         className=""
       >
-        <Button className="w-full">
+        <Button className="w-full !rounded-none">
           Read more
           <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
