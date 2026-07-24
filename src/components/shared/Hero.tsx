@@ -69,8 +69,7 @@ export default function Hero() {
             className="text-[#B0B0B0] md:text-[#B0B0B0] text-base md:text-lg lg:text-xl max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed font-light"
             variants={fadeInUp}
           >
-            Every DoUndo experience is connected through thirteen shared
-            symbols.
+           Every DoUndo experience speaks the same visual language.
           </motion.p>
 
           {/* CTA Button */}

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Plus } from "lucide-react";
 
@@ -51,18 +51,43 @@ matters, you may use indicated in our policies.`,
 
 export default function FAQPixelPerfect() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
+
+  // স্ক্রিনের সাইজ চেক করার জন্য useEffect
+  useEffect(() => {
+    // ফাংশন যা স্ক্রিন সাইজ চেক করবে
+    const checkScreenSize = () => {
+      // Tailwind-এর 'lg' ব্রেকপয়েন্ট সাধারণত 1024px হয়
+      setIsLargeScreen(window.innerWidth >= 1024);
+    };
+
+    // কম্পোনেন্ট মাউন্ট হওয়ার সময় একবার চেক করি
+    checkScreenSize();
+
+    // উইন্ডো রিসাইজ ইভেন্ট লিসেনার যোগ করি
+    window.addEventListener("resize", checkScreenSize);
+
+    // ক্লিনআপ ফাংশন
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
 
   const toggleFAQ = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
+  const handleMouseEnter = (index: number) => {
+    // শুধুমাত্র বড় স্ক্রিনে এবং যদি আইটেমটি অলরেডি খোলা না থাকে
+    if (isLargeScreen && openIndex !== index) {
+      setOpenIndex(index);
+    }
+  };
+
   return (
     <section className="bg-[#FAF6EE] text-stone-950 px-6 md:px-12 lg:px-24 py-16 md:py-24 flex items-center justify-center font-sans antialiased">
       <div className="container mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 lg:gap-16 items-start">
-        
-        {/* Left Typography Block - Fixed responsive spacing and sticky behavior */}
+        {/* Left Typography Block */}
         <div className="lg:col-span-5 lg:sticky lg:top-12 space-y-4 mb-4 lg:mb-0">
-          <span className=" text-[#E96A3D] text-xs font-bold tracking-widest uppercase block">
+          <span className="text-[#E96A3D] text-xs font-bold tracking-widest uppercase block">
             FAQ
           </span>
 
@@ -77,7 +102,7 @@ export default function FAQPixelPerfect() {
           </p>
         </div>
 
-        {/* Right Accordion List Block - 7 Columns */}
+        {/* Right Accordion List Block */}
         <motion.div
           className="lg:col-span-7 w-full border-t border-stone-200/70"
           initial="hidden"
@@ -94,7 +119,8 @@ export default function FAQPixelPerfect() {
             return (
               <motion.div
                 key={index}
-                onMouseEnter={() => setOpenIndex(index)}
+                // এখানে handleMouseEnter ফাংশনটি কল করা হচ্ছে
+                onMouseEnter={() => handleMouseEnter(index)}
                 variants={{
                   hidden: { opacity: 0, y: 16 },
                   visible: { opacity: 1, y: 0 },
@@ -104,12 +130,12 @@ export default function FAQPixelPerfect() {
               >
                 <button
                   onClick={() => toggleFAQ(index)}
-                  onFocus={() => setOpenIndex(index)}
+                  // onFocus={...} সরিয়ে দেওয়া হয়েছে মোবাইলের সমস্যার জন্য,
+                  // হোভার এফেক্ট JS এবং CSS দিয়ে হ্যান্ডেল করা হচ্ছে।
                   aria-expanded={isOpen}
                   aria-controls={`faq-answer-${index}`}
                   className="group flex w-full items-center justify-between py-4.5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E97443]/40 focus-visible:ring-offset-2"
                 >
-                  {/* Fixed responsive font size for questions */}
                   <span
                     className={`pr-4 text-xs font-medium tracking-wide transition-colors duration-300 md:text-[16px] leading-snug ${
                       isOpen
@@ -163,7 +189,10 @@ export default function FAQPixelPerfect() {
           })}
 
           <p className="text-[10px] text-stone-400/80 leading-relaxed mt-6 tracking-wide max-w-2xl">
-            You can reach us through the Contact page on our website. We aim to respond to all enquiries within 2-3 business days. For order-specific issues, please include your order number to help us assist you faster.
+            You can reach us through the Contact page on our website. We aim to
+            respond to all enquiries within 2-3 business days. For
+            order-specific issues, please include your order number to help us
+            assist you faster.
           </p>
         </motion.div>
       </div>

@@ -38,8 +38,6 @@ const RESOURCES_LINKS = [
 const LEGAL_LINKS = [
   { label: "Terms", href: "/term-condition" },
   { label: "Privacy", href: "/privacy-policy" },
-  // { label: "Cookies", href: "/cookies" },
-  // { label: "Sitemap", href: "/sitemap.xml" },
 ];
 
 // Structured Data for SEO

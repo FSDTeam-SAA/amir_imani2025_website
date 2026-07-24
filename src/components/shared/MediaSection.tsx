@@ -33,7 +33,7 @@ export default function MediaSection({
   const embedUrl = videoLink ? getYouTubeEmbedUrl(videoLink) : null;
 
   return (
-    <section className="my-10 container border-[#EFEFEF]">
+    <section id="game-video" className="my-10 container border-[#EFEFEF]">
       <p className="text-center font-semibold">WATCH - 3 MINUTE OVERVIEW</p>
 
       <h2 className="text-[#0E1D2B] mt-4 text-2xl md:text-3xl lg:text-5xl mb-10 text-center">

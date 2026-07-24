@@ -26,7 +26,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
           } gap-8 lg:gap-16 items-start mx-auto`}
         >
           <div className={isCard ? "lg:col-span-7" : "lg:col-span-1"}>
-            <p className="text-[10px] md:text-xs font-bold tracking-[0.25em] text-[#7A8B93] uppercase mb-4">
+            <p className="text-[10px] md:text-xs font-bold tracking-[0.25em] text-[#fff4de] uppercase mb-4">
               {sectionLabel}
             </p>
 
@@ -34,7 +34,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
               {title}
             </h2>
 
-            <div className="prose prose-invert max-w-none break-words overflow-hidden text-[#B0BCC2] font-light leading-relaxed text-sm md:text-base selection:bg-[#B3634B]/30">
+            <div className="prose prose-invert max-w-none break-words overflow-hidden text-[#fff4de] font-light leading-relaxed text-sm md:text-base selection:bg-[#B3634B]/30">
               <div 
                 className="space-y-4 [&_p]:leading-relaxed [&_ul]:space-y-2 [&_ul]:list-none [&_ul]:pl-0 [&_li]:before:content-['-'] [&_li]:before:mr-3 [&_li]:before:text-[#7A8B93] [&_li]:text-xs [&_li]:tracking-wider [&_li]:uppercase [&_li]:text-[#D0DBC5]" 
                 dangerouslySetInnerHTML={{ __html: product.description }} 

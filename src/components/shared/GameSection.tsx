@@ -86,10 +86,10 @@ export default function GameSection() {
             </h2>
           </div>
           <div>
-            <p className="text-stone-600 text-base md:text-lg max-w-md md:ml-auto leading-relaxed">
+            {/* <p className="text-stone-600 text-base md:text-lg max-w-md md:ml-auto leading-relaxed">
               The same thirteen symbols. Different rules, different moods,
               different depths. Every game is a new way in to the same world.
-            </p>
+            </p> */}
           </div>
         </div>
 

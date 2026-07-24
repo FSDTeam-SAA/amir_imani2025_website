@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function AboutSectionPixelPerfect() {
   return (
-    <section className="bg-[#6C9BB0] py-20 px-6 md:px-12 lg:px-24  flex items-center justify-center font-sans selection:bg-[#E97443]/20">
+    <section className="bg-[#3f909c] py-20 px-6 md:px-12 lg:px-24  flex items-center justify-center font-sans selection:bg-[#E97443]/20">
       {/* Main Container */}
       <div className=" mx-auto container w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
         
@@ -42,7 +42,7 @@ one shared universe.
             <div>
               <div className="text-4xl md:text-5xl font-bold mb-2 tracking-tight">∞</div>
               <div className="text-[10px] font-bold tracking-[0.15em] uppercase text-white/80">
-                GAMES COMING
+              experience
               </div>
             </div>
           </div>

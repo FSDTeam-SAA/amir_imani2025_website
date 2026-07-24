@@ -213,9 +213,10 @@ export default function MixedGalaxySymbols() {
   }, []);
 
   return (
-    <section className="bg-black text-white min-h-screen grid grid-cols-1 lg:grid-cols-12 items-center font-sans relative overflow-hidden">
-      {/* Left Content Column */}
-      <div className="lg:col-span-5 px-8 md:px-16 gap-6 lg:px-24 py-16 flex flex-col justify-center relative z-10">
+    <section className="bg-black text-white ">
+     <div className="min-h-screen grid grid-cols-1 container lg:grid-cols-12 items-center font-sans relative overflow-hidden">
+       {/* Left Content Column */}
+      <div className="lg:col-span-5  gap-6  py-16 flex flex-col justify-center relative z-10">
         <div className="flex items-center gap-1.5 mb-4">
           <span className="text-[#E97443] text-xs tracking-widest font-bold">
             ✦✦✦
@@ -235,7 +236,7 @@ export default function MixedGalaxySymbols() {
         </p>
 
         <div className="mb-14">
-          <Link href={"/about-us"}>
+          <Link href={"/fortune-telling"}>
             <button className="bg-[#F04D2A] hover:bg-[#d66332] text-white text-xs font-bold tracking-[0.25em] uppercase px-9 py-4.5 transition-all duration-200 rounded-none flex items-center gap-3 group shadow-lg">
               BEGIN YOUR READING
               <span className="text-xs transition-transform group-hover:translate-x-1 duration-200">
@@ -262,6 +263,7 @@ export default function MixedGalaxySymbols() {
           className="w-full h-full block opacity-95 mix-blend-screen"
         />
       </div>
+     </div>
     </section>
   );
 }

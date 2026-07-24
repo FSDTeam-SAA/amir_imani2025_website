@@ -280,7 +280,7 @@ export default function ProductHero({ product }: ProductHeroProps) {
               onClick={() =>
                 document
                   .getElementById(
-                    isMerchandise ? "product-details" : "game-rules",
+                    isMerchandise ? "product-details" : "game-video",
                   )
                   ?.scrollIntoView({ behavior: "smooth", block: "start" })
               }

@@ -130,6 +130,7 @@ export default function ProductPage() {
        <InTheBoxSection product={product} />
         
         <ProductDetails product={product} />
+        
         {shouldShowCardSections && (
           <PressReactionsSection
             title={product.passandplayTittle}
