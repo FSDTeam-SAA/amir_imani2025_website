@@ -210,8 +210,11 @@ export default function PantheonCombinedSection() {
   const handleCardClick = (god: (typeof pantheonData)[0]) => {
     setActiveGod(god);
 
-    if (window.innerWidth < 768 && detailsRef.current) {
-      detailsRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (detailsRef.current) {
+      detailsRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
     }
   };
 
@@ -255,12 +258,14 @@ export default function PantheonCombinedSection() {
                   }`}
               >
                 {/* Top Mini Icon Grid */}
-                <div className="flex-1 flex items-center justify-center relative w-16 h-16 md:w-[72px] md:h-[72px]">
+                <div className="flex-1 flex items-center justify-center relative w-16 h-16 md:w-[102px] md:h-[102px]">
                   <Image
                     src={god.iconImage}
                     alt={`${god.name} icon`}
                     fill
-                    className="object-contain transition-transform duration-300 group-hover:scale-110"
+                    className={`object-contain transition-transform duration-300 group-hover:scale-110 ${
+                      index === 6 ? "scale-100" : "scale-150"
+                    }`}
                   />
                 </div>
 

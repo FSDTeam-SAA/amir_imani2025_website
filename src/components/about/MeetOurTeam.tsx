@@ -76,7 +76,7 @@ export default function MeetOurTeam() {
         {/* Top Mini Tag */}
         <span className="text-[10px] tracking-[0.2em] font-bold text-[#0EA5B8] uppercase block mb-4">
           The People
-        </span>                                                                                         
+        </span>
 
         {/* Main Header */}
         <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
@@ -84,9 +84,8 @@ export default function MeetOurTeam() {
         </h2>
 
         {/* Subtitle Description */}
-        <p className="text-sm md:text-base text-[#666666] max-w-xl mx-auto leading-relaxed">
-          A small, focused team building bolindo from idea to game table — and
-          beyond.
+        <p className="text-sm md:text-base text-[#666666] max-w-2xl mx-auto leading-relaxed">
+          A small, focused team building DoUndo from idea to game table  and beyond.
         </p>
       </div>
 
