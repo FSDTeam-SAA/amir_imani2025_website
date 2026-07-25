@@ -7,8 +7,6 @@ import { ArrowUpRight, MoveRight } from "lucide-react";
 import { Product } from "@/lib/types/ecommerce";
 import { productService } from "@/lib/api/product-service";
 
-const FEATURED_PRODUCT_ROUTE = "/product/695057098548e119f5fa7cfd";
-
 export default function GameSection() {
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -36,46 +34,30 @@ export default function GameSection() {
   const primaryProduct = featuredProducts[0];
   const secondaryProduct = featuredProducts[1];
 
-  const primaryTitle = primaryProduct?.productName || "DoUndo: The Card Game";
-  const primarySubtitle =
-    primaryProduct?.feature ||
-    "Strategy & Perception";
-  const primaryDescription =
-    primaryProduct?.description ||
-    "The original game that started it all. Use your thirteen symbols to outread, outmaneuver, and outlast your opponent in a battle of archetypes.";
+  if (isLoading || featuredProducts.length === 0) return null;
 
-  const secondaryTitle = secondaryProduct?.productName || "The Myth Game";
-  const secondaryDescription =
-    secondaryProduct?.description ||
-    "Weave stories using symbols as characters, conflicts, and resolutions. A narrative game for 2-8 players.";
-
+  const primaryTitle = primaryProduct.productName;
+  const primarySubtitle = primaryProduct.feature || "Featured Game";
   const primaryImage =
-    primaryProduct?.homeImage ||
-    primaryProduct?.imgs?.[0] ||
-    primaryProduct?.img ||
-    "/images/univers1.jpeg";
+    primaryProduct.homeImage ||
+    primaryProduct.imgs?.[0] ||
+    primaryProduct.img ||
+    "/no-image.jpg";
+  const primaryRoute = `/product/${primaryProduct._id}`;
+
+  const secondaryTitle = secondaryProduct?.productName;
   const secondaryImage =
     secondaryProduct?.homeImage ||
     secondaryProduct?.imgs?.[0] ||
     secondaryProduct?.img ||
-    "/images/univers2.jpeg";
-
-  const cardContent = isLoading
-    ? {
-        title: "DoUndo: The Card Game",
-        subtitle: "Strategy & Perception",
-        description:
-          "The original game that started it all. Use your thirteen symbols to outread, outmaneuver, and outlast your opponent in a battle of archetypes.",
-      }
-    : {
-        title: primaryTitle,
-        subtitle: primarySubtitle,
-        description: primaryDescription,
-      };
+    "/no-image.jpg";
+  const secondaryRoute = secondaryProduct
+    ? `/product/${secondaryProduct._id}`
+    : "";
 
   return (
     <section className="bg-[#F8F0DD] text-stone-900 py-20 px-6 md:px-12 lg:px-20 flex flex-col justify-center font-sans">
-      <div className="container">
+      <div className="md:container">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end mb-12">
           <div>
             <span className="text-[#E97443] text-xs font-bold tracking-[0.25em] uppercase block mb-3">
@@ -95,8 +77,8 @@ export default function GameSection() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
           <Link
-            href={FEATURED_PRODUCT_ROUTE}
-            className="lg:col-span-2  min-h-137.5 flex flex-col justify-between relative overflow-hidden group shadow-xl"
+            href={primaryRoute}
+            className="lg:col-span-2  min-h-137.5  flex flex-col justify-between relative overflow-hidden group shadow-xl"
           >
             <Image
               src={primaryImage}
@@ -109,10 +91,10 @@ export default function GameSection() {
 
             <div className="p-8 md:p-12 mt-auto relative z-10 max-w-xl w-full">
               <div className="uppercase text-[#5EA3A3] text-xs font-bold tracking-widest mb-6">
-                {cardContent.subtitle}
+                {primarySubtitle}
               </div>
               <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
-                {cardContent.title}
+                {primaryTitle}
               </h3>
               {/* <p className="text-stone-200 text-sm md:text-base mb-6 leading-relaxed">
                 {cardContent.description}
@@ -124,8 +106,9 @@ export default function GameSection() {
             </div>
           </Link>
 
+          {secondaryProduct && (
           <Link
-            href={FEATURED_PRODUCT_ROUTE}
+            href={secondaryRoute}
             className=" min-h-105 flex flex-col justify-between relative overflow-hidden group shadow-xl"
           >
             <Image
@@ -140,10 +123,10 @@ export default function GameSection() {
             <div className="p-8 mt-auto relative z-10 w-full h-full flex flex-col justify-between min-h-105">
               <div className="flex justify-between items-start w-full">
                 <span className="uppercase text-[#5EA3A3] text-xs font-bold tracking-widest">
-                  {secondaryProduct ? "Featured Game" : "Next Chapter"}
+                  Featured Game
                 </span>
                 <span className="bg-stone-900/80 backdrop-blur-sm text-[#5EA3A3] text-[10px] font-bold tracking-widest px-2 py-1 rounded uppercase border border-stone-700/50">
-                  Coming Soon
+                  Featured
                 </span>
               </div>
 
@@ -161,6 +144,7 @@ export default function GameSection() {
               </div>
             </div>
           </Link>
+          )}
         </div>
       </div>
     </section>
