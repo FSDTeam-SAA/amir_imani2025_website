@@ -7,7 +7,7 @@ import Image from "next/image";
 import { Product } from "@/lib/types/ecommerce";
 import { useCart } from "@/provider/cart-provider";
 import { toast } from "sonner";
-import { getProductPrice } from "@/lib/utils/product-price";
+import { getProductPreviousPrice, getProductPrice } from "@/lib/utils/product-price";
 
 interface ProductHeroProps {
   product: Product;
@@ -22,6 +22,7 @@ export default function ProductHero({ product }: ProductHeroProps) {
 
   const { addToCart } = useCart();
   const { amount: displayPrice, currency } = getProductPrice(product);
+  const previousPrice = getProductPreviousPrice(product);
 
   // Memoized values
   const isMerchandise = useMemo(
@@ -238,12 +239,21 @@ export default function ProductHero({ product }: ProductHeroProps) {
           {/* Bottom Control Row: Price, Quantity, Add to Cart, Action Link */}
           <div className="flex flex-wrap items-center gap-6 pt-4">
             {/* Terracotta Styled Price */}
-            <p className="text-3xl md:text-4xl font-normal text-[#E96A3D]">
-              ${displayPrice.toFixed(2)}{" "}
-              <span className="text-base font-light tracking-normal text-gray-500">
-                {currency}
-              </span>
-            </p>
+            <div className="space-y-1">
+              <p
+                className="text-3xl md:text-4xl font-normal text-[#E96A3D]"
+              >
+                ${displayPrice.toFixed(2)}{" "}
+                <span className="text-base font-light tracking-normal text-gray-500">
+                  {currency}
+                </span>
+              </p>
+              {previousPrice && (
+                <p className="text-lg font-medium text-gray-500 line-through">
+                  ${previousPrice.amount.toFixed(2)} <span className="text-base font-light">{previousPrice.currency}</span>
+                </p>
+              )}
+            </div>
 
             {/* Quantity Selector Counter */}
             <div className="flex items-center border border-gray-300 !rounded-none bg-white overflow-hidden h-11">
@@ -330,6 +340,7 @@ export default function ProductHero({ product }: ProductHeroProps) {
               </button>
             ))}
           </nav>
+          
         </div>
       </div>
     </section>

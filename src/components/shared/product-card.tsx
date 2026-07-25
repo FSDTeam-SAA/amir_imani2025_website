@@ -4,7 +4,7 @@ import { ShoppingCart } from "lucide-react";
 import { Product } from "@/lib/types/ecommerce";
 import Image from "next/image";
 import Link from "next/link";
-import { getProductPrice } from "@/lib/utils/product-price";
+import { getProductPreviousPrice, getProductPrice } from "@/lib/utils/product-price";
 
 interface ProductCardProps {
   product: Product;
@@ -23,6 +23,7 @@ export default function ProductCard({
 }: ProductCardProps) {
   const isAddingToCart = addingToCartId === product?._id;
   const productPrice = getProductPrice(product);
+  const previousPrice = getProductPreviousPrice(product);
   const badgeLabels = {
     new_arrival: "New Arrival",
     most_popular: "Most Popular",
@@ -74,9 +75,16 @@ export default function ProductCard({
             <h3 className="text-lg md:text-xl font-bold text-primary-foreground line-clamp-2">
               {product?.productName}
             </h3>
-            <p className="text-primary-foreground text-base font-semibold whitespace-nowrap">
-              ${productPrice.amount.toFixed(2)} {productPrice.currency}
-            </p>
+            <div className="space-y-1">
+              <p className="text-primary-foreground text-base font-semibold whitespace-nowrap">
+                ${productPrice.amount.toFixed(2)} {productPrice.currency}
+              </p>
+              {previousPrice && (
+                <p className="text-primary-foreground text-sm font-medium whitespace-nowrap line-through opacity-60">
+                  ${previousPrice.amount.toFixed(2)} {previousPrice.currency}
+                </p>
+              )}
+            </div>
           </div>
 
           <div className="flex flex-row gap-3 transition-all duration-300">

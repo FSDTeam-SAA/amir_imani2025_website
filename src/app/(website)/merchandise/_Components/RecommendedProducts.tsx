@@ -3,7 +3,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getProductPrice } from "@/lib/utils/product-price";
+import { getProductPreviousPrice, getProductPrice } from "@/lib/utils/product-price";
 import { Loader2 } from "lucide-react";
 import { productService } from "@/lib/api/product-service";
 import { Product } from "@/lib/types/ecommerce";
@@ -158,9 +158,16 @@ export default function ProductImageSlider({
                   <div className="space-y-1">
                     <div className="flex items-center justify-between gap-3 text-sm md:text-base font-normal tracking-tight text-stone-950">
                       <h3 className="line-clamp-1">{product.productName}</h3>
-                      <span className="text-stone-500 font-medium text-xs md:text-sm">
-                        ${getProductPrice(product).amount.toFixed(2)}{" "}
-                        {getProductPrice(product).currency}
+                      <span className="text-right font-medium text-xs md:text-sm">
+                        <span className="block text-stone-500">
+                          ${getProductPrice(product).amount.toFixed(2)}{" "}
+                          {getProductPrice(product).currency}
+                        </span>
+                        {getProductPreviousPrice(product) && (
+                          <span className="block text-stone-400 line-through">
+                            ${getProductPreviousPrice(product)?.amount.toFixed(2)} {getProductPreviousPrice(product)?.currency}
+                          </span>
+                        )}
                       </span>
                     </div>
                     <p className="line-clamp-2 text-stone-400 text-[11px] md:text-xs tracking-wide">

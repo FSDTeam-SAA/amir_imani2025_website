@@ -13,6 +13,7 @@ import { Product } from "@/lib/types/ecommerce";
 import { productService } from "@/lib/api/product-service";
 import Link from "next/link";
 import Image from "next/image";
+import { getProductPreviousPrice, getProductPrice } from "@/lib/utils/product-price";
 
 const SearchMotal = ({
   open,
@@ -119,8 +120,15 @@ const SearchMotal = ({
                             {product.feature}
                           </p>
                         </div>
-                        <div className="font-semibold text-gray-900">
-                          ${product.price}
+                        <div className="text-right font-semibold text-gray-900">
+                          <div>
+                            ${getProductPrice(product).amount.toFixed(2)} {getProductPrice(product).currency}
+                          </div>
+                          {getProductPreviousPrice(product) && (
+                            <div className="text-gray-400 line-through">
+                              ${getProductPreviousPrice(product)?.amount.toFixed(2)} {getProductPreviousPrice(product)?.currency}
+                            </div>
+                          )}
                         </div>
                       </Link>
                     ))}
