@@ -26,16 +26,6 @@ const ChevronDownIcon = () => (
   </svg>
 );
 
-const categoryDisplayOrder = [
-  "ALL",
-  "APPAREL",
-  "ACCESSORIES",
-  "PRINTS & POSTERS",
-  "STATIONERY",
-  "HOME & DECOR",
-  "COLLECTIBLES",
-] as const;
-
 type SortOption = "featured" | "low-to-high" | "high-to-low";
 
 const MerchandiseProduct = () => {
@@ -117,7 +107,15 @@ const MerchandiseProduct = () => {
   }, [allProducts]);
 
   const categories = useMemo(() => {
-    return categoryDisplayOrder.map((category) => ({
+    const availableCategories = Array.from(
+      new Set(
+        allProducts
+          .map((product) => product.category?.trim())
+          .filter((category): category is string => Boolean(category)),
+      ),
+    );
+
+    return ["ALL", ...availableCategories].map((category) => ({
       id: category,
       label: category,
       count:

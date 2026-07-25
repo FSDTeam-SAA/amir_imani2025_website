@@ -59,38 +59,7 @@ export default function ProductPage() {
     );
   }
 
-  const materialItems = [
-    {
-      count: "01",
-      title: "Material",
-      description: product.garmentsMATERIAL || "",
-    },
-    {
-      count: "02",
-      title: "Weight",
-      description: product.garmentWEIGHT || "",
-    },
-    {
-      count: "03",
-      title: "Fit",
-      description: product.garmentFit || "",
-    },
-    {
-      count: "04",
-      title: "Print",
-      description: product.garmentPRINT || "",
-    },
-    {
-      count: "05",
-      title: "Made In",
-      description: product.garmentMADeIN || "",
-    },
-    {
-      count: "06",
-      title: "Care",
-      description: product.garmentCARE || "",
-    },
-  ].filter((item) => item.description);
+
 
   const shouldShowCardSections = product.productType === "card";
 
