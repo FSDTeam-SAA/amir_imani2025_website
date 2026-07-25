@@ -31,7 +31,7 @@ const BlogCard = ({ blog }: BlogCardProps) => {
   return (
     <div className="group flex flex-col gap-4 ">
       {/* Image Container */}
-      <div className="relative aspect-16/10 w-full overflow-hidden rounded-3xl bg-gray-100">
+      <div className="relative aspect-16/10 w-full overflow-hidden bg-gray-100">
         {blog.img ? (
           <Image
             src={blog.img}

@@ -8,7 +8,7 @@ const BlogsPage = () => {
   const { data, isLoading, error } = useBlogs();
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#FAF7F0]">
       <Hero1
         image="/hero.jpg"
         title=""
