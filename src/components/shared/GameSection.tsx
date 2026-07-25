@@ -90,9 +90,9 @@ export default function GameSection() {
             <div className="absolute inset-0 bg-black/40 z-0" />
 
             <div className="p-8 md:p-12 mt-auto relative z-10 max-w-xl w-full">
-              <div className="uppercase text-[#5EA3A3] text-xs font-bold tracking-widest mb-6">
+              {/* <div className="uppercase text-[#5EA3A3] text-xs font-bold tracking-widest mb-6">
                 {primarySubtitle}
-              </div>
+              </div> */}
               <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
                 {primaryTitle}
               </h3>
