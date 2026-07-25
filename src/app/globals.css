@@ -268,6 +268,31 @@ Link {
   white-space: pre-wrap !important;
 }
 
+/* Rich-text product feature: keep whole words together and wrap at spaces. */
+.product-feature-content,
+.product-feature-content * {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  white-space: normal !important;
+  word-break: keep-all !important;
+  overflow-wrap: normal !important;
+  word-wrap: normal !important;
+  hyphens: none !important;
+}
+
+.product-feature-content > p,
+.product-feature-content > h1,
+.product-feature-content > h2,
+.product-feature-content > h3,
+.product-feature-content > h4,
+.product-feature-content > h5,
+.product-feature-content > h6,
+.product-feature-content > div {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
 .blog-content h1 {
   font-size: clamp(1.75rem, 4vw, 2.5rem);
   font-weight: 700;

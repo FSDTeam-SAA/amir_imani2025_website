@@ -2,6 +2,7 @@ export interface Product {
   _id: string;
   productName: string;
   price: number;
+  previousPrice?: number;
   ca_price?: number;
   merchandiseBadge?:
     | "none"

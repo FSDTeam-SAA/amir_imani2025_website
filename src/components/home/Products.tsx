@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Product } from "@/lib/types/ecommerce";
 import { productService } from "@/lib/api/product-service";
-import { getProductPrice } from "@/lib/utils/product-price";
+import { getProductPreviousPrice, getProductPrice } from "@/lib/utils/product-price";
 
 export default function Products() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -86,6 +86,7 @@ export default function Products() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {products.map((product) => {
             const productPrice = getProductPrice(product);
+            const previousPrice = getProductPreviousPrice(product);
             return (
             <Link
               key={product._id}
@@ -110,9 +111,18 @@ export default function Products() {
                 <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-cyan-600 transition-colors">
                   {product.productName}
                 </h3>
-                <p className="text-xl font-bold text-gray-900">
-                  ${productPrice.amount.toFixed(2)} {productPrice.currency}
-                </p>
+                <div className="space-y-1">
+                  <p
+                    className="text-xl font-bold text-gray-900"
+                  >
+                    ${productPrice.amount.toFixed(2)} {productPrice.currency}
+                  </p>
+                  {previousPrice && (
+                    <p className="text-base font-medium text-gray-400 line-through">
+                      ${previousPrice.amount.toFixed(2)} {previousPrice.currency}
+                    </p>
+                  )}
+                </div>
               </div>
             </Link>
             );

@@ -15,8 +15,8 @@ export default function PressReactionsSection({
   return (
     <section className=" text-[#1A1A1A] px-6 py-16 md:py-24 container mx-auto font-sans">
       <div className="mb-4">
-        <p className="text-[11px] font-bold tracking-[0.25em] text-[#5C6B73] uppercase">
-          Pass &amp; Play
+        <p className="text-[11px] font-bold tracking-[0.25em] text-[#0EA5B8] uppercase">
+          Press &amp; Play
         </p>
       </div>
 

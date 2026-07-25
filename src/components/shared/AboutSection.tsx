@@ -26,7 +26,7 @@ one shared universe.
           </p>
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-3 gap-6 mb-12 max-w-md">
+          <div className="grid grid-cols-3 gap-6 mb-12 max-w-lg">
             <div>
               <div className="text-4xl md:text-5xl font-bold mb-2 tracking-tight">13</div>
               <div className="text-[10px] font-bold tracking-[0.15em] uppercase text-white/80">
@@ -41,8 +41,8 @@ one shared universe.
             </div>
             <div>
               <div className="text-4xl md:text-5xl font-bold mb-2 tracking-tight">∞</div>
-              <div className="text-[10px] font-bold tracking-[0.15em] uppercase text-white/80">
-              experience
+              <div className="text-[10px]  font-bold tracking-[0.15em] uppercase text-white/80">
+              Infinity Experiences.
               </div>
             </div>
           </div>

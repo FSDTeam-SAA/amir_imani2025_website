@@ -370,7 +370,7 @@ export default function CheckoutPage() {
 
             <section>
               <h2 className="mb-5 text-lg font-bold text-[#111111]">
-                Shipping address
+                Shipping address 
               </h2>
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2 md:col-span-2">
