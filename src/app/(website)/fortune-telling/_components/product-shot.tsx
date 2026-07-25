@@ -27,7 +27,7 @@ export default function ProductShot() {
           </h2>
 
           <p className="text-[13px] leading-[1.8] text-[#a7b2ae]">
-            DoUndo is a strategic card game built around twelve symbolic
+            DoUndo is a strategic card game built around thirteen symbolic
             archetypes. A game of psychology, deduction, and layered decision
             making. Bring the circle to the table.
           </p>
