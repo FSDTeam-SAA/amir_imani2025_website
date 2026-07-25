@@ -359,8 +359,7 @@ const PrivacyPolicy = () => {
                     <li className="flex gap-3">
                       <span className="text-[#6C757D]">•</span>
                       <span className="text-[#6C757D] text-xl leading-[150%] font-normal">
-                        Mailing Address: DoUndo Corp., 7011 McCowan Road,
-                        Markham, Ontario, L3S 3L7, Canada
+                        Mailing Address: 7025 Markham Rd, Markham, ON L3S 0C3, Canada
                       </span>
                     </li>
                   </ul>
