@@ -152,7 +152,7 @@ const BlogDetailsPage = () => {
   });
 
   return (
-    <div className="bg-white pt-10 pb-12">
+    <div className="bg-[#FAF7F0] pt-10 pb-12">
       {/* Added max-w-4xl to center and bound the whole layout */}
       <div className="container mx-auto">
         {/* Navigation */}
