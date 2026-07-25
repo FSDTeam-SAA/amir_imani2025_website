@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Plus } from "lucide-react";
 
@@ -31,28 +31,42 @@ export default function FAQAccordionSection() {
   ];
 
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
+
+  useEffect(() => {
+    const checkScreenSize = () => setIsLargeScreen(window.innerWidth >= 1024);
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
 
   const toggleAccordion = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
+  const handleMouseEnter = (index: number) => {
+    if (isLargeScreen && openIndex !== index) {
+      setOpenIndex(index);
+    }
+  };
+
   return (
-    <section className="bg-[#F8F0DD] text-[#171513] py-24 px-6 md:px-12 lg:px-24 w-full font-sans antialiased">
-      <div className=" container mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+    <section className="flex w-full items-center justify-center bg-[#FAF6EE] px-6 py-16 font-sans antialiased text-stone-950 md:px-12 md:py-24 lg:px-24">
+      <div className="container mx-auto grid w-full grid-cols-1 items-start gap-8 md:gap-12 lg:grid-cols-12 lg:gap-16">
         
         {/* Left Side: Header Content (Takes 5 Columns) */}
-        <div className="lg:col-span-5 space-y-3 lg:sticky lg:top-12 h-fit text-left">
-          <span className="text-[#3A8B91] text-[10px] font-bold tracking-[0.3em] uppercase block">
+        <div className="mb-4 space-y-4 text-left lg:sticky lg:top-12 lg:col-span-5 lg:mb-0">
+          <span className="block text-xs font-bold uppercase tracking-widest text-[#E96A3D]">
             FREQUENTLY ASKED
           </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-normal tracking-tight text-stone-950 leading-[1.1]">
+          <h2 className="text-3xl font-bold leading-tight tracking-tight md:text-4xl">
             Before you order.
           </h2>
         </div>
 
         {/* Right Side: Interactive Accordion List (Takes 7 Columns) */}
         <motion.div
-          className="lg:col-span-7 border-t border-stone-200/80"
+          className="w-full border-t border-stone-200/70 lg:col-span-7"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.15 }}
@@ -66,26 +80,27 @@ export default function FAQAccordionSection() {
             
             return (
               <motion.div
-                key={index} 
+                key={index}
+                onMouseEnter={() => handleMouseEnter(index)}
                 variants={{
                   hidden: { opacity: 0, y: 16 },
                   visible: { opacity: 1, y: 0 },
                 }}
                 transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                className="border-b border-stone-200/80 transition-colors duration-150"
+                className="border-b border-stone-200/70"
               >
                 {/* Accordion Trigger Header Button */}
                 <button
                   onClick={() => toggleAccordion(index)}
                   aria-expanded={isOpen}
                   aria-controls={`merchandise-faq-answer-${index}`}
-                  className="w-full py-6 md:py-7 flex items-center justify-between text-left group focus:outline-hidden"
+                  className="group flex w-full items-center justify-between py-4.5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E97443]/40 focus-visible:ring-offset-2"
                 >
                   <span
-                    className={`text-base md:text-lg font-normal tracking-tight transition-colors duration-300 ${
+                    className={`pr-4 text-xs font-medium leading-snug tracking-wide transition-colors duration-300 md:text-[16px] ${
                       isOpen
-                        ? "text-[#3A8B91]"
-                        : "text-stone-900 group-hover:text-[#3A8B91]"
+                        ? "text-[#E97443]"
+                        : "text-stone-800 group-hover:text-[#E97443]"
                     }`}
                   >
                     {item.question}
@@ -95,11 +110,11 @@ export default function FAQAccordionSection() {
                   <motion.span
                     animate={{
                       rotate: isOpen ? 45 : 0,
-                      borderColor: isOpen ? "#3A8B91" : "#d6d3d1",
-                      color: isOpen ? "#3A8B91" : "#a8a29e",
+                      borderColor: isOpen ? "#E97443" : "#d6d3d1",
+                      color: isOpen ? "#E97443" : "#a8a29e",
                     }}
                     transition={{ duration: 0.25, ease: "easeOut" }}
-                    className="ml-4 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full border bg-transparent group-hover:border-[#3A8B91] group-hover:text-[#3A8B91]"
+                    className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full border bg-transparent group-hover:border-[#E97443] group-hover:text-[#E97443]"
                   >
                     <Plus aria-hidden="true" size={13} strokeWidth={2} />
                   </motion.span>
@@ -124,7 +139,7 @@ export default function FAQAccordionSection() {
                         initial={{ y: -8 }}
                         animate={{ y: 0 }}
                         exit={{ y: -5 }}
-                        className="text-stone-500 text-xs md:text-[13px] leading-relaxed max-w-xl pb-6 md:pb-8 font-normal tracking-wide"
+                        className="max-w-2xl whitespace-pre-line pb-5 pl-1 text-xs font-normal leading-relaxed text-stone-500 md:text-[13px]"
                       >
                         {item.answer}
                       </motion.p>

@@ -308,9 +308,9 @@ export default function Navbar() {
                   <Link href="/login">
                     <Button
                       size="sm"
-                      className={`text-white font-medium ${
+                      className={`!rounded-none text-white font-medium ${
                         isFortunePage
-                          ? "bg-white/10 hover:bg-white/20"
+                          ? " bg-white/10 hover:bg-white/20"
                           : "bg-primary hover:bg-[#D63E1F]"
                       }`}
                     >
@@ -444,7 +444,7 @@ export default function Navbar() {
                           </>
                         ) : (
                           <Button
-                            className="w-full bg-primary hover:bg-[#D63E1F] text-white"
+                            className="w-full !rounded-none bg-primary hover:bg-[#D63E1F] text-white"
                             asChild
                           >
                             <Link

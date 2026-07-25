@@ -14,3 +14,12 @@ export function getProductPrice(product?: Partial<Product> | null) {
   }
   return { amount: 0, currency: "USD" as const };
 }
+
+export function getProductPreviousPrice(product?: Partial<Product> | null) {
+  const currentPrice = getProductPrice(product);
+  const amount = Number(product?.previousPrice);
+
+  return Number.isFinite(amount) && amount > currentPrice.amount
+    ? { amount, currency: currentPrice.currency }
+    : null;
+}

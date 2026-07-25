@@ -16,7 +16,7 @@ import { useCart } from "@/provider/cart-provider";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getProductPrice } from "@/lib/utils/product-price";
+import { getProductPreviousPrice, getProductPrice } from "@/lib/utils/product-price";
 
 export interface ProductHeroProps {
   product: Product;
@@ -25,6 +25,7 @@ export interface ProductHeroProps {
 const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
   const [quantity, setQuantity] = useState(1);
   const { amount: displayPrice, currency } = getProductPrice(product);
+  const previousPrice = getProductPreviousPrice(product);
   const [isAdding, setIsAdding] = useState(false);
   const [selectColor, setSelectColor] = useState<string | null>(null);
   const [selectSize, setSelectSize] = useState<string | null>(null);
@@ -223,13 +224,18 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
           <h1 className="text-4xl lg:text-[40px] font-bold text-[#111111] mt-4 mb-2 leading-tight">
             {product.productName}
           </h1>
-          <div className="mb-6 text-3xl font-bold text-[#111111]">
-            <span>
+          <div className="mb-6 space-y-1 text-3xl font-bold text-[#111111]">
+            <span className="block">
               ${displayPrice.toFixed(2)}{" "}
               <span className="text-base font-normal text-gray-500">
                 {currency}
               </span>
             </span>
+            {previousPrice && (
+              <span className="block text-lg font-medium text-gray-400 line-through">
+                ${previousPrice.amount.toFixed(2)} <span className="text-base font-normal">{previousPrice.currency}</span>
+              </span>
+            )}
           </div>
 
           {/* Summary / Features */}

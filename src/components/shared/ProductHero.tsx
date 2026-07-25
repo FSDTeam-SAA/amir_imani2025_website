@@ -7,7 +7,7 @@ import Image from "next/image";
 import { Product } from "@/lib/types/ecommerce";
 import { useCart } from "@/provider/cart-provider";
 import { toast } from "sonner";
-import { getProductPrice } from "@/lib/utils/product-price";
+import { getProductPreviousPrice, getProductPrice } from "@/lib/utils/product-price";
 
 interface ProductHeroProps {
   product: Product;
@@ -22,6 +22,11 @@ export default function ProductHero({ product }: ProductHeroProps) {
 
   const { addToCart } = useCart();
   const { amount: displayPrice, currency } = getProductPrice(product);
+  const previousPrice = getProductPreviousPrice(product);
+  const featureHtml = (
+    product.feature ||
+    "A psychological strategy game where every move reveals more about the board — and about you. Every selection you make tells a story."
+  ).replace(/&nbsp;|\u00a0/g, " ");
 
   // Memoized values
   const isMerchandise = useMemo(
@@ -123,7 +128,7 @@ export default function ProductHero({ product }: ProductHeroProps) {
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
         {/* Left Column: Product Details -> Added order-2 lg:order-1 */}
-        <article className="w-full flex flex-col gap-8 lg:col-span-7 lg:self-stretch lg:justify-between lg:gap-0 order-2 lg:order-1">
+        <article className="order-2 flex w-full min-w-0 flex-col gap-8 lg:order-1 lg:col-span-7 lg:self-stretch lg:justify-between lg:gap-0">
           <div>
             {/* Dynamic Product Name as fallback/sub-heading if needed */}
             <h2 className="text-lg font-light text-[#0EA5B8] tracking-tight leading-[1.1] mb-6">
@@ -131,10 +136,12 @@ export default function ProductHero({ product }: ProductHeroProps) {
             </h2>
 
             {/* Features / Description */}
-            <p className="text-base md:text-4xl text-[#4A4A4A] leading-[1.1] max-w-2xl font-light">
-              {product.feature ||
-                "A psychological strategy game where every move reveals more about the board — and about you. Every selection you make tells a story."}
-            </p>
+            <div
+              className="product-feature-content w-full min-w-0 max-w-2xl text-base font-light leading-[1.1] text-[#4A4A4A] md:text-4xl"
+              dangerouslySetInnerHTML={{
+                __html: featureHtml,
+              }}
+            />
 
             <p className="text-base md:text-lg mt-6 text-[#4A4A4A] leading-relaxed max-w-xl font-light">
               {product.gameSubtitle ||
@@ -238,12 +245,21 @@ export default function ProductHero({ product }: ProductHeroProps) {
           {/* Bottom Control Row: Price, Quantity, Add to Cart, Action Link */}
           <div className="flex flex-wrap items-center gap-6 pt-4">
             {/* Terracotta Styled Price */}
-            <p className="text-3xl md:text-4xl font-normal text-[#E96A3D]">
-              ${displayPrice.toFixed(2)}{" "}
-              <span className="text-base font-light tracking-normal text-gray-500">
-                {currency}
-              </span>
-            </p>
+            <div className="space-y-1">
+              <p
+                className="text-3xl md:text-4xl font-normal text-[#E96A3D]"
+              >
+                ${displayPrice.toFixed(2)}{" "}
+                <span className="text-base font-light tracking-normal text-gray-500">
+                  {currency}
+                </span>
+              </p>
+              {previousPrice && (
+                <p className="text-lg font-medium text-gray-500 line-through">
+                  ${previousPrice.amount.toFixed(2)} <span className="text-base font-light">{previousPrice.currency}</span>
+                </p>
+              )}
+            </div>
 
             {/* Quantity Selector Counter */}
             <div className="flex items-center border border-gray-300 !rounded-none bg-white overflow-hidden h-11">
@@ -330,6 +346,7 @@ export default function ProductHero({ product }: ProductHeroProps) {
               </button>
             ))}
           </nav>
+          
         </div>
       </div>
     </section>
