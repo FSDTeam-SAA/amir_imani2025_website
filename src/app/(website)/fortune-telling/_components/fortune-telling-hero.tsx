@@ -34,7 +34,7 @@ export default function FortuneTellingHero() {
           </div>
 
           <h1 className="max-w-[760px] font-serif text-[46px] font-light leading-[0.98] tracking-[-0.04em] text-[#f3e9da] sm:text-[58px] md:text-[68px] lg:text-[78px]">
-            <span className="block">Ask the twelve.</span>
+            <span className="block">Ask the thirteen.</span>
             <span className="mt-1 block italic text-[#dd9448]">
               Choose three.
             </span>

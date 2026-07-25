@@ -2,7 +2,7 @@ import React from "react";
 
 const ShipingPolicy = () => {
   return (
-    <section className="my-10 md:my-16 lg:my-20 w-[95%] mx-auto md:w-full">
+    <section className="py-10 w-[95%] mx-auto md:w-full bg-[#FAF7F0]">
       <div className="container mx-auto px-4 overflow-hidden">
         {/* Header */}
         <div className="text-center mb-12">

@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const PrivacyPolicy = () => {
   return (
-    <section className="my-10 md:my-16 lg:my-20 w-[95%] mx-auto md:w-full">
+    <section className="py-10 w-[95%] mx-auto md:w-full bg-[#FAF7F0]">
       <div className="container mx-auto px-4 overflow-hidden">
         {/* Header */}
         <div className="text-center mb-12">
@@ -359,7 +359,8 @@ const PrivacyPolicy = () => {
                     <li className="flex gap-3">
                       <span className="text-[#6C757D]">•</span>
                       <span className="text-[#6C757D] text-xl leading-[150%] font-normal">
-                        Mailing Address: 7025 Markham Rd, Markham, ON L3S 0C3, Canada
+                        Mailing Address: 7025 Markham Rd, Markham, ON L3S 0C3,
+                        Canada
                       </span>
                     </li>
                   </ul>
