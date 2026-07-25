@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Cinzel_Decorative } from "next/font/google";
 import { Menu, LogOut, Search, ShoppingCart, User2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -31,31 +30,26 @@ const navigationItems = [
   { name: "Contact", href: "/contact" },
 ];
 
-const fortuneWordmarkFont = Cinzel_Decorative({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-});
-
 function renderNavLabel(name: string, isFortunePage: boolean) {
   if (name !== "Fortune Telling") {
     return name;
   }
 
   return (
-    <span className="relative inline-flex flex-col items-center leading-[0.88]">
+    <span className="inline-flex items-center gap-0.5 leading-none">
       <span
-        className={`${fortuneWordmarkFont.className} bg-[linear-gradient(135deg,#6AD9E5_0%,#0EA5B8_42%,#F04D2A_100%)] bg-clip-text text-[0.98em] font-bold uppercase tracking-[0.14em] text-transparent drop-shadow-[0_4px_12px_rgba(14,29,43,0.22)] ${
+        className={`bg-[linear-gradient(135deg,#6AD9E5_0%,#0EA5B8_42%,#F04D2A_100%)] bg-clip-text text-transparent font-medium ${
           isFortunePage
-            ? "[text-shadow:0_0_18px_rgba(14,165,184,0.16)]"
+            ? "[text-shadow:0_0_24px_rgba(14,165,184,0.4),0_0_60px_rgba(240,77,42,0.2)]"
             : "[text-shadow:0_0_14px_rgba(14,165,184,0.1)]"
         }`}
       >
         Fortune
       </span>
       <span
-        className={`${fortuneWordmarkFont.className} -mt-0.5 bg-[linear-gradient(135deg,#F04D2A_0%,#0EA5B8_58%,#6AD9E5_100%)] bg-clip-text text-[0.9em] font-bold uppercase tracking-[0.2em] text-transparent drop-shadow-[0_4px_12px_rgba(14,29,43,0.22)] ${
+        className={`bg-[linear-gradient(135deg,#F04D2A_0%,#0EA5B8_58%,#6AD9E5_100%)] bg-clip-text text-transparent font-medium ${
           isFortunePage
-            ? "[text-shadow:0_0_18px_rgba(240,77,42,0.14)]"
+            ? "[text-shadow:0_0_24px_rgba(240,77,42,0.4),0_0_60px_rgba(14,165,184,0.2)]"
             : "[text-shadow:0_0_14px_rgba(240,77,42,0.08)]"
         }`}
       >
@@ -90,6 +84,7 @@ export default function Navbar() {
       `${profile.firstName || ""} ${profile.lastName || ""}`.trim() || "User"
     );
   };
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 1024) {
@@ -102,6 +97,7 @@ export default function Navbar() {
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
   return (
     <header className="fixed top-0 z-50 w-full animate-in fade-in duration-500">
       <div
@@ -154,7 +150,7 @@ export default function Navbar() {
                         : isFortunePage
                           ? "text-white/80"
                           : "text-[#0E1D2B]"
-                    } px-3 py-2 text-sm 2xl:text-base rounded-lg transition-all duration-200 ${
+                    } px-3 py-2 text-sm 2xl:text-base rounded-lg transition-all duration-200 whitespace-nowrap ${
                       isFortunePage
                         ? "hover:bg-white/10 hover:text-white"
                         : "hover:text-primary hover:bg-white/30"
@@ -346,25 +342,6 @@ export default function Navbar() {
                     className={`w-[85vw] sm:w-[400px] p-0 `}
                   >
                     <div className="flex flex-col h-full">
-                      {/* Mobile Header */}
-                      {/* <div className="flex items-center justify-between p-6 border-b">
-                        <Image
-                          src="/logo.svg"
-                          alt="Logo"
-                          width={150}
-                          height={40}
-                          className="h-10 w-auto"
-                        />
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => setIsOpen(false)}
-                          aria-label="Close menu"
-                        >
-                          <X className="h-5 w-5" />
-                        </Button>
-                      </div> */}
-
                       {/* User info section for mobile */}
                       {status === "authenticated" && session && (
                         <div className="p-6 bg-gradient-to-r from-primary/10 to-transparent border-b">
