@@ -13,6 +13,7 @@ import BoardAnatomySection from "../_components/BoardAnatomySection";
 import PressReactionsSection from "../_components/PressReactionsSection";
 import MaterialsSection from "../_components/MaterialsSection";
 import InTheBoxSection from "../_components/InTheBoxSection";
+import ProductReviewsSection from "../../merchandise/_Components/product-reviews-section";
 // import MaterialsSection from "../_components/MaterialsSection";
 
 export default function ProductPage() {
@@ -59,8 +60,6 @@ export default function ProductPage() {
     );
   }
 
-
-
   const shouldShowCardSections = product.productType === "card";
 
   return (
@@ -96,10 +95,10 @@ export default function ProductPage() {
           videoLink={product.videoLink}
         />
 
-       <InTheBoxSection product={product} />
-        
+        <InTheBoxSection product={product} />
+
         <ProductDetails product={product} />
-        
+
         {shouldShowCardSections && (
           <PressReactionsSection
             title={product.passandplayTittle}
@@ -108,6 +107,8 @@ export default function ProductPage() {
             )}
           />
         )}
+
+        <ProductReviewsSection productId={product._id} />
       </main>
     </div>
   );
