@@ -197,7 +197,7 @@ thunder. Own it.`,
     number: "No. 13 / 13",
     description: `Zigi ignores the rules of the other symbols. He appears when things become too certain or controlled. His shape is playful, restless, and unpredictable. He changes direction, breaks patterns, and hides inside distraction.
 Pulling Zigi means the circle has shifted. A plan may fail, but something hidden may finally appear.`,
-    iconImage: "/shapes/zigi.svg",
+    iconImage: "/shapes/zigi.png",
     cardImage: "/card/Cards-13.jpg",
     color: "#795548",
   },

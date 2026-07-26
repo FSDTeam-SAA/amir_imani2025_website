@@ -120,7 +120,7 @@ const CARDS_DATA: CardData[] = [
     symbol: "Ziggy",
     name: "Ziggy",
     title: "Veil",
-    imageSrc: "/shapes/zigi.svg",
+    imageSrc: "/shapes/zigi.png",
   },
 ];
 
