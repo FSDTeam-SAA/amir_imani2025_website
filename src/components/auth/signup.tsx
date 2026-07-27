@@ -102,11 +102,7 @@ const Signup = () => {
   }
 
   return (
-    <section
-      className="min-h-screen w-full flex items-center justify-center 
-  bg-[linear-gradient(0deg,rgba(212,161,50,phoneNum0.90)_0%,rgba(212,161,50,0.90)_100%),url('/bg.png')] 
-  bg-cover bg-center bg-no-repeat bg-lightgray flex-col gap-5 px-4 py-8"
-    >
+    <section className="min-h-screen w-full flex items-center justify-center bg-white flex-col gap-5 px-4 py-8">
       {/* Logo */}
       <div className="flex justify-center mb-2">
         <Image
@@ -118,7 +114,7 @@ const Signup = () => {
         />
       </div>
 
-      <div className="w-full max-w-[450px] bg-white rounded-xl shadow-lg p-8 lg:p-10">
+      <div className="w-full max-w-[600px] rounded-xl border border-gray-100 bg-white p-8 shadow-[0_18px_45px_rgba(17,17,17,0.10)] lg:p-10">
         <h2 className="text-2xl font-semibold text-center mb-8">
           Create Your Account
         </h2>

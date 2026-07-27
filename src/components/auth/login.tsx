@@ -86,7 +86,7 @@ const Login = () => {
       </div>
 
       {/* Wider container with responsive max-width */}
-      <div className="w-full max-w-[450px] bg-white rounded-xl shadow-lg p-8 lg:p-10">
+      <div className="w-full max-w-[500px] rounded-xl border border-gray-100 bg-white p-8 shadow-[0_18px_45px_rgba(17,17,17,0.10)] lg:p-10">
         <h2 className="text-2xl font-semibold text-center mb-1">Welcome!</h2>
 
         {/* Form */}
