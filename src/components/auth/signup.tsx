@@ -103,9 +103,9 @@ const Signup = () => {
 
   return (
     <section
-      className="min-h-screen flex items-center justify-center 
+      className="min-h-screen w-full flex items-center justify-center 
   bg-[linear-gradient(0deg,rgba(212,161,50,phoneNum0.90)_0%,rgba(212,161,50,0.90)_100%),url('/bg.png')] 
-  bg-cover bg-center bg-no-repeat bg-lightgray flex-col gap-5 py-8"
+  bg-cover bg-center bg-no-repeat bg-lightgray flex-col gap-5 px-4 py-8"
     >
       {/* Logo */}
       <div className="flex justify-center mb-2">
@@ -118,13 +118,10 @@ const Signup = () => {
         />
       </div>
 
-      <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
-        <h2 className="text-2xl font-semibold text-center mb-1">
+      <div className="w-full max-w-[450px] bg-white rounded-xl shadow-lg p-8 lg:p-10">
+        <h2 className="text-2xl font-semibold text-center mb-8">
           Create Your Account
         </h2>
-        <p className="text-gray-500 text-center mb-6">
-          Create your account to start booking, hosting, and sharing kitchens
-        </p>
 
         {/* Error */}
         {error && (
