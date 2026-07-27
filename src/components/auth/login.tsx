@@ -72,8 +72,7 @@ const Login = () => {
   };
 
   return (
-    <section
-      className="min-h-screen flex items-center justify-center flex-col gap-5">
+    <section className="min-h-screen w-full flex items-center justify-center flex-col gap-5 px-4">
       {/* Logo */}
       <div className="flex justify-center mb-4">
         <Image
@@ -85,28 +84,30 @@ const Login = () => {
           priority
         />
       </div>
-      <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
+
+      {/* Wider container with responsive max-width */}
+      <div className="w-full max-w-[450px] bg-white rounded-xl shadow-lg p-8 lg:p-10">
         <h2 className="text-2xl font-semibold text-center mb-1">Welcome!</h2>
-        <p className="text-gray-500 text-center mb-6">
-          Manage your orders, track shipments, and configure products easily.
-        </p>
 
         {/* Form */}
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-4 w-full"
+          >
             {/* Email */}
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel className="text-base">Email</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="hello@example.com"
                       {...field}
                       disabled={isLoading}
-                      className=" placeholder:text-gray-400"
+                      className="placeholder:text-gray-400 w-full h-12 text-base px-4"
                     />
                   </FormControl>
                   <FormMessage />
@@ -120,7 +121,7 @@ const Login = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel className="text-base">Password</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Input
@@ -128,18 +129,18 @@ const Login = () => {
                         {...field}
                         disabled={isLoading}
                         placeholder="Enter Your password"
-                        className=" placeholder:text-gray-400"
+                        className="placeholder:text-gray-400 w-full h-12 text-base px-4"
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-2.5 text-gray-500"
+                        className="absolute right-4 top-3.5 text-gray-500 hover:text-gray-700 transition-colors"
                         disabled={isLoading}
                       >
                         {showPassword ? (
-                          <EyeOff size={18} />
+                          <EyeOff size={20} />
                         ) : (
-                          <Eye size={18} />
+                          <Eye size={20} />
                         )}
                       </button>
                     </div>
@@ -162,17 +163,17 @@ const Login = () => {
                         onCheckedChange={field.onChange}
                         disabled={isLoading}
                         className="
-            border-gray-400
-            checked:bg-blue-600
-          
-            text-white
-            focus:ring-2
-            focus:ring-blue-400
-            transition-colors
-          "
+                          border-gray-400
+                          checked:bg-blue-600
+                          text-white
+                          focus:ring-2
+                          focus:ring-blue-400
+                          transition-colors
+                          w-5 h-5
+                        "
                       />
                     </FormControl>
-                    <FormLabel className="text-sm font-normal cursor-pointer">
+                    <FormLabel className="text-base font-normal cursor-pointer">
                       Remember me
                     </FormLabel>
                   </FormItem>
@@ -181,7 +182,7 @@ const Login = () => {
 
               <Link
                 href="/forget-password"
-                className="text-sm font-medium text-orange-500 hover:text-orange-700 cursor-pointer transition-colors"
+                className="text-base font-medium text-orange-500 hover:text-orange-700 cursor-pointer transition-colors"
               >
                 Forgot Password
               </Link>
@@ -191,18 +192,18 @@ const Login = () => {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full rounded-2xl bg-black hover:bg-gray-800"
+              className="w-full rounded-2xl bg-black hover:bg-gray-800 h-12 text-base"
             >
               {isLoading ? "Signing in..." : "Sign In"}
             </Button>
           </form>
         </Form>
 
-        <p className="text-sm text-gray-500 mt-4 text-center">
+        <p className="text-base text-gray-500 mt-4 text-center">
           Don&apos;t have an account?{" "}
           <Link
             href="/signup"
-            className="text-orange-500 hover:text-orange-700 cursor-pointer"
+            className="text-orange-500 hover:text-orange-700 cursor-pointer font-medium"
           >
             Sign Up
           </Link>

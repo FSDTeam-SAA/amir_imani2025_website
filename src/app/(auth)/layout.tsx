@@ -15,7 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <div
-      className="min-h-screen flex items-center justify-center flex-col gap-5 bg-cover bg-center bg-no-repeat"
+      className="min-h-screen w-full flex items-center justify-center flex-col gap-5 bg-cover bg-center bg-no-repeat"
       style={{
         backgroundImage: "url('/login.jpg')",
       }}
