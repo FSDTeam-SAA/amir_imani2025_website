@@ -205,25 +205,25 @@ const Signup = () => {
             />
 
             {/* Gender */}
-            <FormField
+             <FormField
               control={form.control}
               name="gender"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Gender</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
+                    <FormControl  className="w-full">
                       <SelectTrigger>
                         <SelectValue
                           placeholder="Select your gender"
-                          className=" placeholder:text-gray-400"
+                          className=" placeholder:text-gray-400  "
                         />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       <SelectItem value="Male">Male</SelectItem>
                       <SelectItem value="Female">Female</SelectItem>
-                      <SelectItem value="Other">Other</SelectItem>
+                      {/* <SelectItem value="Other">Other</SelectItem> */}
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -303,7 +303,7 @@ const Signup = () => {
             <Button
               type="submit"
               disabled={isPending}
-              className="w-full rounded-full bg-black hover:bg-gray-800 text-white font-semibold py-2.5 mt-2"
+              className="w-full !rounded-none bg-black hover:bg-gray-800 text-white font-semibold py-2.5 mt-2"
             >
               {isPending ? "Creating Account..." : "Sign Up"}
             </Button>
@@ -314,7 +314,7 @@ const Signup = () => {
         <p className="text-sm text-gray-500 mt-6 text-center">
           Already have an account?{" "}
           <span
-            className="text-orange-500 hover:text-orange-600 cursor-pointer font-medium transition-colors"
+            className="text-orange-500 hover:text-orange-600 cursor-pointer  font-medium transition-colors"
             onClick={() => router.push("/login")}
           >
             Sign in

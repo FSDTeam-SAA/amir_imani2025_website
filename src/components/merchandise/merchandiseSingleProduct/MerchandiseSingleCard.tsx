@@ -17,6 +17,11 @@ import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getProductPreviousPrice, getProductPrice } from "@/lib/utils/product-price";
+import {
+  hasPreorderedProduct,
+  preorderService,
+  rememberPreorderedProduct,
+} from "@/lib/api/preorder-service";
 
 export interface ProductHeroProps {
   product: Product;
@@ -27,6 +32,9 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
   const { amount: displayPrice, currency } = getProductPrice(product);
   const previousPrice = getProductPreviousPrice(product);
   const [isAdding, setIsAdding] = useState(false);
+  const [hasPreordered, setHasPreordered] = useState(() =>
+    hasPreorderedProduct(product._id),
+  );
   const [selectColor, setSelectColor] = useState<string | null>(null);
   const [selectSize, setSelectSize] = useState<string | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(
@@ -83,6 +91,25 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
   const { data: session } = useSession();
 
   const handleAddToCart = async () => {
+    if (product.isPreOrder) {
+      setIsAdding(true);
+      try {
+        await preorderService.create(product._id);
+        rememberPreorderedProduct(product._id);
+        setHasPreordered(true);
+        toast.success(`${product.productName} pre-order submitted successfully!`);
+      } catch (error: unknown) {
+        const message =
+          typeof error === "object" && error && "response" in error
+            ? (error as { response?: { data?: { message?: string } } }).response?.data?.message
+            : undefined;
+        toast.error(message || "Unable to submit pre-order. Please try again.");
+      } finally {
+        setIsAdding(false);
+      }
+      return;
+    }
+
     setIsAdding(true);
 
     if (
@@ -118,9 +145,11 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
         ],
         session?.user?.id,
       );
-      toast.success(`${product.productName} added to cart for pre-order!`);
+      toast.success(
+        `${product.productName} ${product.isPreOrder ? "pre-order added to cart" : "added to cart"}!`,
+      );
     } catch (error) {
-      toast.error("Failed to add to cart for pre-order. Please try again.");
+      toast.error("Failed to add to cart. Please try again.");
       console.error("Add to cart error:", error);
     } finally {
       setIsAdding(false);
@@ -353,10 +382,10 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
             {/* CTA Button */}
             <Button
               onClick={handleAddToCart}
-              disabled={isAdding}
+              disabled={isAdding || (product.isPreOrder && hasPreordered)}
               className="w-full h-14 !rounded-none bg-[#4296a1] hover:bg-[#4296a1]/85 text-white  text-base "
             >
-              {isAdding ? "Adding..." : "Pre-Order"} <ShoppingCart />
+              {isAdding ? "Adding..." : product.isPreOrder ? hasPreordered ? "Already pre-ordered" : "Pre-Order" : "Add to Cart"} <ShoppingCart />
             </Button>
 
             {product.productFeatures && product?.productFeatures?.length > 0 && (

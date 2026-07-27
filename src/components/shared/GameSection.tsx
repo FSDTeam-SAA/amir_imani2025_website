@@ -103,6 +103,7 @@ export default function GameSection() {
                 Explore the Game
                 <MoveRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
               </span>
+              
             </div>
           </Link>
 
