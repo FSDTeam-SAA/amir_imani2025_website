@@ -63,14 +63,14 @@ const CARDS_DATA: CardData[] = [
     id: "gaia",
     symbol: "GAIA",
     name: "Gaia",
-    title: "Earth",
+    title: "",
     imageSrc: "/shapes/gaia.svg",
   },
   {
     id: "hera",
     symbol: "HERA",
     name: "Hera",
-    title: "Prize",
+    title: "",
     imageSrc: "/shapes/hera.svg",
   },
   {
@@ -112,7 +112,7 @@ const CARDS_DATA: CardData[] = [
     id: "titan",
     symbol: "TITAN",
     name: "Titan",
-    title: "Trace",
+    title: "",
     imageSrc: "/shapes/titan.svg",
   },
   {
@@ -356,13 +356,13 @@ export default function TheReading() {
         viewport={{ once: true, amount: 0.2 }}
       >
         <motion.div className="space-y-3 !mb-24" variants={itemVariants}>
-          <span className="block text-[9px] uppercase tracking-[0.26em] text-[#c9803d]">
+          <span className="block text-[11px] uppercase tracking-[0.26em] text-[#c9803d]">
             — the reading —
           </span>
-          <h2 className="font-serif text-[44px] font-light leading-none tracking-[-0.04em] text-[#f3e9da] sm:text-[56px]">
+          <h2 className="font-serif text-[48px] font-light leading-none tracking-[-0.04em] text-[#f3e9da] sm:text-[62px]">
             The circle is open.
           </h2>
-          <p className="max-w-[460px] text-[14px] leading-[1.8] text-[#a7b2ae]">
+          <p className="max-w-[520px] text-[16px] leading-[1.8] text-[#a7b2ae]">
             Choose three symbols. Your first reflects the past. Your second
             reveals the present. Your third points toward what comes next.
           </p>
@@ -385,11 +385,11 @@ export default function TheReading() {
 
               <div className="relative z-10 flex flex-col gap-4 border-b border-[#243336] pb-5 sm:flex-row sm:items-start sm:justify-between">
                 <div>
-                  <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.22em] text-[#c9803d]">
-                    <Sparkles className="h-4 w-4" />
+                  <div className="flex items-center gap-2 text-[12px] uppercase tracking-[0.22em] text-[#c9803d]">
+                    <Sparkles className="h-5 w-5" />
                     <span>Revealed fortune</span>
                   </div>
-                  <p className="mt-3 text-[13px] leading-6 text-[#a0acab]">
+                  <p className="mt-3 text-[15px] leading-7 text-[#a0acab]">
                     {displayedFortune
                       ? `${displayedFortune.symbols.join(" • ")} • ${formatFortuneDate(displayedFortune.createdAt)}`
                       : "Your omen is loading."}
@@ -401,7 +401,7 @@ export default function TheReading() {
                   whileHover={{ y: -2, scale: 1.01 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={openHistory}
-                  className="rounded-[2px] border border-[#4f5d5e] px-4 py-2.5 text-[10px] uppercase tracking-[0.14em] text-[#ced4ce] transition-colors hover:border-[#68777a]"
+                  className="rounded-[2px] border border-[#4f5d5e] px-4 py-2.5 text-[11px] uppercase tracking-[0.14em] text-[#ced4ce] transition-colors hover:border-[#68777a]"
                 >
                   View history
                 </motion.button>
@@ -413,11 +413,11 @@ export default function TheReading() {
                     key={`${card.id}-${index}`}
                     className="group flex min-h-[152px] flex-col justify-center rounded-[2px] border border-[#f0a95d] bg-[linear-gradient(180deg,rgba(58,35,24,0.98),rgba(44,26,18,0.98))] px-4 py-4 text-center shadow-[0_0_0_1px_rgba(240,169,93,0.18)]"
                   >
-                    <p className="text-[9px] uppercase tracking-[0.22em] text-[#738381]">
+                    <p className="text-[11px] uppercase tracking-[0.22em] text-[#738381]">
                       {index === 0 ? "past" : index === 1 ? "present" : "path"}
                     </p>
                     <div className="mt-4 flex flex-col items-center gap-3">
-                      <div className="relative flex h-[54px] w-[54px] items-center justify-center sm:h-[60px] sm:w-[60px]">
+                      <div className="relative flex h-[62px] w-[62px] items-center justify-center sm:h-[72px] sm:w-[72px]">
                         <Image
                           src={card.imageSrc}
                           alt={card.name}
@@ -427,13 +427,13 @@ export default function TheReading() {
                         />
                       </div>
                       <div>
-                        <p className="font-serif text-[18px] text-[#efe4d4]">
+                        <p className="font-serif text-[21px] text-[#efe4d4]">
                           {card.name}
                         </p>
-                        <p className="mt-1 text-[10px] tracking-[0.18em] text-[#c8a07b]">
+                        <p className="mt-1 text-[11px] tracking-[0.18em] text-[#c8a07b]">
                           {card.title}
                         </p>
-                        <p className="mt-2 text-[10px] uppercase tracking-[0.18em] text-[#ad8f73]">
+                        <p className="mt-2 text-[11px] uppercase tracking-[0.18em] text-[#ad8f73]">
                           {card.symbol}
                         </p>
                       </div>
@@ -456,8 +456,8 @@ export default function TheReading() {
                         key={`${displayedFortune.createdAt}-${index}`}
                         className={`leading-7 ${
                           index === 0
-                            ? "font-serif text-[24px] text-[#dd9448]"
-                            : "text-[14px] text-[#cdd5cf]"
+                            ? "font-serif text-[28px] text-[#dd9448]"
+                            : "text-[16px] leading-8 text-[#cdd5cf]"
                         }`}
                       >
                         {paragraph.trim()}
@@ -511,12 +511,12 @@ export default function TheReading() {
                   transition={{ duration: 0.3, ease: EASE_OUT }}
                 >
                   {revealMutation.isPending ? (
-                    <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.24em] text-[#d7a167]">
-                      <LoaderCircle className="h-4 w-4 animate-spin" />
+                    <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-[#d7a167]">
+                      <LoaderCircle className="h-5 w-5 animate-spin" />
                       <span>Revealing your reading</span>
                     </div>
                   ) : (
-                    <p className="text-[10px] uppercase tracking-[0.24em] text-[#7d8a88]">
+                    <p className="text-[11px] uppercase tracking-[0.24em] text-[#7d8a88]">
                       {selectedCards.length === 0
                         ? "Choose any three cards"
                         : `${selectedCards.length} of 3 cards chosen`}
@@ -602,14 +602,14 @@ export default function TheReading() {
                                       key={starIndex}
                                       className={
                                         starIndex % 2 === 0
-                                          ? "h-[14px] w-[14px]"
-                                          : "h-[10px] w-[10px]"
+                                          ? "h-[16px] w-[16px]"
+                                          : "h-[12px] w-[12px]"
                                       }
                                     />
                                   ),
                                 )}
                               </div>
-                              <p className="mt-4 text-[8px] uppercase tracking-[0.28em] text-[#b68560]">
+                              <p className="mt-4 text-[9px] uppercase tracking-[0.28em] text-[#b68560]">
                                 Tap to reveal
                               </p>
                             </div>
@@ -621,7 +621,7 @@ export default function TheReading() {
                                 transform: "rotateY(180deg)",
                               }}
                             >
-                              <div className="relative flex h-[42px] w-[42px] items-center justify-center sm:h-[72px] sm:w-[72px]">
+                              <div className="relative flex h-[48px] w-[48px] items-center justify-center sm:h-[78px] sm:w-[78px]">
                                 <Image
                                   src={card.imageSrc}
                                   alt={card.name}
@@ -644,11 +644,11 @@ export default function TheReading() {
                                 }}
                                 className="mt-2 sm:mt-3"
                               >
-                                <h3 className="font-serif text-[11px] leading-none tracking-[0.01em] text-[#fff3e3] sm:text-[13px]">
+                                <h3 className="font-serif text-[12px] leading-none tracking-[0.01em] text-[#fff3e3] sm:text-[15px]">
                                   {card.name}
                                 </h3>
 
-                                <span className="mt-1 block text-[7px] tracking-[0.14em] text-[#c8a07b] sm:text-[8px] sm:tracking-[0.18em]">
+                                <span className="mt-1 block text-[8px] tracking-[0.14em] text-[#c8a07b] sm:text-[9px] sm:tracking-[0.18em]">
                                   {card.title}
                                 </span>
                               </motion.div>
@@ -668,10 +668,10 @@ export default function TheReading() {
       <Dialog open={isAuthDialogOpen} onOpenChange={setIsAuthDialogOpen}>
         <DialogContent className="border border-[#2b383a] bg-[#0f191c] text-[#efe4d4] sm:max-w-[460px]">
           <DialogHeader>
-            <DialogTitle className="font-serif text-[30px] font-light text-[#efe4d4]">
+            <DialogTitle className="font-serif text-[34px] font-light text-[#efe4d4]">
               Login to reveal your fortune
             </DialogTitle>
-            <DialogDescription className="text-[13px] leading-6 text-[#9daba8]">
+            <DialogDescription className="text-[15px] leading-7 text-[#9daba8]">
               The backend saves one reading per day for each user, so this API
               flow needs your account token before it can reveal or load
               history.
@@ -682,13 +682,13 @@ export default function TheReading() {
             <button
               type="button"
               onClick={() => router.push("/login")}
-              className="rounded-[2px] border border-[#e2974b] bg-[#e2974b] px-4 py-2.5 text-[10px] uppercase tracking-[0.14em] text-[#1b1713]"
+              className="rounded-[2px] border border-[#e2974b] bg-[#e2974b] px-4 py-2.5 text-[11px] uppercase tracking-[0.14em] text-[#1b1713]"
             >
               Go to login
             </button>
             <Link
               href="/signup"
-              className="rounded-[2px] border border-[#4f5d5e] px-4 py-2.5 text-[10px] uppercase tracking-[0.14em] text-[#ced4ce]"
+              className="rounded-[2px] border border-[#4f5d5e] px-4 py-2.5 text-[11px] uppercase tracking-[0.14em] text-[#ced4ce]"
             >
               Create account
             </Link>
@@ -699,18 +699,18 @@ export default function TheReading() {
       <Dialog open={isHistoryDialogOpen} onOpenChange={setIsHistoryDialogOpen}>
         <DialogContent className="border border-[#2b383a] bg-[#0f191c] text-[#efe4d4] sm:max-w-[780px]">
           <DialogHeader>
-            <DialogTitle className="font-serif text-[30px] font-light text-[#efe4d4]">
+            <DialogTitle className="font-serif text-[34px] font-light text-[#efe4d4]">
               Your Fortune History
             </DialogTitle>
-            <DialogDescription className="text-[13px] leading-6 text-[#9daba8]">
+            <DialogDescription className="text-[15px] leading-7 text-[#9daba8]">
               Every revealed reading saved by `/fortune-telling/my-history`.
             </DialogDescription>
           </DialogHeader>
 
           <div className="max-h-[60vh] space-y-3 overflow-y-auto pr-2">
             {historyQuery.isLoading ? (
-              <div className="flex items-center gap-2 text-[13px] text-[#9daba8]">
-                <LoaderCircle className="h-4 w-4 animate-spin" />
+              <div className="flex items-center gap-2 text-[15px] text-[#9daba8]">
+                <LoaderCircle className="h-5 w-5 animate-spin" />
                 Loading your history...
               </div>
             ) : history.length ? (
@@ -725,21 +725,21 @@ export default function TheReading() {
                   className="w-full border border-[#233033] bg-[#151f22]/85 p-4 text-left transition-colors hover:border-[#355056]"
                 >
                   <div className="flex flex-wrap items-center justify-between gap-3">
-                    <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-[#c9803d]">
-                      <ScrollText className="h-3.5 w-3.5" />
+                    <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-[#c9803d]">
+                      <ScrollText className="h-4.5 w-4.5" />
                       <span>{entry.symbols.join(" • ")}</span>
                     </div>
-                    <span className="text-[11px] text-[#7c8a89]">
+                    <span className="text-[12px] text-[#7c8a89]">
                       {formatFortuneDate(entry.createdAt)}
                     </span>
                   </div>
-                  <p className="mt-3 line-clamp-3 text-[13px] leading-6 text-[#cdd5cf]">
+                  <p className="mt-3 line-clamp-3 text-[15px] leading-7 text-[#cdd5cf]">
                     {entry.fortune}
                   </p>
                 </button>
               ))
             ) : (
-              <div className="border border-dashed border-[#2a3335] p-5 text-[13px] leading-6 text-[#9daba8]">
+              <div className="border border-dashed border-[#2a3335] p-5 text-[15px] leading-7 text-[#9daba8]">
                 No saved fortunes yet. Choose three cards and reveal your first
                 reading.
               </div>
