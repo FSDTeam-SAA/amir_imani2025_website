@@ -8,6 +8,11 @@ import { Product } from "@/lib/types/ecommerce";
 import { useCart } from "@/provider/cart-provider";
 import { toast } from "sonner";
 import { getProductPreviousPrice, getProductPrice } from "@/lib/utils/product-price";
+import {
+  hasPreorderedProduct,
+  preorderService,
+  rememberPreorderedProduct,
+} from "@/lib/api/preorder-service";
 
 interface ProductHeroProps {
   product: Product;
@@ -16,6 +21,9 @@ interface ProductHeroProps {
 export default function ProductHero({ product }: ProductHeroProps) {
   const [quantity, setQuantity] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
+  const [hasPreordered, setHasPreordered] = useState(() =>
+    hasPreorderedProduct(product._id),
+  );
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
@@ -91,6 +99,25 @@ export default function ProductHero({ product }: ProductHeroProps) {
   }, [isMerchandise, hasSizes, hasColors, selectedSize, selectedColor]);
 
   const handleAddToCart = useCallback(async () => {
+    if (product.isPreOrder) {
+      setIsAdding(true);
+      try {
+        await preorderService.create(product._id);
+        rememberPreorderedProduct(product._id);
+        setHasPreordered(true);
+        toast.success(`${product.productName} pre-order submitted successfully!`);
+      } catch (error: unknown) {
+        const message =
+          typeof error === "object" && error && "response" in error
+            ? (error as { response?: { data?: { message?: string } } }).response?.data?.message
+            : undefined;
+        toast.error(message || "Unable to submit pre-order. Please try again.");
+      } finally {
+        setIsAdding(false);
+      }
+      return;
+    }
+
     if (!validateSelection()) return;
 
     setIsAdding(true);
@@ -105,7 +132,9 @@ export default function ProductHero({ product }: ProductHeroProps) {
           product,
         },
       ]);
-      toast.success(`${product.productName} added to cart for Pre Order!`);
+      toast.success(
+        `${product.productName} ${product.isPreOrder ? "pre-order added to cart" : "added to cart"}!`,
+      );
     } catch (error) {
       toast.error("Failed to add to cart. Please try again.");
       console.error("Add to cart error:", error);
@@ -285,10 +314,10 @@ export default function ProductHero({ product }: ProductHeroProps) {
             {/* Pill Shape Terracotta Button */}
             <Button
               onClick={handleAddToCart}
-              disabled={isAdding}
+              disabled={isAdding || (product.isPreOrder && hasPreordered)}
               className="px-8 h-11 bg-[#E96A3D] hover:bg-[#9C523D] !rounded-none text-white text-xs font-medium uppercase tracking-wider transition-all transform active:scale-[0.98] disabled:opacity-50"
             >
-              {isAdding ? "Adding..." : "Add to Cart"}
+              {isAdding ? "Adding..." : product.isPreOrder ? hasPreordered ? "Already pre-ordered" : "Pre-order" : "Add to Cart"}
             </Button>
 
             {/* How To Play Arrow Link */}

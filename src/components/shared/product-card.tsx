@@ -5,6 +5,12 @@ import { Product } from "@/lib/types/ecommerce";
 import Image from "next/image";
 import Link from "next/link";
 import { getProductPreviousPrice, getProductPrice } from "@/lib/utils/product-price";
+import {
+  hasPreorderedProduct,
+  preorderService,
+  rememberPreorderedProduct,
+} from "@/lib/api/preorder-service";
+import { toast } from "sonner";
 
 interface ProductCardProps {
   product: Product;
@@ -22,6 +28,10 @@ export default function ProductCard({
   addingToCartId,
 }: ProductCardProps) {
   const isAddingToCart = addingToCartId === product?._id;
+  const [isSubmittingPreorder, setIsSubmittingPreorder] = React.useState(false);
+  const [hasPreordered, setHasPreordered] = React.useState(() =>
+    hasPreorderedProduct(product._id),
+  );
   const productPrice = getProductPrice(product);
   const previousPrice = getProductPreviousPrice(product);
   const badgeLabels = {
@@ -36,6 +46,27 @@ export default function ProductCard({
     product.merchandiseBadge !== "none"
       ? badgeLabels[product.merchandiseBadge]
       : null;
+
+  const handlePreorder = async (event: React.MouseEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    setIsSubmittingPreorder(true);
+    try {
+      await preorderService.create(product._id);
+      rememberPreorderedProduct(product._id);
+      setHasPreordered(true);
+      toast.success(`${product.productName} pre-order submitted successfully!`);
+    } catch (error: unknown) {
+      const message =
+        typeof error === "object" && error && "response" in error
+          ? (error as { response?: { data?: { message?: string } } }).response?.data?.message
+          : undefined;
+      toast.error(message || "Unable to submit pre-order. Please try again.");
+    } finally {
+      setIsSubmittingPreorder(false);
+    }
+  };
 
   return (
     <Link
@@ -91,23 +122,18 @@ export default function ProductCard({
             <Button
               variant="secondary"
               className="flex-1 !rounded-none hover:bg-amber-100 bg-white border text-primary-foreground font-semibold"
-              onClick={(e) => handleAddToCart(e, product)}
-              disabled={isAddingToCart}
+              onClick={(e) =>
+                product.isPreOrder ? handlePreorder(e) : handleAddToCart(e, product)
+              }
+              disabled={product.isPreOrder ? isSubmittingPreorder || hasPreordered : isAddingToCart}
             >
-              {isAddingToCart ? (
+              {isAddingToCart || isSubmittingPreorder ? (
                 "..."
               ) : (
                 <>
-                  <ShoppingCart className="w-4 h-4 mr-2" /> Add to Cart
+                  <ShoppingCart className="w-4 h-4 mr-2" /> {product.isPreOrder ? hasPreordered ? "Already pre-ordered" : "Pre-order" : "Add to Cart"}
                 </>
               )}
-            </Button>
-            <Button
-              className="flex-1 !rounded-none bg-primary hover:bg-primary/80 text-white font-semibold"
-              onClick={(e) => handleAddToCart(e, product, true)}
-              disabled={addingToCartId === product?._id}
-            >
-              Pre-order
             </Button>
           </div>
         </div>

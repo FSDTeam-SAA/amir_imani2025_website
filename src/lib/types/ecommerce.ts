@@ -24,6 +24,7 @@ export interface Product {
   description: string;
   gameSubtitle:string;
   addHome?: boolean;
+  isPreOrder?: boolean;
   players?: string
   cards?:string
   age?:string
