@@ -18,14 +18,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -33,7 +25,7 @@ const formSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
   email: z.string().email("Invalid email"),
-  gender: z.string().min(1, "Gender is required"),
+  // gender: z.string().min(1, "Gender is required"),
   password: z.string().min(6, "Password must be at least 6 characters"),
   age: z.string().optional(),
   address: z.string().optional(),
@@ -56,7 +48,7 @@ const Signup = () => {
       firstName: "",
       lastName: "",
       email: "",
-      gender: "",
+      // gender: "",
       password: "",
       age: "",
       address: "",
@@ -205,7 +197,7 @@ const Signup = () => {
             />
 
             {/* Gender */}
-             <FormField
+             {/* <FormField
               control={form.control}
               name="gender"
               render={({ field }) => (
@@ -223,13 +215,13 @@ const Signup = () => {
                     <SelectContent>
                       <SelectItem value="Male">Male</SelectItem>
                       <SelectItem value="Female">Female</SelectItem>
-                      {/* <SelectItem value="Other">Other</SelectItem> */}
+                      <SelectItem value="Other">Other</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
 
             <FormField
               control={form.control}
