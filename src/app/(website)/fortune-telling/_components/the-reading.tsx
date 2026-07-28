@@ -26,7 +26,6 @@ type CardData = {
   id: string;
   symbol: string;
   name: string;
-  title: string;
   imageSrc: string;
 };
 
@@ -35,91 +34,78 @@ const CARDS_DATA: CardData[] = [
     id: "ahura",
     symbol: "AHURA",
     name: "Ahura",
-    title: "Above",
     imageSrc: "/shapes/ahuraa.svg",
   },
   {
     id: "ares",
     symbol: "ARES",
     name: "Ares",
-    title: "Arms",
     imageSrc: "/shapes/ares.svg",
   },
   {
     id: "asgard",
     symbol: "ASGARD",
     name: "Asgard",
-    title: "Angel",
     imageSrc: "/shapes/asgrad.svg",
   },
   {
     id: "enki",
     symbol: "ENKI",
     name: "Enki",
-    title: "Rain",
     imageSrc: "/shapes/enki.svg",
   },
   {
     id: "gaia",
     symbol: "GAIA",
     name: "Gaia",
-    title: "",
     imageSrc: "/shapes/gaia.svg",
   },
   {
     id: "hera",
     symbol: "HERA",
     name: "Hera",
-    title: "",
     imageSrc: "/shapes/hera.svg",
   },
   {
     id: "laozi",
     symbol: "LAOZI",
     name: "Laozi",
-    title: "Leaf",
     imageSrc: "/shapes/laozi.svg",
   },
   {
     id: "mitra",
     symbol: "MITRA",
     name: "Mitra",
-    title: "Mist",
     imageSrc: "/shapes/mitra.svg",
   },
   {
     id: "setna",
     symbol: "SETNA",
     name: "Setna",
-    title: "Stone",
     imageSrc: "/shapes/setna.svg",
   },
   {
     id: "shaman",
     symbol: "SHAMAN",
     name: "Shaman",
-    title: "Stream",
     imageSrc: "/shapes/shaman.svg",
   },
   {
     id: "shiva",
     symbol: "SHIVA",
     name: "Shiva",
-    title: "Shot",
     imageSrc: "/shapes/shiva.svg",
   },
   {
     id: "titan",
     symbol: "TITAN",
     name: "Titan",
-    title: "",
     imageSrc: "/shapes/titan.svg",
   },
   {
     id: "Ziggy",
     symbol: "Ziggy",
     name: "Ziggy",
-    title: "Veil",
     imageSrc: "/shapes/zigi.png",
   },
 ];
@@ -407,36 +393,25 @@ export default function TheReading() {
                 </motion.button>
               </div>
 
-              <div className="relative z-10 mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="relative z-10 mt-6 grid gap-5 lg:grid-cols-3">
                 {displayedCards.map((card, index) => (
                   <div
                     key={`${card.id}-${index}`}
-                    className="group flex min-h-[152px] flex-col justify-center rounded-[2px] border border-[#f0a95d] bg-[linear-gradient(180deg,rgba(58,35,24,0.98),rgba(44,26,18,0.98))] px-4 py-4 text-center shadow-[0_0_0_1px_rgba(240,169,93,0.18)]"
+                    className="group flex min-h-[62vh] flex-col justify-center rounded-[2px] border border-[#f0a95d] bg-[linear-gradient(180deg,rgba(58,35,24,0.98),rgba(44,26,18,0.98))] px-5 py-8 text-center shadow-[0_0_0_1px_rgba(240,169,93,0.18)] sm:min-h-[68vh]"
                   >
-                    <p className="text-[11px] uppercase tracking-[0.22em] text-[#738381]">
-                      {index === 0 ? "past" : index === 1 ? "present" : "path"}
-                    </p>
-                    <div className="mt-4 flex flex-col items-center gap-3">
-                      <div className="relative flex h-[62px] w-[62px] items-center justify-center sm:h-[72px] sm:w-[72px]">
+                    <div className="flex h-full flex-col items-center justify-center gap-6">
+                      <div className="relative flex h-[42vh] w-full max-w-[42vh] items-center justify-center sm:h-[48vh] sm:max-w-[48vh]">
                         <Image
                           src={card.imageSrc}
                           alt={card.name}
-                          width={60}
-                          height={60}
+                          width={1000}
+                          height={1000}
                           className="h-full w-full object-contain"
                         />
                       </div>
-                      <div>
-                        <p className="font-serif text-[21px] text-[#efe4d4]">
-                          {card.name}
-                        </p>
-                        <p className="mt-1 text-[11px] tracking-[0.18em] text-[#c8a07b]">
-                          {card.title}
-                        </p>
-                        <p className="mt-2 text-[11px] uppercase tracking-[0.18em] text-[#ad8f73]">
-                          {card.symbol}
-                        </p>
-                      </div>
+                      <p className="font-serif text-[clamp(2.5rem,6vw,4.5rem)] leading-none tracking-[-0.03em] text-[#efe4d4]">
+                        {card.name}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -647,10 +622,6 @@ export default function TheReading() {
                                 <h3 className="font-serif text-[12px] leading-none tracking-[0.01em] text-[#fff3e3] sm:text-[15px]">
                                   {card.name}
                                 </h3>
-
-                                <span className="mt-1 block text-[8px] tracking-[0.14em] text-[#c8a07b] sm:text-[9px] sm:tracking-[0.18em]">
-                                  {card.title}
-                                </span>
                               </motion.div>
                             </div>
                           </motion.div>
