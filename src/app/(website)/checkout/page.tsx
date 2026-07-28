@@ -1,11 +1,12 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
 import {
   Elements,
+  AddressElement,
   PaymentElement,
   useElements,
   useStripe,
@@ -28,6 +29,7 @@ import { clearGuestCart } from "@/lib/utils/guest-cart";
 import { useCartQuery } from "@/hooks/use-cart-query";
 import { getProductPrice } from "@/lib/utils/product-price";
 import { calculateShippingCad } from "@/lib/utils/shipping";
+import type { StripeAddressElement, StripeAddressElementChangeEvent } from "@stripe/stripe-js";
 
 const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
   ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
@@ -139,6 +141,31 @@ function CheckoutPaymentForm({
   );
 }
 
+function ShippingAddressAutocomplete({
+  onChange,
+  onReady,
+}: {
+  onChange: (event: StripeAddressElementChangeEvent) => void;
+  onReady: (element: StripeAddressElement) => void;
+}) {
+  const googleMapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+
+  return (
+    <AddressElement
+      options={{
+        mode: "shipping",
+        allowedCountries: ["US", "CA"],
+        fields: { phone: "never" },
+        ...(googleMapsApiKey
+          ? { autocomplete: { mode: "google_maps_api", apiKey: googleMapsApiKey } }
+          : {}),
+      }}
+      onChange={onChange}
+      onReady={onReady}
+    />
+  );
+}
+
 export default function CheckoutPage() {
   const { data: session, update: updateSession } = useSession();
   const { data: cart, isLoading } = useCartQuery();
@@ -150,6 +177,8 @@ export default function CheckoutPage() {
     typeof getAppliedCoupon
   >>(null);
   const [isPreparingPayment, setIsPreparingPayment] = useState(false);
+  const [isShippingAddressComplete, setIsShippingAddressComplete] = useState(false);
+  const shippingAddressElementRef = useRef<StripeAddressElement | null>(null);
 
   const isAuthenticated = Boolean(session?.user?.id);
   const items = useMemo(() => cart?.productIds || [], [cart?.productIds]);
@@ -182,6 +211,19 @@ export default function CheckoutPage() {
         [field]: event.target.value,
       }));
     };
+
+  const updateShippingAddress = (event: StripeAddressElementChangeEvent) => {
+    const address = event.value.address;
+    setIsShippingAddressComplete(event.complete);
+    setValues((current) => ({
+      ...current,
+      address: [address.line1, address.line2].filter(Boolean).join(", "),
+      city: address.city || "",
+      province: address.state || "",
+      postalCode: address.postal_code || "",
+      country: (address.country === "CA" ? "CA" : "US") as "US" | "CA",
+    }));
+  };
 
   const ensureCheckoutUser = async () => {
     if (session?.user?.id) return session.user.id;
@@ -231,6 +273,14 @@ export default function CheckoutPage() {
 
     if (!stripePromise) {
       toast.error("Stripe publishable key is missing.");
+      return;
+    }
+
+    // getValue triggers Stripe's inline field validation, so an invalid postal
+    // code can never proceed to the payment-intent API call.
+    const addressResult = await shippingAddressElementRef.current?.getValue();
+    if (!addressResult?.complete || !isShippingAddressComplete) {
+      toast.error("Please correct the shipping address, including the postal code.");
       return;
     }
 
@@ -372,61 +422,26 @@ export default function CheckoutPage() {
               <h2 className="mb-5 text-lg font-bold text-[#111111]">
                 Shipping address 
               </h2>
-              <div className="grid gap-4 md:grid-cols-2">
-                <div className="space-y-2 md:col-span-2">
-                  <Label htmlFor="address">Address</Label>
-                  <Input
-                    id="address"
-                    required
-                    value={values.address}
-                    onChange={updateField("address")}
-                    placeholder="123 Main St"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="city">City</Label>
-                  <Input
-                    id="city"
-                    required
-                    value={values.city}
-                    onChange={updateField("city")}
-                    placeholder="New York"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="province">State / Province</Label>
-                  <Input
-                    id="province"
-                    required
-                    value={values.province}
-                    onChange={updateField("province")}
-                    placeholder="NY"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="postalCode">Postal code</Label>
-                  <Input
-                    id="postalCode"
-                    required
-                    value={values.postalCode}
-                    onChange={updateField("postalCode")}
-                    placeholder="10001"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="country">Country</Label>
-                  <select
-                    id="country"
-                    required
-                    value={values.country}
-                    onChange={updateField("country")}
-                    className="h-9 w-full rounded-md border border-input bg-transparent px-3 text-sm outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
-                  >
-                    <option value="US">United States</option>
-                    <option value="CA">Canada</option>
-                  </select>
-                </div>
-              </div>
+              {stripePromise ? (
+                <>
+                  <p className="mb-3 text-sm text-[#666666]">
+                    Start typing your street address, then choose a suggestion. City,
+                    state/province, and postal code will fill automatically.
+                  </p>
+                  <Elements stripe={stripePromise}>
+                    <ShippingAddressAutocomplete
+                      onChange={updateShippingAddress}
+                      onReady={(element) => {
+                        shippingAddressElementRef.current = element;
+                      }}
+                    />
+                  </Elements>
+                </>
+              ) : (
+                <p className="text-sm text-red-600">
+                  Add NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY to enable address autocomplete.
+                </p>
+              )}
             </section>
 
             <Button
