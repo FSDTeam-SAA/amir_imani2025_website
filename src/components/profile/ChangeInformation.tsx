@@ -19,6 +19,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { updateUserInfo } from '@/lib/api/profile';
 import { useSingleUser } from '@/hooks/useprofile';
+import { useQueryClient } from '@tanstack/react-query';
 
 const profileSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
@@ -33,18 +34,8 @@ type ProfileFormValues = z.infer<typeof profileSchema>;
 const ChangeInformation = () => {
   const { data: session } = useSession();
   const {data:userData}=useSingleUser(session?.user?.id || '')
+  const queryClient = useQueryClient();
   const [isPending, setIsPending] = React.useState(false);
-
-  console.log('user data',userData)
-
-  // Helper to split name
-  const splitName = (fullName: string | null | undefined) => {
-    if (!fullName) return { firstName: '', lastName: '' };
-    const parts = fullName.split(' ');
-    const firstName = parts[0];
-    const lastName = parts.slice(1).join(' ');
-    return { firstName, lastName: lastName || '' }; // Handle case with single name
-  };
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
@@ -89,7 +80,7 @@ const ChangeInformation = () => {
       
       if (response && (response.success || response._id)) { // Adjust based on actual API response success indicator
          toast.success('Profile updated successfully!');
-         // Ideally update session here using update() from useSession if NextAuth supports it
+         await queryClient.invalidateQueries({ queryKey: ['user', session.user.id] });
       } else {
          throw new Error(response.message || 'Update failed');
       }
@@ -103,16 +94,16 @@ const ChangeInformation = () => {
   }
 
   return (
-    <div className='max-w-2xl w-full'>
-      <div className='mb-8'>
-        <h2 className='text-2xl font-bold text-gray-900'>Change User Information</h2>
-        <p className='text-gray-500 mt-1'>Manage your personal information and profile details.</p>
+    <div className='w-full'>
+      <div className='mb-7 border-b border-slate-100 pb-6'>
+        <h2 className='text-xl font-bold tracking-tight text-slate-900 sm:text-2xl'>Profile information</h2>
+        <p className='mt-1 text-sm leading-6 text-slate-500'>Keep your contact details up to date.</p>
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
+        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-5'>
           
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+          <div className='grid grid-cols-1 gap-5 sm:grid-cols-2'>
             <FormField
               control={form.control}
               name="firstName"
@@ -121,7 +112,7 @@ const ChangeInformation = () => {
                   <FormLabel>First Name</FormLabel>
                   <FormControl>
                     <Input placeholder="Hasibul" {...field}
-                    className=' placeholder:text-gray-400'
+                    className='h-11 border-slate-200 bg-slate-50/50 placeholder:text-slate-400 focus-visible:ring-cyan-600'
                     />
                   </FormControl>
                   <FormMessage />
@@ -137,7 +128,7 @@ const ChangeInformation = () => {
                   <FormLabel>Last Name</FormLabel>
                   <FormControl>
                     <Input placeholder="Hasan" {...field} 
-                    className=' placeholder:text-gray-400'
+                    className='h-11 border-slate-200 bg-slate-50/50 placeholder:text-slate-400 focus-visible:ring-cyan-600'
                     />
                   </FormControl>
                   <FormMessage />
@@ -154,7 +145,7 @@ const ChangeInformation = () => {
                 <FormLabel>Email</FormLabel>
                 <FormControl>
                   <Input placeholder="email@example.com" type="email" {...field} 
-                  className=' placeholder:text-gray-400'
+                  className='h-11 border-slate-200 bg-slate-50/50 placeholder:text-slate-400 focus-visible:ring-cyan-600'
                   />
                 </FormControl>
                 <FormMessage />
@@ -170,7 +161,7 @@ const ChangeInformation = () => {
                 <FormLabel>Phone Number</FormLabel>
                 <FormControl>
                   <Input placeholder="+1234567890" {...field} 
-                  className=' placeholder:text-gray-400'
+                  className='h-11 border-slate-200 bg-slate-50/50 placeholder:text-slate-400 focus-visible:ring-cyan-600'
                   />
                 </FormControl>
                 <FormMessage />
@@ -186,7 +177,7 @@ const ChangeInformation = () => {
                 <FormLabel>Address</FormLabel>
                 <FormControl>
                   <Input placeholder="123 Street Name, City, Country" {...field}
-                  className=' placeholder:text-gray-400'
+                  className='h-11 border-slate-200 bg-slate-50/50 placeholder:text-slate-400 focus-visible:ring-cyan-600'
                   />
                 </FormControl>
                 <FormMessage />
@@ -194,11 +185,11 @@ const ChangeInformation = () => {
             )}
           />
 
-          <div className='pt-2'>
+          <div className='flex justify-end border-t border-slate-100 pt-5'>
             <Button
               type="submit"
               disabled={isPending}
-              className="bg-primary hover:bg-primary/90 text-white min-w-[140px]"
+              className="h-11 min-w-[148px] rounded-xl bg-slate-900 text-white hover:bg-slate-800"
             >
               {isPending ? "Saving..." : "Save Changes"}
             </Button>

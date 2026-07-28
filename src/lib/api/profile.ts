@@ -55,3 +55,25 @@ export async function updateUserInfo(userId: string, data: UpdateProfileData, to
         throw error;
     }      
 }
+
+export async function uploadUserAvatar(
+  userId: string,
+  file: File,
+  token: string,
+) {
+  const formData = new FormData();
+  formData.append('avatar', file);
+
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/${userId}`, {
+    method: 'PATCH',
+    headers: { Authorization: `Bearer ${token}` },
+    body: formData,
+  });
+
+  const data = await response.json();
+  if (!response.ok || !data.success) {
+    throw new Error(data.message || 'Failed to upload profile photo');
+  }
+
+  return data;
+}

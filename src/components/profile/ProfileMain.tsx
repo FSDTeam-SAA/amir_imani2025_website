@@ -18,19 +18,26 @@ const ProfileMain = () => {
   ] as const;
 
   return (
-    <div className='container mx-auto my-20 md:my-40 px-4'>
-      <div className='grid grid-cols-1 lg:grid-cols-12 gap-8 items-start'>
+    <main className='min-h-screen bg-slate-50/70 py-10 sm:py-14 lg:py-20'>
+      <div className='container mx-auto container px-4 sm:px-6 lg:px-8'>
+        <div className='mb-8 sm:mb-10'>
+          <p className='mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-700'>Account</p>
+          <h1 className='text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl'>My profile</h1>
+          <p className='mt-2 max-w-xl text-sm leading-6 text-slate-500 sm:text-base'>Manage your personal details, orders, and account security in one place.</p>
+        </div>
+        <div className='grid grid-cols-1 items-start gap-6 lg:grid-cols-12 lg:gap-8'>
         
         {/* Sidebar - Left Column */}
-        <div className='lg:col-span-4'>
+        <div className='lg:col-span-4 lg:sticky lg:top-24'>
           <ProfileSideBar />
         </div>
 
         {/* Main Content - Right Column */}
-        <div className='lg:col-span-8 space-y-6'>
+        <div className='min-w-0 lg:col-span-8'>
           
           {/* Tab Navigation */}
-          <div className='flex flex-col sm:flex-row gap-4 sm:gap-2 border-b border-gray-200 pb-4'>
+          <div className='mb-5 overflow-x-auto rounded-2xl border border-slate-200 bg-white p-1.5 shadow-sm'>
+            <div className='flex justify-around gap-1'>
             {tabs.map((tab) => (
               <Button
                 key={tab.id}
@@ -38,20 +45,21 @@ const ProfileMain = () => {
    
                 onClick={() => setActiveTab(tab.id)}
                 className={`
-                  w-full sm:w-auto px-6 py-3 rounded-lg font-medium transition-all
+                  h-10 rounded-xl px-4 text-sm font-semibold transition-all sm:px-5
                   ${activeTab === tab.id 
-                    ? 'bg-primary text-white shadow-sm' 
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                    ? 'bg-slate-900 text-white shadow-sm' 
+                    : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'
                   }
                 `}
               >
                 {tab.label}
               </Button>
             ))}
+            </div>
           </div>
 
           {/* Active Tab Content */}
-          <div className='bg-white rounded-xl shadow-sm p-6'>
+          <div className='rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7'>
             {activeTab === 'info' && <ChangeInformation />}
             {activeTab === 'history' && <OrderHistory />}
             {activeTab === 'security' && <ChangePassword />}
@@ -59,7 +67,8 @@ const ProfileMain = () => {
 
         </div>
       </div>
-    </div>
+      </div>
+    </main>
   )
 }
 
