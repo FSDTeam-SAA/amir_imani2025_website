@@ -7,19 +7,21 @@ export interface ProductImage {
 }
 
 export interface Product {
-  imgs: ProductImage[] | string[];
+  imgs?: ProductImage[] | string[];
   quantity: number;
   _id: string;
   productName: string;
   price: number;
-  feature: string;
-  description: string;
-  videoLink: string;
-  img: string;
+  feature?: string;
+  description?: string;
+  videoLink?: string;
+  img?: string;
   createdAt: string;
-  updatedAt: string;
+  updatedAt?: string;
   productType: string;
-  __v: number;
+  __v?: number;
+  paymentStatus?: string;
+  orderStatus?: string;
 }
 
 export interface ApiResponse {
