@@ -110,7 +110,7 @@ export default function ProductShot() {
               onClick={(e) => e.stopPropagation()}
             >
               {/* Image - No extra container, just the image */}
-              <div className="relative h-full w-full">
+              <Link href={"/game"} className="relative h-full w-full">
                 <Image
                   src="/doundo.jpg"
                   alt="DoUndo product shot enlarged"
@@ -119,7 +119,7 @@ export default function ProductShot() {
                   className="max-h-[90vh] w-auto max-w-[90vw] object-contain rounded-lg shadow-2xl"
                   priority
                 />
-              </div>
+              </Link>
 
               {/* Close button - positioned absolutely over the image */}
               <button

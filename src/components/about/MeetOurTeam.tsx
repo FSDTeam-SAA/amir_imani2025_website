@@ -44,7 +44,7 @@ export default function MeetOurTeam() {
       name: "Amir Imani",
       role: "FOUNDER",
       image: "/images/Amir_image.JPG", // Replace with your actual image path
-      bio: "Amir Imani is the creator of bolindo, a series of games with simple rules and open possibilities. Thirteen unique symbols lie at the heart of his work, each carrying a story that brings depth and meaning to every game.",
+      bio: "Amir Imani is the creator of DoUndo, a series of games with simple rules and open possibilities. Thirteen unique symbols lie at the heart of his work, each carrying a story that brings depth and meaning to every game.",
       link: "https://www.linkedin.com/in/amir-imani-fazel-5166a359",
     },
     {
