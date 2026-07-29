@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
 import {
   Elements,
@@ -168,8 +168,15 @@ function ShippingAddressAutocomplete({
 
 export default function CheckoutPage() {
   const { data: session, update: updateSession } = useSession();
+  const searchParams = useSearchParams();
+  const selectedCountry = searchParams.get("shippingCountry");
+  const cartShippingCountry =
+    selectedCountry === "CA" || selectedCountry === "US" ? selectedCountry : null;
   const { data: cart, isLoading } = useCartQuery();
-  const [values, setValues] = useState<CheckoutFormValues>(initialValues);
+  const [values, setValues] = useState<CheckoutFormValues>(() => ({
+    ...initialValues,
+    country: cartShippingCountry || initialValues.country,
+  }));
   const [clientSecret, setClientSecret] = useState("");
   const [paymentId, setPaymentId] = useState("");
   const [checkoutUserId, setCheckoutUserId] = useState("");
@@ -199,7 +206,12 @@ export default function CheckoutPage() {
     setAppliedCoupon(getAppliedCoupon());
   }, []);
 
-  const shippingPreview = calculateShippingCad(subtotal, values.country);
+  // Prefer the country selected on the cart page so this estimate is not a
+  // static/default value while the address form is being completed.
+  const shippingPreview = calculateShippingCad(
+    subtotal,
+    cartShippingCountry || values.country
+  );
   const couponDiscount = Math.min(appliedCoupon?.discountAmount || 0, subtotal);
   const totalPreview = Math.max(0, subtotal - couponDiscount) + shippingPreview;
 

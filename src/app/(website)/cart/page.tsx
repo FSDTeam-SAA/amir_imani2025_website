@@ -114,7 +114,8 @@ export default function CartPage() {
 
   const handleCheckout = () => {
     if (!cart || items.length === 0) return;
-    router.push("/checkout");
+    // Carry the destination selected in this summary into checkout.
+    router.push(`/checkout?shippingCountry=${shippingCountry}`);
   };
 
   if (isLoading) {
