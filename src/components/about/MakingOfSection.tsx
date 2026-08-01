@@ -9,37 +9,44 @@ const gridItems = [
   {
     title: "STUDIO",
     image: "/about/logo.jpg",
-    className: "col-span-12 md:col-span-6 row-span-2",
+    width: 3528,
+    height: 2224,
   },
   {
     title: "PROTOTYPE",
     image: "/about/GameBox_v2.jpg",
-    className: "col-span-12 sm:col-span-6 md:col-span-3",
+    width: 2160,
+    height: 1794,
   },
   {
     title: "SYMBOLS",
     image: "/about/Symbols.jpg",
-    className: "col-span-12 sm:col-span-6 md:col-span-3 row-span-2",
+    width: 1200,
+    height: 1600,
   },
   {
     title: "SKETCHES",
     image: "/about/Icons.jpg",
-    className: "col-span-12 sm:col-span-6 md:col-span-3",
+    width: 2268,
+    height: 4032,
   },
   {
     title: "BOX DESIGN",
     image: "/about/GameBox.jpg",
-    className: "col-span-12 md:col-span-6",
+    width: 2180,
+    height: 2418,
   },
   {
     title: "PROCESS",
     image: "/about/Symbols_2.jpg",
-    className: "col-span-12 sm:col-span-6 md:col-span-3",
+    width: 1200,
+    height: 1600,
   },
   {
     title: "STUDIO DAY",
     image: "/about/Symbols_3.jpg",
-    className: "col-span-12 sm:col-span-6 md:col-span-3",
+    width: 3156,
+    height: 2268,
   },
 ];
 
@@ -101,33 +108,24 @@ export default function MakingOfSection() {
         </div>
       </div>
 
-      {/* Bento Grid layout */}
-      <div className="container mx-auto grid grid-cols-12 auto-rows-[190px] md:auto-rows-[220px] gap-4">
+      {/* Each image keeps its natural aspect ratio; CSS columns create the masonry layout. */}
+      <div className="container mx-auto columns-1 gap-4 sm:columns-2 lg:columns-3">
         {gridItems.map((item, index) => (
           <button
             type="button"
             key={index}
             onClick={() => setSelectedIndex(index)}
             aria-label={`Open ${item.title} image`}
-            className={`${item.className} relative  p-6 flex flex-col text-left justify-between overflow-hidden group cursor-zoom-in transition-all duration-300 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#577b8a]`}
+            className="mb-4 block w-full break-inside-avoid cursor-zoom-in text-left transition-all duration-300 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#577b8a]"
           >
             <Image
               src={item.image}
               alt={`${item.title} behind the scenes`}
-              fill
-              sizes="(min-width: 768px) 50vw, 100vw"
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              width={item.width}
+              height={item.height}
+              sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+              className="h-auto w-full"
             />
-
-            <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/10 to-transparent pointer-events-none" />
-
-            {/* Empty space filler for flex-col top alignment layout */}
-            <div></div>
-
-            {/* Label at the bottom-left */}
-            {/* <span className="text-[10px] font-bold tracking-[0.15em] text-white/70 uppercase relative z-10">
-              {item.title}
-            </span> */}
           </button>
         ))}
       </div>

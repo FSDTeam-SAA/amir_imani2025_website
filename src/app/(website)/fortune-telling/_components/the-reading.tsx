@@ -360,7 +360,7 @@ export default function TheReading() {
               key={
                 displayedFortune?._id || displayedFortune?.createdAt || "result"
               }
-              className="relative isolate mx-auto mt-10 w-full max-w-[900px] overflow-hidden rounded-[2px] border border-[#2b3c40] bg-[#0d1719] p-4 sm:p-6"
+              className="relative isolate mx-auto mt-10 w-full  overflow-hidden rounded-[2px] border border-[#2b3c40] bg-[#0d1719] p-4 sm:p-6"
               variants={itemVariants}
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
@@ -397,10 +397,10 @@ export default function TheReading() {
                 {displayedCards.map((card, index) => (
                   <div
                     key={`${card.id}-${index}`}
-                    className="group flex min-h-[62vh] flex-col justify-center rounded-[2px] border border-[#f0a95d] bg-[linear-gradient(180deg,rgba(58,35,24,0.98),rgba(44,26,18,0.98))] px-5 py-8 text-center shadow-[0_0_0_1px_rgba(240,169,93,0.18)] sm:min-h-[68vh]"
+                    className="group flex pb-4  flex-col justify-center rounded-[2px] border border-[#f0a95d] bg-[linear-gradient(180deg,rgba(58,35,24,0.98),rgba(44,26,18,0.98))]  text-center shadow-[0_0_0_1px_rgba(240,169,93,0.18)] "
                   >
-                    <div className="flex h-full flex-col items-center justify-center gap-6">
-                      <div className="relative flex h-[42vh] w-full max-w-[42vh] items-center justify-center sm:h-[48vh] sm:max-w-[48vh]">
+                    <div>
+                      <div>
                         <Image
                           src={card.imageSrc}
                           alt={card.name}
@@ -602,7 +602,7 @@ export default function TheReading() {
                                   alt={card.name}
                                   width={1000}
                                   height={1000}
-                                  className="h-full w-full object-contain"
+                                  className="h-full w-full sm:min-w-[200px] sm:min-h-[200px] object-contain"
                                 />
                               </div>
 
@@ -617,9 +617,9 @@ export default function TheReading() {
                                   ease: EASE_OUT,
                                   delay: isSelected ? 0.16 : 0,
                                 }}
-                                className="mt-2 sm:mt-3"
+                                className="mt-2 sm:mt-4"
                               >
-                                <h3 className="font-serif text-[12px] leading-none tracking-[0.01em] text-[#fff3e3] sm:text-[15px]">
+                                <h3 className="font-serif text-[12px] leading-none tracking-[0.01em] text-[#fff3e3] sm:text-[20px]">
                                   {card.name}
                                 </h3>
                               </motion.div>

@@ -64,9 +64,10 @@ export default function ProductShot() {
 
           <div className="flex justify-center lg:justify-end">
             <div className="w-full max-w-[430px] border border-[#4d321f] bg-[#21150f] px-4 py-3 shadow-[0_24px_90px_rgba(0,0,0,0.25)]">
-              <div
+              <Link
+                href={"/product/695057098548e119f5fa7cfd"}
                 className="relative overflow-hidden border border-[#6b4a34] bg-[#2a1b14] cursor-pointer group"
-                onClick={() => setIsModalOpen(true)}
+                // onClick={() => setIsModalOpen(true)}
               >
                 {/* width ও height এর জায়গায় আপনার ছবির আসল Resolution/Dimensions দিন */}
                 <Image
@@ -76,12 +77,8 @@ export default function ProductShot() {
                   height={800}
                   className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300"
                 />
-                <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/30 transition-all duration-300">
-                  <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm tracking-wider">
-                    Click to enlarge
-                  </span>
-                </div>
-              </div>
+               
+              </Link>
             </div>
           </div>
         </div>

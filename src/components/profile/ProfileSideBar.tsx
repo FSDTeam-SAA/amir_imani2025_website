@@ -61,7 +61,7 @@ const ProfileSideBar: React.FC = () => {
   }
 
   return (
-    <aside className="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <aside className="w-full overflow-hidden  border border-slate-200 bg-white shadow-sm">
       {/* Profile Header */}
       <div className="relative">
         <div className="relative h-28 bg-gradient-to-br from-cyan-700 via-teal-600 to-emerald-500 sm:h-32">

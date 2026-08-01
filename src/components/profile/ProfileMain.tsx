@@ -5,8 +5,9 @@ import { Button } from '../ui/button';
 import ChangeInformation from './ChangeInformation';
 import OrderHistory from './OrderHistory';
 import ChangePassword from './ChangePassword';
+import FortuneHistory from './FortuneHistory';
 
-type ActiveTab = 'info' | 'history' | 'security';
+type ActiveTab = 'info' | 'history' | 'fortune-history' | 'security';
 
 const ProfileMain = () => {
   const [activeTab, setActiveTab] = useState<ActiveTab>('info');
@@ -14,6 +15,7 @@ const ProfileMain = () => {
   const tabs = [
     { id: 'info', label: 'Profile Information' },
     { id: 'history', label: 'Order History' },
+    { id: 'fortune-history', label: 'Fortune History' },
     { id: 'security', label: 'Security' },
   ] as const;
 
@@ -36,7 +38,7 @@ const ProfileMain = () => {
         <div className='min-w-0 lg:col-span-8'>
           
           {/* Tab Navigation */}
-          <div className='mb-5 overflow-x-auto rounded-2xl border border-slate-200 bg-white p-1.5 shadow-sm'>
+          <div className='mb-5 overflow-x-auto  border border-slate-200 bg-white p-1.5 shadow-sm'>
             <div className='flex justify-around gap-1'>
             {tabs.map((tab) => (
               <Button
@@ -45,7 +47,7 @@ const ProfileMain = () => {
    
                 onClick={() => setActiveTab(tab.id)}
                 className={`
-                  h-10 rounded-xl px-4 text-sm font-semibold transition-all sm:px-5
+                  h-10 !rounded-none px-4 text-sm font-semibold transition-all sm:px-5
                   ${activeTab === tab.id 
                     ? 'bg-slate-900 text-white shadow-sm' 
                     : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'
@@ -59,9 +61,10 @@ const ProfileMain = () => {
           </div>
 
           {/* Active Tab Content */}
-          <div className='rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7'>
+          <div className=' border border-slate-200 bg-white p-5 shadow-sm sm:p-7'>
             {activeTab === 'info' && <ChangeInformation />}
             {activeTab === 'history' && <OrderHistory />}
+            {activeTab === 'fortune-history' && <FortuneHistory />}
             {activeTab === 'security' && <ChangePassword />}
           </div>
 

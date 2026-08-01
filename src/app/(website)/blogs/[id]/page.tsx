@@ -16,11 +16,12 @@ const stripProblematicTextChars = (text: string) =>
     .replace(/&nbsp;/gi, " ");
 
 const normalizeBlogHtml = (html: string) => {
+  
   const cleanedHtml = stripProblematicTextChars(html);
 
-  if (typeof window === "undefined") {
+if (typeof window === "undefined") {
     return cleanedHtml;
-  }
+}
 
   const parser = new DOMParser();
   const document = parser.parseFromString(cleanedHtml, "text/html");

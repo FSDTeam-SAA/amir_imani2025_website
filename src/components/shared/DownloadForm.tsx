@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -36,13 +36,11 @@ const DownloadForm = ({ gameName }: { gameName: string }) => {
       email: "",
     },
   });
-  console.log("product name", gameName);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
   const mutation = useMutation({
     mutationFn: (data: { name: string; email: string }) =>
       Download(data.name, data.email),
-    onSuccess: (data) => {
-      toast.success(data.message || "Successfuly added your Request");
-    },
     onError: (err) => {
       toast.error(err.message || "Successfuly added your Request");
     },
@@ -50,16 +48,15 @@ const DownloadForm = ({ gameName }: { gameName: string }) => {
 
   /* ------------------ submit function ------------------ */
   const onSubmit = (values: FormValues) => {
+    setSuccessMessage(null);
     const name = gameName + " print and play request by " + values.name;
     const email = values.email;
-    const form = { name, email };
-    mutation.mutate(form, {
+    const payload = { name, email };
+    mutation.mutate(payload, {
       onSuccess: (data) => {
         console.log("Success:", data);
-        toast.success(
-          data.message || "Successfuly submitted for 'Print and Play'"
-        );
-        // form.reset(); // optional
+        setSuccessMessage("Please check your inbox to check download Print and play");
+        form.reset();
       },
       onError: (error) => {
         console.error("Error:", error);
@@ -86,7 +83,7 @@ const DownloadForm = ({ gameName }: { gameName: string }) => {
                   <FormControl>
                     <Input
                       placeholder="Enter your name"
-                      className=" border border-gray-400 outline-none shadow-none h-10   lg:text-base"
+                      className=" border border-gray-400 outline-none shadow-none h-10  text-black lg:text-base"
                       {...field}
                     />
                   </FormControl>
@@ -105,7 +102,7 @@ const DownloadForm = ({ gameName }: { gameName: string }) => {
                   <FormControl>
                     <Input
                       placeholder="Enter your email"
-                      className=" border border-gray-400 outline-none shadow-none h-10   lg:text-base"
+                      className=" border border-gray-400 text-black outline-none shadow-none h-10   lg:text-base"
                       {...field}
                     />
                   </FormControl>
@@ -115,11 +112,16 @@ const DownloadForm = ({ gameName }: { gameName: string }) => {
             />
 
             {/* Submit */}
+            {successMessage && (
+              <p className="text-center text-sm text-emerald-600" role="status">
+                {successMessage}
+              </p>
+            )}
             <Button
               type="submit"
               className="w-full !rounded-none bg-primary hover:bg-primary/80 text-white"
             >
-              Submit
+              Submit {mutation.isPending && "Submitting..."}
             </Button>
           </form>
         </Form>

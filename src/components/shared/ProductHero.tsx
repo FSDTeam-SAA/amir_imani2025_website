@@ -3,16 +3,12 @@
 import React, { useState, useCallback, useMemo } from "react";
 import { Minus, Plus, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { NotifyMeDialog } from "@/components/shared/NotifyMeDialog";
 import Image from "next/image";
 import { Product } from "@/lib/types/ecommerce";
 import { useCart } from "@/provider/cart-provider";
 import { toast } from "sonner";
 import { getProductPreviousPrice, getProductPrice } from "@/lib/utils/product-price";
-import {
-  hasPreorderedProduct,
-  preorderService,
-  rememberPreorderedProduct,
-} from "@/lib/api/preorder-service";
 
 interface ProductHeroProps {
   product: Product;
@@ -21,9 +17,6 @@ interface ProductHeroProps {
 export default function ProductHero({ product }: ProductHeroProps) {
   const [quantity, setQuantity] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
-  const [hasPreordered, setHasPreordered] = useState(() =>
-    hasPreorderedProduct(product._id),
-  );
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
@@ -31,6 +24,7 @@ export default function ProductHero({ product }: ProductHeroProps) {
   const { addToCart } = useCart();
   const { amount: displayPrice, currency } = getProductPrice(product);
   const previousPrice = getProductPreviousPrice(product);
+  const isUnavailable = !product.quantity;
   const featureHtml = (
     product.feature ||
     "A psychological strategy game where every move reveals more about the board — and about you. Every selection you make tells a story."
@@ -80,7 +74,11 @@ export default function ProductHero({ product }: ProductHeroProps) {
 
   const handleColorSelect = useCallback((color: string) => {
     setSelectedColor(color);
-  }, []);
+    const imageIndex = product.colorImageIndexes?.[color];
+    if (imageIndex !== undefined && thumbnails[imageIndex]) {
+      setSelectedImage(thumbnails[imageIndex]);
+    }
+  }, [product.colorImageIndexes, thumbnails]);
 
   const validateSelection = useCallback((): boolean => {
     if (!isMerchandise) return true;
@@ -99,28 +97,13 @@ export default function ProductHero({ product }: ProductHeroProps) {
   }, [isMerchandise, hasSizes, hasColors, selectedSize, selectedColor]);
 
   const handleAddToCart = useCallback(async () => {
-    if (product.isPreOrder) {
-      setIsAdding(true);
-      try {
-        await preorderService.create(product._id);
-        rememberPreorderedProduct(product._id);
-        setHasPreordered(true);
-        toast.success(`${product.productName} pre-order submitted successfully!`);
-      } catch (error: unknown) {
-        const message =
-          typeof error === "object" && error && "response" in error
-            ? (error as { response?: { data?: { message?: string } } }).response?.data?.message
-            : undefined;
-        toast.error(message || "Unable to submit pre-order. Please try again.");
-      } finally {
-        setIsAdding(false);
-      }
-      return;
-    }
-
     if (!validateSelection()) return;
 
     setIsAdding(true);
+
+    // Legacy standalone preorder API is intentionally disabled. Preorders now
+    // use the normal cart, checkout, and payment flow below.
+    // await preorderService.create(product._id);
 
     try {
       await addToCart([
@@ -135,6 +118,9 @@ export default function ProductHero({ product }: ProductHeroProps) {
       toast.success(
         `${product.productName} ${product.isPreOrder ? "pre-order added to cart" : "added to cart"}!`,
       );
+      if (product.isPreOrder) {
+        window.location.assign("/cart");
+      }
     } catch (error) {
       toast.error("Failed to add to cart. Please try again.");
       console.error("Add to cart error:", error);
@@ -312,13 +298,16 @@ export default function ProductHero({ product }: ProductHeroProps) {
             </div>
 
             {/* Pill Shape Terracotta Button */}
-            <Button
-              onClick={handleAddToCart}
-              disabled={isAdding || (product.isPreOrder && hasPreordered)}
-              className="px-8 h-11 bg-[#E96A3D] hover:bg-[#9C523D] !rounded-none text-white text-xs font-medium uppercase tracking-wider transition-all transform active:scale-[0.98] disabled:opacity-50"
-            >
-              {isAdding ? "Adding..." : product.isPreOrder ? hasPreordered ? "Already pre-ordered" : "Pre-order" : "Add to Cart"}
-            </Button>
+            {product.isPreOrder ? (
+              <>
+                <Button onClick={handleAddToCart} disabled={isAdding} className="px-8 h-11 bg-[#E96A3D] hover:bg-[#9C523D] !rounded-none text-white text-xs font-medium uppercase tracking-wider transition-all transform active:scale-[0.98] disabled:opacity-50">{isAdding ? "Adding..." : "Pre-order"}</Button>
+                <NotifyMeDialog productId={product._id} productName={product.productName} className="px-8 h-11 border border-[#E96A3D] bg-transparent !rounded-none text-xs font-medium uppercase tracking-wider text-[#E96A3D] hover:bg-[#E96A3D]/10" />
+              </>
+            ) : isUnavailable ? (
+              <NotifyMeDialog productId={product._id} productName={product.productName} className="px-8 h-11 bg-[#E96A3D] hover:bg-[#9C523D] !rounded-none text-white text-xs font-medium uppercase tracking-wider" />
+            ) : (
+              <Button onClick={handleAddToCart} disabled={isAdding} className="px-8 h-11 bg-[#E96A3D] hover:bg-[#9C523D] !rounded-none text-white text-xs font-medium uppercase tracking-wider transition-all transform active:scale-[0.98] disabled:opacity-50">{isAdding ? "Adding..." : "Add to Cart"}</Button>
+            )}
 
             {/* How To Play Arrow Link */}
             <button

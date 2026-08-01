@@ -10,6 +10,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { NotifyMeDialog } from "@/components/shared/NotifyMeDialog";
 import Image from "next/image";
 import { Product } from "@/lib/types/ecommerce";
 import { useCart } from "@/provider/cart-provider";
@@ -17,11 +18,6 @@ import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getProductPreviousPrice, getProductPrice } from "@/lib/utils/product-price";
-import {
-  hasPreorderedProduct,
-  preorderService,
-  rememberPreorderedProduct,
-} from "@/lib/api/preorder-service";
 
 export interface ProductHeroProps {
   product: Product;
@@ -31,10 +27,8 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
   const [quantity, setQuantity] = useState(1);
   const { amount: displayPrice, currency } = getProductPrice(product);
   const previousPrice = getProductPreviousPrice(product);
+  const isUnavailable = !product.quantity;
   const [isAdding, setIsAdding] = useState(false);
-  const [hasPreordered, setHasPreordered] = useState(() =>
-    hasPreorderedProduct(product._id),
-  );
   const [selectColor, setSelectColor] = useState<string | null>(null);
   const [selectSize, setSelectSize] = useState<string | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(
@@ -57,6 +51,10 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
       : product.img
         ? [product.img]
         : [];
+  const isSizeOutOfStock = (size: string) => {
+    const sizeStock = product.sizeStocks?.find((item) => item.size === size);
+    return sizeStock !== undefined && sizeStock.quantity <= 0;
+  };
 
   const goNextImage = () => {
     if (images.length <= 1) return;
@@ -91,26 +89,11 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
   const { data: session } = useSession();
 
   const handleAddToCart = async () => {
-    if (product.isPreOrder) {
-      setIsAdding(true);
-      try {
-        await preorderService.create(product._id);
-        rememberPreorderedProduct(product._id);
-        setHasPreordered(true);
-        toast.success(`${product.productName} pre-order submitted successfully!`);
-      } catch (error: unknown) {
-        const message =
-          typeof error === "object" && error && "response" in error
-            ? (error as { response?: { data?: { message?: string } } }).response?.data?.message
-            : undefined;
-        toast.error(message || "Unable to submit pre-order. Please try again.");
-      } finally {
-        setIsAdding(false);
-      }
-      return;
-    }
-
     setIsAdding(true);
+
+    // Legacy standalone preorder API is intentionally disabled. Preorders now
+    // use the normal cart, checkout, and payment flow below.
+    // await preorderService.create(product._id);
 
     if (
       ((product.colors && product.colors.length > 0) ||
@@ -148,6 +131,9 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
       toast.success(
         `${product.productName} ${product.isPreOrder ? "pre-order added to cart" : "added to cart"}!`,
       );
+      if (product.isPreOrder) {
+        window.location.assign("/cart");
+      }
     } catch (error) {
       toast.error("Failed to add to cart. Please try again.");
       console.error("Add to cart error:", error);
@@ -157,9 +143,9 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
   };
   return (
     <section className="py-12 lg:py-16 ">
-      <div className="grid grid-cols-1 lg:grid-cols-2  items-start lg:items-stretch">
-        {/* Left Column: Product Image */}
-        <div className="flex w-full  max-w-[480px] flex-col gap-3 mx-auto lg:ml-0 lg:min-h-0 lg:mb-8">
+      <div className="grid grid-cols-1   lg:grid-cols-2  items-start lg:gap-32 lg:items-stretch">
+        {/* Right Column: Product Image */}
+        <div className="order-2  flex w-full flex-col gap-3 mx-auto lg:ml-0 lg:min-h-0 lg:mb-8">
           {/* Thumbnail big Image  */}
           <div
             className="relative w-full aspect-square overflow-hidden lg:aspect-auto lg:min-h-0 lg:flex-1"
@@ -247,8 +233,8 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
           )}
         </div>
 
-        {/* Right Column: Product Info */}
-        <div className="flex flex-col text-left ">
+        {/* Left Column: Product Info */}
+        <div className="order-1 flex flex-col text-left">
           {/* Title and Price */}
           <h1 className="text-4xl lg:text-[40px] font-bold text-[#111111] mt-4 mb-2 leading-tight">
             {product.productName}
@@ -288,7 +274,13 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
                         {(product.color || product.colors)?.map((color) => (
                           <button
                             key={color}
-                            onClick={() => setSelectColor(color)}
+                            onClick={() => {
+                              setSelectColor(color);
+                              const imageIndex = product.colorImageIndexes?.[color];
+                              if (imageIndex !== undefined && images[imageIndex]) {
+                                setSelectedImage(images[imageIndex]);
+                              }
+                            }}
                             className={`flex items-center gap-2 rounded-full border px-4 py-2 transition-all duration-200 ${
                               selectColor === color
                                 ? "border-primary"
@@ -336,8 +328,13 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
               ${
                 selectSize === size
                   ? "bg-[#1B1815] text-white border-[#1B1815]"
-                  : "bg-white text-[#444] border-[#E5D9C9] hover:border-[#B8AA95] hover:bg-[#FAF6EE]"
+                  : isSizeOutOfStock(size)
+                    ? "cursor-not-allowed border-[#E5D9C9] bg-gray-100 text-gray-400 line-through opacity-60"
+                    : "bg-white text-[#444] border-[#E5D9C9] hover:border-[#B8AA95] hover:bg-[#FAF6EE]"
               }`}
+                            aria-label={`${size}${isSizeOutOfStock(size) ? " is out of stock" : ""}`}
+                            title={isSizeOutOfStock(size) ? "Out of stock" : undefined}
+                            disabled={isSizeOutOfStock(size)}
                           >
                             {size}
                           </button>
@@ -380,13 +377,16 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
             </div>
 
             {/* CTA Button */}
-            <Button
-              onClick={handleAddToCart}
-              disabled={isAdding || (product.isPreOrder && hasPreordered)}
-              className="w-full h-14 !rounded-none bg-[#4296a1] hover:bg-[#4296a1]/85 text-white  text-base "
-            >
-              {isAdding ? "Adding..." : product.isPreOrder ? hasPreordered ? "Already pre-ordered" : "Pre-Order" : "Add to Cart"} <ShoppingCart />
-            </Button>
+            {product.isPreOrder ? (
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <Button onClick={handleAddToCart} disabled={isAdding} className="h-14 !rounded-none bg-[#4296a1] text-base text-white hover:bg-[#4296a1]/85">{isAdding ? "Adding..." : "Pre-order"} <ShoppingCart /></Button>
+                <NotifyMeDialog productId={product._id} productName={product.productName} className="h-14 !rounded-none border border-[#4296a1] bg-white text-base text-[#4296a1] hover:bg-[#4296a1]/10" />
+              </div>
+            ) : isUnavailable ? (
+              <NotifyMeDialog productId={product._id} productName={product.productName} className="h-14 w-full !rounded-none bg-[#4296a1] text-base text-white hover:bg-[#4296a1]/85" />
+            ) : (
+              <Button onClick={handleAddToCart} disabled={isAdding} className="w-full h-14 !rounded-none bg-[#4296a1] hover:bg-[#4296a1]/85 text-white text-base">{isAdding ? "Adding..." : "Add to Cart"} <ShoppingCart /></Button>
+            )}
 
             {product.productFeatures && product?.productFeatures?.length > 0 && (
               <div className="space-y-3">
@@ -405,6 +405,7 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
             )}
           </div>
         </div>
+        
       </div>
     </section>
   );
