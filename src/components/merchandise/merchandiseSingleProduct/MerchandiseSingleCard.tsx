@@ -10,6 +10,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { NotifyMeDialog } from "@/components/shared/NotifyMeDialog";
 import Image from "next/image";
 import { Product } from "@/lib/types/ecommerce";
 import { useCart } from "@/provider/cart-provider";
@@ -31,6 +32,7 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
   const [quantity, setQuantity] = useState(1);
   const { amount: displayPrice, currency } = getProductPrice(product);
   const previousPrice = getProductPreviousPrice(product);
+  const isUnavailable = !product.quantity;
   const [isAdding, setIsAdding] = useState(false);
   const [hasPreordered, setHasPreordered] = useState(() =>
     hasPreorderedProduct(product._id),
@@ -57,6 +59,10 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
       : product.img
         ? [product.img]
         : [];
+  const isSizeOutOfStock = (size: string) => {
+    const sizeStock = product.sizeStocks?.find((item) => item.size === size);
+    return sizeStock !== undefined && sizeStock.quantity <= 0;
+  };
 
   const goNextImage = () => {
     if (images.length <= 1) return;
@@ -288,7 +294,13 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
                         {(product.color || product.colors)?.map((color) => (
                           <button
                             key={color}
-                            onClick={() => setSelectColor(color)}
+                            onClick={() => {
+                              setSelectColor(color);
+                              const imageIndex = product.colorImageIndexes?.[color];
+                              if (imageIndex !== undefined && images[imageIndex]) {
+                                setSelectedImage(images[imageIndex]);
+                              }
+                            }}
                             className={`flex items-center gap-2 rounded-full border px-4 py-2 transition-all duration-200 ${
                               selectColor === color
                                 ? "border-primary"
@@ -336,8 +348,13 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
               ${
                 selectSize === size
                   ? "bg-[#1B1815] text-white border-[#1B1815]"
-                  : "bg-white text-[#444] border-[#E5D9C9] hover:border-[#B8AA95] hover:bg-[#FAF6EE]"
+                  : isSizeOutOfStock(size)
+                    ? "cursor-not-allowed border-[#E5D9C9] bg-gray-100 text-gray-400 line-through opacity-60"
+                    : "bg-white text-[#444] border-[#E5D9C9] hover:border-[#B8AA95] hover:bg-[#FAF6EE]"
               }`}
+                            aria-label={`${size}${isSizeOutOfStock(size) ? " is out of stock" : ""}`}
+                            title={isSizeOutOfStock(size) ? "Out of stock" : undefined}
+                            disabled={isSizeOutOfStock(size)}
                           >
                             {size}
                           </button>
@@ -380,13 +397,16 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
             </div>
 
             {/* CTA Button */}
-            <Button
-              onClick={handleAddToCart}
-              disabled={isAdding || (product.isPreOrder && hasPreordered)}
-              className="w-full h-14 !rounded-none bg-[#4296a1] hover:bg-[#4296a1]/85 text-white  text-base "
-            >
-              {isAdding ? "Adding..." : product.isPreOrder ? hasPreordered ? "Already pre-ordered" : "Pre-Order" : "Add to Cart"} <ShoppingCart />
-            </Button>
+            {product.isPreOrder ? (
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <Button onClick={handleAddToCart} disabled={isAdding || hasPreordered} className="h-14 !rounded-none bg-[#4296a1] text-base text-white hover:bg-[#4296a1]/85">{isAdding ? "Adding..." : hasPreordered ? "Already pre-ordered" : "Pre-order"} <ShoppingCart /></Button>
+                <NotifyMeDialog productId={product._id} productName={product.productName} className="h-14 !rounded-none border border-[#4296a1] bg-white text-base text-[#4296a1] hover:bg-[#4296a1]/10" />
+              </div>
+            ) : isUnavailable ? (
+              <NotifyMeDialog productId={product._id} productName={product.productName} className="h-14 w-full !rounded-none bg-[#4296a1] text-base text-white hover:bg-[#4296a1]/85" />
+            ) : (
+              <Button onClick={handleAddToCart} disabled={isAdding} className="w-full h-14 !rounded-none bg-[#4296a1] hover:bg-[#4296a1]/85 text-white text-base">{isAdding ? "Adding..." : "Add to Cart"} <ShoppingCart /></Button>
+            )}
 
             {product.productFeatures && product?.productFeatures?.length > 0 && (
               <div className="space-y-3">

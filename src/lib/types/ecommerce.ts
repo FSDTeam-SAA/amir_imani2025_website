@@ -44,8 +44,10 @@ export interface Product {
   imgs?: string[];
   colors?: string[]; // Keep for compatibility
   color?: string[];
+  colorImageIndexes?: Record<string, number>;
   sizes?: string[]; // Keep for compatibility
   size?: string[];
+  sizeStocks?: { size: string; quantity: number }[];
   quantity?: number;
   ruleTitle?: string;
   rulls?: ProductRule[];

@@ -3,6 +3,7 @@
 import React, { useState, useCallback, useMemo } from "react";
 import { Minus, Plus, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { NotifyMeDialog } from "@/components/shared/NotifyMeDialog";
 import Image from "next/image";
 import { Product } from "@/lib/types/ecommerce";
 import { useCart } from "@/provider/cart-provider";
@@ -31,6 +32,7 @@ export default function ProductHero({ product }: ProductHeroProps) {
   const { addToCart } = useCart();
   const { amount: displayPrice, currency } = getProductPrice(product);
   const previousPrice = getProductPreviousPrice(product);
+  const isUnavailable = !product.quantity;
   const featureHtml = (
     product.feature ||
     "A psychological strategy game where every move reveals more about the board — and about you. Every selection you make tells a story."
@@ -80,7 +82,11 @@ export default function ProductHero({ product }: ProductHeroProps) {
 
   const handleColorSelect = useCallback((color: string) => {
     setSelectedColor(color);
-  }, []);
+    const imageIndex = product.colorImageIndexes?.[color];
+    if (imageIndex !== undefined && thumbnails[imageIndex]) {
+      setSelectedImage(thumbnails[imageIndex]);
+    }
+  }, [product.colorImageIndexes, thumbnails]);
 
   const validateSelection = useCallback((): boolean => {
     if (!isMerchandise) return true;
@@ -312,13 +318,16 @@ export default function ProductHero({ product }: ProductHeroProps) {
             </div>
 
             {/* Pill Shape Terracotta Button */}
-            <Button
-              onClick={handleAddToCart}
-              disabled={isAdding || (product.isPreOrder && hasPreordered)}
-              className="px-8 h-11 bg-[#E96A3D] hover:bg-[#9C523D] !rounded-none text-white text-xs font-medium uppercase tracking-wider transition-all transform active:scale-[0.98] disabled:opacity-50"
-            >
-              {isAdding ? "Adding..." : product.isPreOrder ? hasPreordered ? "Already pre-ordered" : "Pre-order" : "Add to Cart"}
-            </Button>
+            {product.isPreOrder ? (
+              <>
+                <Button onClick={handleAddToCart} disabled={isAdding || hasPreordered} className="px-8 h-11 bg-[#E96A3D] hover:bg-[#9C523D] !rounded-none text-white text-xs font-medium uppercase tracking-wider transition-all transform active:scale-[0.98] disabled:opacity-50">{isAdding ? "Adding..." : hasPreordered ? "Already pre-ordered" : "Pre-order"}</Button>
+                <NotifyMeDialog productId={product._id} productName={product.productName} className="px-8 h-11 border border-[#E96A3D] bg-transparent !rounded-none text-xs font-medium uppercase tracking-wider text-[#E96A3D] hover:bg-[#E96A3D]/10" />
+              </>
+            ) : isUnavailable ? (
+              <NotifyMeDialog productId={product._id} productName={product.productName} className="px-8 h-11 bg-[#E96A3D] hover:bg-[#9C523D] !rounded-none text-white text-xs font-medium uppercase tracking-wider" />
+            ) : (
+              <Button onClick={handleAddToCart} disabled={isAdding} className="px-8 h-11 bg-[#E96A3D] hover:bg-[#9C523D] !rounded-none text-white text-xs font-medium uppercase tracking-wider transition-all transform active:scale-[0.98] disabled:opacity-50">{isAdding ? "Adding..." : "Add to Cart"}</Button>
+            )}
 
             {/* How To Play Arrow Link */}
             <button
