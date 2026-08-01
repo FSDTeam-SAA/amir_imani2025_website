@@ -157,9 +157,9 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
   };
   return (
     <section className="py-12 lg:py-16 ">
-      <div className="grid grid-cols-1 lg:grid-cols-2  items-start lg:items-stretch">
-        {/* Left Column: Product Image */}
-        <div className="flex w-full  max-w-[480px] flex-col gap-3 mx-auto lg:ml-0 lg:min-h-0 lg:mb-8">
+      <div className="grid grid-cols-1   lg:grid-cols-2  items-start lg:gap-32 lg:items-stretch">
+        {/* Right Column: Product Image */}
+        <div className="order-2  flex w-full flex-col gap-3 mx-auto lg:ml-0 lg:min-h-0 lg:mb-8">
           {/* Thumbnail big Image  */}
           <div
             className="relative w-full aspect-square overflow-hidden lg:aspect-auto lg:min-h-0 lg:flex-1"
@@ -247,8 +247,8 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
           )}
         </div>
 
-        {/* Right Column: Product Info */}
-        <div className="flex flex-col text-left ">
+        {/* Left Column: Product Info */}
+        <div className="order-1 flex flex-col text-left">
           {/* Title and Price */}
           <h1 className="text-4xl lg:text-[40px] font-bold text-[#111111] mt-4 mb-2 leading-tight">
             {product.productName}
@@ -405,6 +405,7 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
             )}
           </div>
         </div>
+        
       </div>
     </section>
   );

@@ -44,7 +44,7 @@ export default function GarmentSpecsSection({ product }: ProductHeroProps) {
         {/* Top Header Section */}
         <div className="space-y-3 mb-14 text-left">
           <span className="text-[#3A8B91] text-[10px] font-bold tracking-[0.3em] uppercase block">
-            THE GARMENT
+            THE PRODUCT
           </span>
           <h2 className="text-3xl md:text-4xl font-normal tracking-tight text-stone-950">
             {product?.garmentTitle}

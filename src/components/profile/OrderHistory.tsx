@@ -61,9 +61,9 @@ const OrderHistory = () => {
       </div>
 
       {orders.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50 py-12 text-center text-sm text-slate-500">No orders found.</div>
+        <div className=" border border-dashed border-slate-200 bg-slate-50 py-12 text-center text-sm text-slate-500">No orders found.</div>
       ) : (
-        <div className="overflow-x-auto rounded-xl border border-slate-200">
+        <div className="overflow-x-auto  border border-slate-200">
           <table className="min-w-[1160px] w-full border-collapse text-left">
             <thead className="bg-slate-50">
               <tr className="border-b border-slate-200 text-xs font-bold uppercase tracking-wider text-slate-500">

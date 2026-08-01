@@ -91,7 +91,7 @@ const SocialIcons = () => {
         <IoLogoYoutube className="text-xl md:text-2xl text-white" />
       </Link>
         <Link
-        href="https://discord.gg/55UFGXr5"
+        href=" https://discord.com/invite/WskJsVWkbu"
         className="
           group relative flex items-center justify-center
           w-10 h-10 md:w-12 md:h-12 rounded-full

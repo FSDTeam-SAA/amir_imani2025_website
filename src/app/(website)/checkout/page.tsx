@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { FormEvent, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
@@ -16,6 +16,13 @@ import { ArrowLeft, CreditCard, Loader2, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { authService } from "@/lib/api/auth-service";
@@ -166,7 +173,7 @@ function ShippingAddressAutocomplete({
   );
 }
 
-export default function CheckoutPage() {
+function CheckoutPageContent() {
   const { data: session, update: updateSession } = useSession();
   const searchParams = useSearchParams();
   const selectedCountry = searchParams.get("shippingCountry");
@@ -184,6 +191,7 @@ export default function CheckoutPage() {
     typeof getAppliedCoupon
   >>(null);
   const [isPreparingPayment, setIsPreparingPayment] = useState(false);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [isShippingAddressComplete, setIsShippingAddressComplete] = useState(false);
   const shippingAddressElementRef = useRef<StripeAddressElement | null>(null);
 
@@ -345,6 +353,7 @@ export default function CheckoutPage() {
 
       setClientSecret(paymentData.clientSecret);
       setPaymentId(paymentData.paymentId);
+      setIsPaymentModalOpen(true);
       toast.success("Secure payment form is ready.");
     } catch (error) {
       toast.error(
@@ -513,50 +522,70 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            <div className="rounded-2xl border border-[#EFEFEF] bg-white p-6 shadow-[0px_8px_24px_rgba(0,0,0,0.03)]">
-              <div className="mb-5 flex items-center gap-2">
-                <CreditCard className="h-5 w-5 text-primary" />
-                <h2 className="text-lg font-bold text-[#111111]">Payment</h2>
-              </div>
-
-              {!stripePromise && (
-                <p className="text-sm text-red-600">
-                  Add NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY to the storefront env to
-                  enable Stripe Elements.
-                </p>
-              )}
-
-              {stripePromise && clientSecret && (
-                <Elements
-                  stripe={stripePromise}
-                  options={{
-                    clientSecret,
-                    appearance: {
-                      theme: "stripe",
-                      variables: {
-                        colorPrimary: "#F04D2A",
-                        borderRadius: "8px",
-                      },
-                    },
-                  }}
+            {clientSecret && (
+              <div className="rounded-2xl border border-[#EFEFEF] bg-white p-6 shadow-[0px_8px_24px_rgba(0,0,0,0.03)]">
+                <div className="flex items-start gap-3">
+                  <div className="rounded-full bg-primary/10 p-2 text-primary">
+                    <CreditCard className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h2 className="font-bold text-[#111111]">Payment ready</h2>
+                    <p className="mt-1 text-sm leading-6 text-[#666666]">Your secure payment form is ready to complete.</p>
+                  </div>
+                </div>
+                <Button
+                  type="button"
+                  onClick={() => setIsPaymentModalOpen(true)}
+                  className="mt-5 h-11 w-full bg-primary text-white hover:bg-[#111111]"
                 >
-                  <CheckoutPaymentForm
-                    clientSecret={clientSecret}
-                    paymentId={paymentId}
-                  />
-                </Elements>
-              )}
-
-              {stripePromise && !clientSecret && (
-                <p className="text-sm text-[#666666]">
-                  Complete the checkout details first. The secure card form will
-                  appear here.
-                </p>
-              )}
-            </div>
+                  <CreditCard className="h-4 w-4" />
+                  Open payment
+                </Button>
+              </div>
+            )}
           </aside>
         </div>
       </main>
+
+      <Dialog open={isPaymentModalOpen} onOpenChange={setIsPaymentModalOpen}>
+        <DialogContent className="max-h-[calc(100dvh-2rem)] max-w-[calc(100%-1.5rem)] overflow-y-auto rounded-2xl border-[#EFEFEF] bg-[#faf7f0] p-5 shadow-2xl sm:max-w-xl sm:p-7">
+          <DialogHeader className="border-b border-[#e9e3da] pb-5 pr-8 text-left">
+            <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+              <CreditCard className="h-5 w-5" />
+            </div>
+            <DialogTitle className="text-xl text-[#111111] sm:text-2xl">Secure payment</DialogTitle>
+            <DialogDescription className="leading-6 text-[#666666]">
+              Enter your payment details to complete this order securely.
+            </DialogDescription>
+          </DialogHeader>
+
+          {stripePromise && clientSecret && (
+            <Elements
+              stripe={stripePromise}
+              options={{
+                clientSecret,
+                appearance: {
+                  theme: "stripe",
+                  variables: {
+                    colorPrimary: "#F04D2A",
+                    borderRadius: "8px",
+                  },
+                },
+              }}
+            >
+              <CheckoutPaymentForm clientSecret={clientSecret} paymentId={paymentId} />
+            </Elements>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
+  );
+}
+
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#faf7f0]" />}>
+      <CheckoutPageContent />
+    </Suspense>
   );
 }

@@ -71,11 +71,7 @@ export default function ForgetPassword() {
   };
 
   return (
-    <section
-      className="min-h-screen flex items-center justify-center 
-      bg-[linear-gradient(0deg,rgba(212,161,50,0.90)_0%,rgba(212,161,50,0.90)_100%),url('/bg.png')] 
-      bg-cover bg-center bg-no-repeat bg-lightgray flex-col gap-5"
-    >
+    <section>
     <div className="flex justify-center mb-2">
         <Image
           src="/logo.svg"
@@ -85,7 +81,7 @@ export default function ForgetPassword() {
           className="w-auto h-auto"
         />
       </div>
-    <div className="w-full max-w-xl bg-white rounded-xl shadow-lg p-8">
+    <div className="w-full border shadow-xl max-w-xl bg-white  mt-10  p-8">
       <h2 className="text-3xl md:text-[48px] font-bold leading-[100%] font-playfair text-primary mb-2 font-heading tracking-tight text-center">
         Reset Your Password
       </h2>
@@ -120,7 +116,7 @@ export default function ForgetPassword() {
           {/* Submit */}
           <Button
             type="submit"
-            className="w-full h-10 bg-foreground hover:bg-foreground/50 cursor-pointer"
+            className="w-full !rounded-none h-10 bg-foreground hover:bg-foreground/50 cursor-pointer"
             disabled={isLoading}
           >
             {isLoading ? "Sending OTP..." : "Send OTP"}

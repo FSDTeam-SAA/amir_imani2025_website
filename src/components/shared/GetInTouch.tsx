@@ -24,6 +24,15 @@ const contactSchema = z.object({
 type ContactFormData = z.infer<typeof contactSchema>;
 type FormErrors = Partial<Record<keyof ContactFormData, string>>;
 
+const emptyFormData: ContactFormData = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  message: "",
+  phone: "",
+  privacyAgreed: false as unknown as true,
+};
+
 const MapPinIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -60,40 +69,12 @@ const MailIcon = () => (
 
 const GetInTouch = () => {
   const { mutate, isPending } = useContact();
-  const [formData, setFormData] = useState<ContactFormData>({
-    firstName: "",
-    lastName: "",
-    email: "",
-    message: "",
-    phone: "",
-    privacyAgreed: false as unknown as true,
-  });
+  const [formData, setFormData] = useState<ContactFormData>(emptyFormData);
   const [errors, setErrors] = useState<FormErrors>({});
-
-  const [fullName, setFullName] = useState("");
-
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setFullName(value);
-
-    const parts = value.trim().split(" ");
-    const fName = parts[0] || "";
-    const lName = parts.slice(1).join(" ") || "";
-
-    setFormData((prev) => ({
-      ...prev,
-      firstName: fName,
-      lastName: lName,
-    }));
-
-    if (errors.firstName || errors.lastName) {
-      setErrors((prev) => ({
-        ...prev,
-        firstName: undefined,
-        lastName: undefined,
-      }));
-    }
-  };
+  const [submitMessage, setSubmitMessage] = useState<{
+    text: string;
+    type: "success" | "error";
+  } | null>(null);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -122,12 +103,27 @@ const GetInTouch = () => {
     }
 
     setErrors({});
+    setSubmitMessage(null);
     mutate({
       firstName: formData.firstName,
       lastName: formData.lastName,
       email: formData.email,
       phoneNumber: formData.phone,
       message: formData.message,
+    }, {
+      onSuccess: (data) => {
+        setFormData(emptyFormData);
+        setSubmitMessage({
+          text: data?.message || "Message sent successfully!",
+          type: "success",
+        });
+      },
+      onError: (error) => {
+        setSubmitMessage({
+          text: error.message || "Failed to send message. Please try again.",
+          type: "error",
+        });
+      },
     });
   };
 
@@ -385,6 +381,18 @@ const GetInTouch = () => {
 
           {/* Shadcn UI / Custom Button Integration with isPending status */}
           <div>
+            {submitMessage && (
+              <p
+                className={`mb-3 text-xs ${
+                  submitMessage.type === "success"
+                    ? "text-emerald-600"
+                    : "text-red-500"
+                }`}
+                role="status"
+              >
+                {submitMessage.text}
+              </p>
+            )}
             <Button
               type="submit"
               disabled={isPending}

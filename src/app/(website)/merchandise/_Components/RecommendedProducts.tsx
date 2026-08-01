@@ -101,7 +101,7 @@ export default function ProductImageSlider({
             Loading more merchandise...
           </div>
         ) : products.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-stone-300 bg-white px-6 py-8 text-sm text-stone-500">
+          <div className="rounded-2xl border border-dashed border-stone-300 bg-[#FAF6EE] px-6 py-8 text-sm text-stone-500">
             More merchandise will appear here once additional products are available.
           </div>
         ) : (

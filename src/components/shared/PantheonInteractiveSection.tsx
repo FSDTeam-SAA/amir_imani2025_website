@@ -287,7 +287,7 @@ export default function PantheonCombinedSection() {
         {/* Bottom Preview Section */}
         <div
           ref={detailsRef}
-          className="grid grid-cols-1 items-center gap-10 md:grid-cols-7 md:gap-8 lg:gap-12 scroll-mt-6"
+          className="grid grid-cols-1 items-center gap-10 md:grid-cols-7 md:gap-8 lg:gap-12 scroll-mt-32"
         >
           {/* Left: Selected card image */}
           <div className="flex justify-center md:col-span-3 md:justify-start">

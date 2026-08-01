@@ -44,7 +44,7 @@ export default function VerifyOTP() {
   // Handle OTP input change
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    index: number
+    index: number,
   ) => {
     const val = e.target.value.replace(/\D/, "");
     if (!val) return;
@@ -57,7 +57,7 @@ export default function VerifyOTP() {
   // Handle backspace
   const handleKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>,
-    index: number
+    index: number,
   ) => {
     if (e.key === "Backspace") {
       e.preventDefault();
@@ -134,100 +134,95 @@ export default function VerifyOTP() {
   };
 
   return (
-    <section
-      className="min-h-screen flex items-center justify-center 
-      bg-[linear-gradient(0deg,rgba(212,161,50,0.90)_0%,rgba(212,161,50,0.90)_100%),url('/bg.png')] 
-      bg-cover bg-center bg-no-repeat bg-lightgray flex-col gap-5"
-    >
-         <div className="flex justify-center mb-4">
-            <Image
-              src="/logo.svg"
-              alt="logo"
-              width={50}
-              height={50}
-              className="w-full h-full"
-              priority
+    <section>
+      <div className="flex justify-center mb-2">
+        <Image
+          src="/logo.svg"
+          alt="logo"
+          width={50}
+          height={60}
+          className="w-auto h-auto"
+        />
+      </div>
+      <div className="w-full border shadow-xl max-w-xl bg-white  mt-10  p-8">
+        <h1 className="text-primary text-3xl md:text-[40px] font-bold mb-2 font-heading text-center">
+          Enter OTP
+        </h1>
+        <p className="text-gray-500 mb-6 text-center">
+          We’ve sent a 6-digit code to your email:{" "}
+          <span className="font-semibold text-[#131313]">{email}</span>
+        </p>
+
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+            <FormField
+              control={form.control}
+              name="otp"
+              render={() => (
+                <FormItem>
+                  <div className="flex justify-between gap-2">
+                    {Array.from({ length: 6 }).map((_, index) => (
+                      <Input
+                        key={index}
+                        type="text"
+                        inputMode="numeric"
+                        maxLength={1}
+                        value={otpValue[index] || ""}
+                        ref={(el) => {
+                          inputRefs.current[index] = el;
+                        }}
+                        className="h-16 rounded-none w-14 md:w-16 text-center text-2xl font-bold border-gray-300 focus:ring-2 focus:ring-primary"
+                        onChange={(e) => handleChange(e, index)}
+                        onKeyDown={(e) => handleKeyDown(e, index)}
+                      />
+                    ))}
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-    <div className="w-full max-w-xl bg-white rounded-xl shadow-lg p-8">
-      <h1 className="text-primary text-3xl md:text-[40px] font-bold mb-2 font-heading text-center">
-        Enter OTP
-      </h1>
-      <p className="text-gray-500 mb-6 text-center">
-        We’ve sent a 6-digit code to your email:{" "}
-        <span className="font-semibold text-[#131313]">{email}</span>
-      </p>
 
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
-          <FormField
-            control={form.control}
-            name="otp"
-            render={() => (
-              <FormItem>
-                <div className="flex justify-between gap-2">
-                  {Array.from({ length: 6 }).map((_, index) => (
-                    <Input
-                      key={index}
-                      type="text"
-                      inputMode="numeric"
-                      maxLength={1}
-                      value={otpValue[index] || ""}
-                      ref={(el) => {
-                        inputRefs.current[index] = el;
-                      }}
-                      className="h-16 w-14 md:w-16 text-center text-2xl font-bold border-gray-300 focus:ring-2 focus:ring-primary"
-                      onChange={(e) => handleChange(e, index)}
-                      onKeyDown={(e) => handleKeyDown(e, index)}
-                    />
-                  ))}
-                </div>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* Timer + Resend */}
-          <div className="flex justify-between items-center text-sm text-gray-500 mb-6">
-            <div className="flex items-center gap-1">
-              <span>⏱</span>
-              <span>
-                {String(Math.floor(timeLeft / 60)).padStart(2, "0")}:
-                {String(timeLeft % 60).padStart(2, "0")}
-              </span>
+            {/* Timer + Resend */}
+            <div className="flex justify-between items-center text-sm text-gray-500 mb-6">
+              <div className="flex items-center gap-1">
+                <span>⏱</span>
+                <span>
+                  {String(Math.floor(timeLeft / 60)).padStart(2, "0")}:
+                  {String(timeLeft % 60).padStart(2, "0")}
+                </span>
+              </div>
+              <div>
+                Didn’t get a code?{" "}
+                <button
+                  disabled={timeLeft > 0}
+                  className={`${
+                    timeLeft > 0
+                      ? "text-primary cursor-not-allowed"
+                      : "text-primary hover:underline cursor-pointer"
+                  }`}
+                >
+                  Resend
+                </button>
+              </div>
             </div>
-            <div>
-              Didn’t get a code?{" "}
-              <button
-                disabled={timeLeft > 0}
-                className={`${
-                  timeLeft > 0
-                    ? "text-primary cursor-not-allowed"
-                    : "text-primary hover:underline cursor-pointer"
-                }`}
-              >
-                Resend
-              </button>
-            </div>
-          </div>
 
-          <Button
-            type="submit"
-            disabled={loading}
-            className="bg-foreground hover:bg-foreground/50 text-white h-12 w-full rounded-md text-base font-semibold shadow-md flex items-center justify-center cursor-pointer"
-          >
-            {loading ? (
-              <>
-                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                Verifying...
-              </>
-            ) : (
-              "Verify"
-            )}
-          </Button>
-        </form>
-      </Form>
-    </div>
+            <Button
+              type="submit"
+              disabled={loading}
+              className="bg-foreground hover:bg-foreground/50 text-white h-12 w-full !rounded-none text-base font-semibold shadow-md flex items-center justify-center cursor-pointer"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                  Verifying...
+                </>
+              ) : (
+                "Verify"
+              )}
+            </Button>
+          </form>
+        </Form>
+      </div>
     </section>
   );
 }

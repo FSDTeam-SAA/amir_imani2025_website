@@ -233,7 +233,7 @@ export default function ProductReviewsSection({
                 </article>
               ))
             ) : (
-              <div className=" border border-dashed border-[#E4D5B7] bg-white p-6 text-sm text-[#666666]">
+              <div className=" border border-dashed border-[#E4D5B7] bg-[#fbfbfb65] p-6 text-sm text-[#666666]">
                 No published reviews yet. Be the first verified buyer to share
                 one.
               </div>
