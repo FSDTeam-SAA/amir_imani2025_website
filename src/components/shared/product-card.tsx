@@ -5,12 +5,6 @@ import { Product } from "@/lib/types/ecommerce";
 import Image from "next/image";
 import Link from "next/link";
 import { getProductPreviousPrice, getProductPrice } from "@/lib/utils/product-price";
-import {
-  hasPreorderedProduct,
-  preorderService,
-  rememberPreorderedProduct,
-} from "@/lib/api/preorder-service";
-import { toast } from "sonner";
 
 interface ProductCardProps {
   product: Product;
@@ -28,10 +22,6 @@ export default function ProductCard({
   addingToCartId,
 }: ProductCardProps) {
   const isAddingToCart = addingToCartId === product?._id;
-  const [isSubmittingPreorder, setIsSubmittingPreorder] = React.useState(false);
-  const [hasPreordered, setHasPreordered] = React.useState(() =>
-    hasPreorderedProduct(product._id),
-  );
   const productPrice = getProductPrice(product);
   const previousPrice = getProductPreviousPrice(product);
   const badgeLabels = {
@@ -47,25 +37,14 @@ export default function ProductCard({
       ? badgeLabels[product.merchandiseBadge]
       : null;
 
-  const handlePreorder = async (event: React.MouseEvent) => {
+  const handlePreorder = (event: React.MouseEvent) => {
     event.preventDefault();
     event.stopPropagation();
 
-    setIsSubmittingPreorder(true);
-    try {
-      await preorderService.create(product._id);
-      rememberPreorderedProduct(product._id);
-      setHasPreordered(true);
-      toast.success(`${product.productName} pre-order submitted successfully!`);
-    } catch (error: unknown) {
-      const message =
-        typeof error === "object" && error && "response" in error
-          ? (error as { response?: { data?: { message?: string } } }).response?.data?.message
-          : undefined;
-      toast.error(message || "Unable to submit pre-order. Please try again.");
-    } finally {
-      setIsSubmittingPreorder(false);
-    }
+    // Legacy standalone preorder API is intentionally disabled. The existing
+    // cart handler redirects this preorder to the normal checkout flow.
+    // await preorderService.create(product._id);
+    return handleAddToCart(event, product, true);
   };
 
   return (
@@ -125,13 +104,13 @@ export default function ProductCard({
               onClick={(e) =>
                 product.isPreOrder ? handlePreorder(e) : handleAddToCart(e, product)
               }
-              disabled={product.isPreOrder ? isSubmittingPreorder || hasPreordered : isAddingToCart}
+              disabled={isAddingToCart}
             >
-              {isAddingToCart || isSubmittingPreorder ? (
+              {isAddingToCart ? (
                 "..."
               ) : (
                 <>
-                  <ShoppingCart className="w-4 h-4 mr-2" /> {product.isPreOrder ? hasPreordered ? "Already pre-ordered" : "Pre-order" : "Add to Cart"}
+                  <ShoppingCart className="w-4 h-4 mr-2" /> {product.isPreOrder ? "Pre-order" : "Add to Cart"}
                 </>
               )}
             </Button>

@@ -332,6 +332,9 @@ function CheckoutPageContent() {
         shippingAddress,
         couponCode: appliedCoupon?.code?.trim() || undefined,
         currency: currency.toLowerCase() as "usd" | "cad",
+        orderType: items.some((item) => item.productId.isPreOrder)
+          ? "preorder"
+          : "order",
       };
 
       const response = await paymentService.createPaymentIntent(payload);

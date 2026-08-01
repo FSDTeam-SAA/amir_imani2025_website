@@ -18,11 +18,6 @@ import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getProductPreviousPrice, getProductPrice } from "@/lib/utils/product-price";
-import {
-  hasPreorderedProduct,
-  preorderService,
-  rememberPreorderedProduct,
-} from "@/lib/api/preorder-service";
 
 export interface ProductHeroProps {
   product: Product;
@@ -34,9 +29,6 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
   const previousPrice = getProductPreviousPrice(product);
   const isUnavailable = !product.quantity;
   const [isAdding, setIsAdding] = useState(false);
-  const [hasPreordered, setHasPreordered] = useState(() =>
-    hasPreorderedProduct(product._id),
-  );
   const [selectColor, setSelectColor] = useState<string | null>(null);
   const [selectSize, setSelectSize] = useState<string | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(
@@ -97,26 +89,11 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
   const { data: session } = useSession();
 
   const handleAddToCart = async () => {
-    if (product.isPreOrder) {
-      setIsAdding(true);
-      try {
-        await preorderService.create(product._id);
-        rememberPreorderedProduct(product._id);
-        setHasPreordered(true);
-        toast.success(`${product.productName} pre-order submitted successfully!`);
-      } catch (error: unknown) {
-        const message =
-          typeof error === "object" && error && "response" in error
-            ? (error as { response?: { data?: { message?: string } } }).response?.data?.message
-            : undefined;
-        toast.error(message || "Unable to submit pre-order. Please try again.");
-      } finally {
-        setIsAdding(false);
-      }
-      return;
-    }
-
     setIsAdding(true);
+
+    // Legacy standalone preorder API is intentionally disabled. Preorders now
+    // use the normal cart, checkout, and payment flow below.
+    // await preorderService.create(product._id);
 
     if (
       ((product.colors && product.colors.length > 0) ||
@@ -154,6 +131,9 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
       toast.success(
         `${product.productName} ${product.isPreOrder ? "pre-order added to cart" : "added to cart"}!`,
       );
+      if (product.isPreOrder) {
+        window.location.assign("/cart");
+      }
     } catch (error) {
       toast.error("Failed to add to cart. Please try again.");
       console.error("Add to cart error:", error);
@@ -399,7 +379,7 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
             {/* CTA Button */}
             {product.isPreOrder ? (
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                <Button onClick={handleAddToCart} disabled={isAdding || hasPreordered} className="h-14 !rounded-none bg-[#4296a1] text-base text-white hover:bg-[#4296a1]/85">{isAdding ? "Adding..." : hasPreordered ? "Already pre-ordered" : "Pre-order"} <ShoppingCart /></Button>
+                <Button onClick={handleAddToCart} disabled={isAdding} className="h-14 !rounded-none bg-[#4296a1] text-base text-white hover:bg-[#4296a1]/85">{isAdding ? "Adding..." : "Pre-order"} <ShoppingCart /></Button>
                 <NotifyMeDialog productId={product._id} productName={product.productName} className="h-14 !rounded-none border border-[#4296a1] bg-white text-base text-[#4296a1] hover:bg-[#4296a1]/10" />
               </div>
             ) : isUnavailable ? (

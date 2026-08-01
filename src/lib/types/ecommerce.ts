@@ -208,6 +208,7 @@ export interface CreatePaymentIntentRequest {
   shippingAddress: ShippingAddress;
   currency?: "usd" | "cad";
   couponCode?: string;
+  orderType?: "order" | "preorder";
 }
 
 export interface PaymentIntentData {
