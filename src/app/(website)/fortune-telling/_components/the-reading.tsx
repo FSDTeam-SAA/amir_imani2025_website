@@ -393,23 +393,23 @@ export default function TheReading() {
                 </motion.button>
               </div>
 
-              <div className="relative z-10 mt-6 grid gap-5 lg:grid-cols-3">
+              <div className="relative z-10 mt-6 grid grid-cols-3 gap-2 sm:gap-4">
                 {displayedCards.map((card, index) => (
                   <div
                     key={`${card.id}-${index}`}
-                    className="group flex pb-4  flex-col justify-center rounded-[2px] border border-[#f0a95d] bg-[linear-gradient(180deg,rgba(58,35,24,0.98),rgba(44,26,18,0.98))]  text-center shadow-[0_0_0_1px_rgba(240,169,93,0.18)] "
+                    className="group flex min-h-28 flex-col items-center justify-center gap-2 rounded-[2px] border border-[#f0a95d] bg-[linear-gradient(180deg,rgba(58,35,24,0.98),rgba(44,26,18,0.98))] p-2 text-center shadow-[0_0_0_1px_rgba(240,169,93,0.18)] sm:min-h-40 sm:gap-3 sm:p-4"
                   >
-                    <div>
-                      <div>
+                    <div className="flex flex-col items-center gap-2 sm:gap-3">
+                      <div className="relative h-12 w-12 sm:h-20 sm:w-20">
                         <Image
                           src={card.imageSrc}
                           alt={card.name}
                           width={1000}
                           height={1000}
-                          className="h-full w-full object-contain"
+                          className="h-full w-full object-contain transition-transform duration-200 group-hover:scale-105"
                         />
                       </div>
-                      <p className="font-serif text-[clamp(2.5rem,6vw,4.5rem)] leading-none tracking-[-0.03em] text-[#efe4d4]">
+                      <p className="font-serif text-lg leading-none tracking-[-0.03em] text-[#efe4d4] sm:text-2xl">
                         {card.name}
                       </p>
                     </div>
@@ -444,7 +444,7 @@ export default function TheReading() {
           ) : (
             <motion.div
               key="picker"
-              className="relative mt-10 flex min-h-[480px] items-center justify-center sm:mt-12 sm:min-h-[560px]"
+              className="relative mt-10 flex min-h-[440px] items-center justify-center sm:mt-12 sm:min-h-[520px]"
               variants={itemVariants}
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
@@ -502,7 +502,7 @@ export default function TheReading() {
                 {cardRows.map((row, rowIndex) => (
                   <div
                     key={rowIndex}
-                    className={`relative flex w-full flex-nowrap justify-center ${
+                  className={`relative flex w-full flex-nowrap justify-center ${
                       rowIndex === 1
                         ? "-mt-1 sm:mt-0"
                         : rowIndex === 2
@@ -596,13 +596,13 @@ export default function TheReading() {
                                 transform: "rotateY(180deg)",
                               }}
                             >
-                              <div className="relative flex h-[48px] w-[48px] items-center justify-center sm:h-[78px] sm:w-[78px]">
+                              <div className="relative flex h-9 w-9 items-center justify-center sm:h-14 sm:w-56">
                                 <Image
                                   src={card.imageSrc}
                                   alt={card.name}
                                   width={1000}
                                   height={1000}
-                                  className="h-full w-full sm:min-w-[200px] sm:min-h-[200px] object-contain"
+                                  className="h-full w-full sm:min-w-[100px] sm:min-h-[100px] object-contain"
                                 />
                               </div>
 

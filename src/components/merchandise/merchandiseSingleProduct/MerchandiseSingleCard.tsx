@@ -141,14 +141,15 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
       setIsAdding(false);
     }
   };
+  
   return (
     <section className="py-12 lg:py-16 ">
-      <div className="grid grid-cols-1   lg:grid-cols-2  items-start lg:gap-32 lg:items-stretch">
+      <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-2 lg:gap-32">
         {/* Right Column: Product Image */}
-        <div className="order-2  flex w-full flex-col gap-3 mx-auto lg:ml-0 lg:min-h-0 lg:mb-8">
+        <div className="order-1 mx-auto flex w-full max-w-md flex-col gap-3 lg:order-2 lg:mx-0 lg:max-w-lg lg:justify-self-end">
           {/* Thumbnail big Image  */}
           <div
-            className="relative w-full aspect-square overflow-hidden lg:aspect-auto lg:min-h-0 lg:flex-1"
+            className="relative aspect-square w-full overflow-hidden"
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
           >
@@ -210,7 +211,7 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
                 <button
                   type="button"
                   key={`${img}-${index}`}
-                  className={`relative aspect-square min-w-18 flex-1 basis-0 overflow-hidden  border-2 transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
+                    className={`relative h-16 w-16 shrink-0 overflow-hidden border-2 transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 lg:h-18 lg:w-18 ${
                     selectedImage === img || (!selectedImage && index === 0)
                       ? "border-primary shadow-md"
                       : "border-gray-200 hover:border-primary/50"
@@ -234,7 +235,7 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
         </div>
 
         {/* Left Column: Product Info */}
-        <div className="order-1 flex flex-col text-left">
+        <div className="order-2 flex flex-col text-left lg:order-1">
           {/* Title and Price */}
           <h1 className="text-4xl lg:text-[40px] font-bold text-[#111111] mt-4 mb-2 leading-tight">
             {product.productName}
@@ -414,22 +415,22 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
 export const MerchandiseSingleCardSkeleton = () => {
   return (
     <section className="py-12 lg:py-16">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-start lg:items-stretch">
+      <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-2 lg:gap-24">
         {/* Left Column Skeleton */}
-        <div className="flex w-full max-w-[480px] flex-col gap-3 mx-auto lg:ml-0 lg:min-h-0">
-          <Skeleton className="w-full aspect-square rounded-md lg:aspect-auto lg:min-h-0 lg:flex-1" />
+        <div className="order-1 mx-auto flex w-full max-w-md flex-col gap-3 lg:order-2 lg:mx-0 lg:max-w-lg lg:justify-self-end">
+          <Skeleton className="aspect-square w-full rounded-md" />
           <div className="flex w-full gap-3 p-1">
             {[...Array(4)].map((_, i) => (
               <Skeleton
                 key={i}
-                className="aspect-square min-w-18 flex-1 basis-0 rounded-md"
+                className="h-16 w-16 shrink-0 rounded-md lg:h-18 lg:w-18"
               />
             ))}
           </div>
         </div>
 
         {/* Right Column Skeleton */}
-        <div className="flex flex-col gap-6">
+        <div className="order-2 flex flex-col gap-6 lg:order-1">
           <Skeleton className="h-6 w-20" />
           <Skeleton className="h-12 w-full md:w-3/4" />
           <Skeleton className="h-10 w-24" />

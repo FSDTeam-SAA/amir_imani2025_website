@@ -55,7 +55,7 @@ const DownloadForm = ({ gameName }: { gameName: string }) => {
     mutation.mutate(payload, {
       onSuccess: (data) => {
         console.log("Success:", data);
-        setSuccessMessage("Please check your inbox to check download Print and play");
+        setSuccessMessage("Please check your inbox to download your Print & Play copy");
         form.reset();
       },
       onError: (error) => {

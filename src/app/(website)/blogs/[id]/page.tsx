@@ -177,13 +177,13 @@ const BlogDetailsPage = () => {
 
         {/* Hero Image */}
         {blog.img && (
-          <div className="mb-10 aspect-video overflow-hidden rounded-3xl bg-gray-100">
+          <div className="mb-10  overflow-hidden  border-gray-200">
             <Image
               src={blog.img}
               alt={blog.title}
               width={1900}
               height={700}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-contain"
               priority
             />
           </div>
