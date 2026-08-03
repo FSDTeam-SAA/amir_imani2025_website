@@ -44,6 +44,22 @@ export default function ProductPage() {
     fetchProduct();
   }, [productId]);
 
+  useEffect(() => {
+    if (loading || !product || window.location.hash !== "#game-video") {
+      return;
+    }
+
+    // The browser resolves the URL hash before this client-fetched product has
+    // rendered, so retry once the target section exists in the DOM.
+    const frameId = window.requestAnimationFrame(() => {
+      document
+        .getElementById("game-video")
+        ?.scrollIntoView({ block: "start" });
+    });
+
+    return () => window.cancelAnimationFrame(frameId);
+  }, [loading, product]);
+
   if (loading) {
     return (
       <div className="min-h-screen bg-[#FBFBFB] flex items-center justify-center">
