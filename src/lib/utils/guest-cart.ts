@@ -74,8 +74,11 @@ export const addGuestCartItems = (items: CartItemInputWithProduct[]): Cart => {
         cartItem.size === item.size
     );
 
+    const nextQuantity = (existingItem?.quantity || 0) + item.quantity;
+    assertItemStock(item.product, item.color, item.size, nextQuantity);
+
     if (existingItem) {
-      existingItem.quantity += item.quantity;
+      existingItem.quantity = nextQuantity;
     } else {
       productIds.push({
         productId: item.product,
@@ -100,13 +103,18 @@ export const updateGuestCartItem = (
 ): Cart => {
   const cart = getGuestCart();
   const productIds = cart.productIds
-    .map((item: CartItem) =>
-      item.productId._id === productId &&
-      item.color === color &&
-      item.size === size
-        ? { ...item, quantity }
-        : item
-    )
+    .map((item: CartItem) => {
+      if (
+        item.productId._id !== productId ||
+        item.color !== color ||
+        item.size !== size
+      ) {
+        return item;
+      }
+
+      assertItemStock(item.productId, color, size, quantity);
+      return { ...item, quantity };
+    })
     .filter((item) => item.quantity > 0);
 
   return saveGuestCart({
@@ -137,3 +145,26 @@ export const removeGuestCartItem = (
 };
 
 export const clearGuestCart = (): Cart => saveGuestCart(createEmptyGuestCart());
+
+function assertItemStock(
+  product: Product,
+  color: string | undefined,
+  size: string | undefined,
+  quantity: number,
+) {
+  if (product.colorSizeStocks?.length) {
+    const stock = product.colorSizeStocks
+      .find((entry) => entry.color === color)
+      ?.sizes.find((entry) => entry.size === size);
+    if (!color || !size || !stock || stock.quantity < quantity) {
+      throw new Error(`The selected color and size is out of stock for ${product.productName}.`);
+    }
+    return;
+  }
+
+  if (!size || !product.sizeStocks?.length) return;
+  const stock = product.sizeStocks.find((entry) => entry.size === size);
+  if (!stock || stock.quantity < quantity) {
+    throw new Error(`${size.toUpperCase()} is out of stock for ${product.productName}.`);
+  }
+}

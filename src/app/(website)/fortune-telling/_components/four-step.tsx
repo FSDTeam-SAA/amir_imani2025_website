@@ -41,11 +41,10 @@ export default function FourSteps() {
       <div className="space-y-10">
         <div className="space-y-3">
           <span className="block text-[9px] uppercase tracking-[0.26em] text-[#c9803d]">
-           READING GUIDE
+            READING GUIDE
           </span>
           <h2 className="font-serif text-[42px] font-light leading-none tracking-[-0.04em] text-[#f3e9da] sm:text-[52px]">
-           One Circle.
-A simple path. A deeper reading.
+            One Circle. A simple path. A deeper reading.
           </h2>
         </div>
 

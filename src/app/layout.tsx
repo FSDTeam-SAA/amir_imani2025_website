@@ -41,7 +41,7 @@ export default function RootLayout({
             <CartProvider>
                {/* <CustomCursor/> */}
               {children}
-              <Toaster position="top-right" richColors />
+              <Toaster position="top-center" duration={2000} richColors />
             </CartProvider>
           </Provider>
         </TanstackProvider>
