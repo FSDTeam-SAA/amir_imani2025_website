@@ -8,47 +8,78 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 const gridItems = [
   {
     title: "STUDIO",
-    image: "/about/logo.jpg",
-    width: 3528,
-    height: 2224,
+    image: "/about/first.png",
+    width: 568,
+    height: 564,
   },
   {
     title: "PROTOTYPE",
-    image: "/about/GameBox_v2.jpg",
-    width: 2160,
-    height: 1794,
+    image: "/about/4th.png",
+    width: 568,
+    height: 421,
   },
   {
     title: "SYMBOLS",
-    image: "/about/Symbols.jpg",
-    width: 1200,
-    height: 1600,
+    image: "/about/2nd.png",
+    width: 443,
+    height: 323,
   },
   {
     title: "SKETCHES",
-    image: "/about/Icons.jpg",
-    width: 2268,
-    height: 4032,
+    image: "/about/5th.png",
+    width: 443,
+    height: 323,
   },
   {
     title: "BOX DESIGN",
-    image: "/about/GameBox.jpg",
-    width: 2180,
-    height: 2418,
+    image: "/about/7th.png",
+    width: 443,
+    height: 323,
   },
   {
     title: "PROCESS",
-    image: "/about/Symbols_2.jpg",
-    width: 1200,
-    height: 1600,
+    image: "/about/3rd.png",
+    width: 398,
+    height: 492,
   },
   {
     title: "STUDIO DAY",
-    image: "/about/Symbols_3.jpg",
-    width: 3156,
-    height: 2268,
+    image: "/about/6th.png",
+    width: 398,
+    height: 492,
   },
 ];
+
+type GalleryImage = (typeof gridItems)[number];
+
+function GalleryTile({
+  item,
+  index,
+  onOpen,
+}: {
+  item: GalleryImage;
+  index: number;
+  onOpen: (index: number) => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={() => onOpen(index)}
+      aria-label={`Open ${item.title} image`}
+      className="group relative min-h-0 overflow-hidden rounded-xs text-left transition-all duration-300 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#577b8a]"
+    >
+      <Image
+        src={item.image}
+        alt={`${item.title} behind the scenes`}
+        width={item.width}
+        height={item.height}
+        sizes="(min-width: 1024px) 40vw, (min-width: 640px) 50vw, 100vw"
+        className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.02]"
+      />
+      <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-black/0 to-black/40" />
+    </button>
+  );
+}
 
 export default function MakingOfSection() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -108,26 +139,46 @@ export default function MakingOfSection() {
         </div>
       </div>
 
-      {/* Each image keeps its natural aspect ratio; CSS columns create the masonry layout. */}
-      <div className="container mx-auto columns-1 gap-4 sm:columns-2 lg:columns-3">
-        {gridItems.map((item, index) => (
-          <button
-            type="button"
-            key={index}
-            onClick={() => setSelectedIndex(index)}
-            aria-label={`Open ${item.title} image`}
-            className="mb-4 block w-full break-inside-avoid cursor-zoom-in text-left transition-all duration-300 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#577b8a]"
-          >
-            <Image
-              src={item.image}
-              alt={`${item.title} behind the scenes`}
-              width={item.width}
-              height={item.height}
-              sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-              className="h-auto w-full"
-            />
-          </button>
-        ))}
+      {/* The column/row ratios mirror the source images at the 1440px × 1000px reference size. */}
+      <div className="mx-auto w-full max-w-[1440px]">
+        <div className="hidden aspect-[36/25] grid-cols-[minmax(0,1.4269fr)_minmax(0,1.1128fr)_minmax(0,1fr)] gap-4 lg:grid">
+          <div className="grid min-h-0 grid-rows-[1.3397fr_1fr] gap-4">
+            <GalleryTile item={gridItems[0]} index={0} onOpen={setSelectedIndex} />
+            <GalleryTile item={gridItems[1]} index={1} onOpen={setSelectedIndex} />
+          </div>
+
+          <div className="grid min-h-0 grid-rows-3 gap-4">
+            <GalleryTile item={gridItems[2]} index={2} onOpen={setSelectedIndex} />
+            <GalleryTile item={gridItems[3]} index={3} onOpen={setSelectedIndex} />
+            <GalleryTile item={gridItems[4]} index={4} onOpen={setSelectedIndex} />
+          </div>
+
+          <div className="grid min-h-0 grid-rows-2 gap-4">
+            <GalleryTile item={gridItems[5]} index={5} onOpen={setSelectedIndex} />
+            <GalleryTile item={gridItems[6]} index={6} onOpen={setSelectedIndex} />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:hidden">
+          {gridItems.map((item, index) => (
+            <button
+              type="button"
+              key={item.image}
+              onClick={() => setSelectedIndex(index)}
+              aria-label={`Open ${item.title} image`}
+              className="group overflow-hidden rounded-xs text-left transition-all duration-300 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#577b8a]"
+            >
+              <Image
+                src={item.image}
+                alt={`${item.title} behind the scenes`}
+                width={item.width}
+                height={item.height}
+                sizes="(min-width: 640px) 50vw, 100vw"
+                className="h-auto w-full transition-transform duration-500 group-hover:scale-[1.02]"
+              />
+            </button>
+          ))}
+        </div>
       </div>
 
       <AnimatePresence>
