@@ -33,14 +33,17 @@ export default function MediaSection({
   const embedUrl = videoLink ? getYouTubeEmbedUrl(videoLink) : null;
 
   return (
-    <section id="game-video" className="my-10 container border-[#EFEFEF]">
-      <p className="text-center font-semibold">WATCH - 3 MINUTE OVERVIEW</p>
+    <section
+      id="game-video"
+      className="container my-10 scroll-mt-28 border-[#EFEFEF] md:scroll-mt-32"
+    >
+      <p  className="text-center font-semibold">WATCH - 3 MINUTE OVERVIEW</p>
 
       <h2 className="text-[#0E1D2B] mt-4 text-2xl md:text-3xl lg:text-5xl mb-10 text-center">
         Learn {productName} in the time it takes to shuffle.
       </h2>
 
-      <div className="relative w-full aspect-video  overflow-hidden shadow-[0px_20px_40px_rgba(0,0,0,0.08)] bg-gray-100 mb-8">
+      <div  className="relative w-full aspect-video  overflow-hidden shadow-[0px_20px_40px_rgba(0,0,0,0.08)] bg-gray-100 mb-8">
         {embedUrl ? (
           <iframe
             src={embedUrl}
