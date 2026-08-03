@@ -27,7 +27,30 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
   const [quantity, setQuantity] = useState(1);
   const { amount: displayPrice, currency } = getProductPrice(product);
   const previousPrice = getProductPreviousPrice(product);
-  const isUnavailable = !product.quantity;
+  const hasColorSizeStock = Boolean(product.colorSizeStocks?.length);
+  const availableColors =
+    product.color?.length
+      ? product.color
+      : product.colors?.length
+        ? product.colors
+        : product.colorSizeStocks?.map((stock) => stock.color) || [];
+  const availableSizes =
+    product.size?.length
+      ? product.size
+      : product.sizes?.length
+        ? product.sizes
+        : Array.from(
+            new Set(
+              product.colorSizeStocks?.flatMap((stock) =>
+                stock.sizes.map((size) => size.size),
+              ) || [],
+            ),
+          );
+  const isUnavailable = hasColorSizeStock
+    ? !product.colorSizeStocks?.some((stock) =>
+        stock.sizes.some((size) => size.quantity > 0),
+      )
+    : !product.quantity;
   const [isAdding, setIsAdding] = useState(false);
   const [selectColor, setSelectColor] = useState<string | null>(null);
   const [selectSize, setSelectSize] = useState<string | null>(null);
@@ -52,9 +75,25 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
         ? [product.img]
         : [];
   const isSizeOutOfStock = (size: string) => {
+    if (hasColorSizeStock) {
+      if (!selectColor) return true;
+      const sizeStock = product.colorSizeStocks
+        ?.find((stock) => stock.color === selectColor)
+        ?.sizes.find((stock) => stock.size === size);
+      return !sizeStock || sizeStock.quantity <= 0;
+    }
     const sizeStock = product.sizeStocks?.find((item) => item.size === size);
     return sizeStock !== undefined && sizeStock.quantity <= 0;
   };
+  const isColorOutOfStock = (color: string) =>
+    hasColorSizeStock &&
+    !product.colorSizeStocks
+      ?.find((stock) => stock.color === color)
+      ?.sizes.some((size) => size.quantity > 0);
+  const isWhiteColor = (color: string) =>
+    ["white", "#fff", "#ffffff", "fff", "ffffff"].includes(
+      color.trim().toLowerCase(),
+    );
 
   const goNextImage = () => {
     if (images.length <= 1) return;
@@ -96,8 +135,7 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
     // await preorderService.create(product._id);
 
     if (
-      ((product.colors && product.colors.length > 0) ||
-        (product.color && product.color.length > 0)) &&
+      availableColors.length > 0 &&
       !selectColor
     ) {
       toast.error("Please select a color.");
@@ -106,8 +144,7 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
     }
 
     if (
-      ((product.sizes && product.sizes.length > 0) ||
-        (product.size && product.size.length > 0)) &&
+      availableSizes.length > 0 &&
       !selectSize
     ) {
       toast.error("Please select a size.");
@@ -264,19 +301,26 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
             <div>
               {/* Color and Size Options */}
               <div className="md:flex flex-col justify-between gap-12 mb-7 md:space-y-0 space-y-4">
-                {(product.color || product.colors) &&
-                  (product.color?.length || 0) + (product.colors?.length || 0) >
-                    0 && (
+                {availableColors.length > 0 && (
                     <div className="flex flex-col gap-4 ">
                       <span className="text-sm font-medium min-w-[60px]">
                         Colors
                       </span>
                       <div className="flex flex-wrap gap-3">
-                        {(product.color || product.colors)?.map((color) => (
+                        {availableColors.map((color) => (
                           <button
                             key={color}
                             onClick={() => {
+                              if (isColorOutOfStock(color)) return;
                               setSelectColor(color);
+                              if (selectSize && hasColorSizeStock) {
+                                const nextSizeStock = product.colorSizeStocks
+                                  ?.find((stock) => stock.color === color)
+                                  ?.sizes.find((stock) => stock.size === selectSize);
+                                if (!nextSizeStock || nextSizeStock.quantity <= 0) {
+                                  setSelectSize(null);
+                                }
+                              }
                               const imageIndex = product.colorImageIndexes?.[color];
                               if (imageIndex !== undefined && images[imageIndex]) {
                                 setSelectedImage(images[imageIndex]);
@@ -285,8 +329,12 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
                             className={`flex items-center gap-2 rounded-full border px-4 py-2 transition-all duration-200 ${
                               selectColor === color
                                 ? "border-primary"
-                                : "border-gray-300 hover:border-gray-500"
+                                : isColorOutOfStock(color)
+                                  ? "cursor-not-allowed border-gray-200 bg-gray-100 opacity-50"
+                                  : "border-gray-300 hover:border-gray-500"
                             }`}
+                            disabled={isColorOutOfStock(color)}
+                            aria-label={`${color}${isColorOutOfStock(color) ? " is out of stock" : ""}`}
                           >
                             {/* Color Circle */}
                             <div
@@ -298,7 +346,13 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
                               }}
                             >
                               {selectColor === color && (
-                                <Check className="w-3 h-3 text-white" />
+                                <Check
+                                  className={`w-3 h-3 ${
+                                    isWhiteColor(color)
+                                      ? "text-[#111111]"
+                                      : "text-white"
+                                  }`}
+                                />
                               )}
                             </div>
 
@@ -312,16 +366,14 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
                     </div>
                   )}
 
-                {(product.size || product.sizes) &&
-                  (product.size?.length || 0) + (product.sizes?.length || 0) >
-                    0 && (
+                {availableSizes.length > 0 && (
                     <div className="flex flex-col gap-4">
                       <span className="text-sm font-medium min-w-[60px]">
                         Sizes:
                       </span>
 
                       <div className="flex flex-wrap gap-3">
-                        {(product.size || product.sizes)?.map((size) => (
+                        {availableSizes.map((size) => (
                           <button
                             key={size}
                             onClick={() => setSelectSize(size)}
@@ -333,8 +385,8 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
                     ? "cursor-not-allowed border-[#E5D9C9] bg-gray-100 text-gray-400 line-through opacity-60"
                     : "bg-white text-[#444] border-[#E5D9C9] hover:border-[#B8AA95] hover:bg-[#FAF6EE]"
               }`}
-                            aria-label={`${size}${isSizeOutOfStock(size) ? " is out of stock" : ""}`}
-                            title={isSizeOutOfStock(size) ? "Out of stock" : undefined}
+                            aria-label={`${size}${isSizeOutOfStock(size) ? hasColorSizeStock && !selectColor ? " requires a color selection" : " is out of stock" : ""}`}
+                            title={isSizeOutOfStock(size) ? hasColorSizeStock && !selectColor ? "Select a color first" : "Out of stock" : undefined}
                             disabled={isSizeOutOfStock(size)}
                           >
                             {size}
@@ -378,7 +430,7 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
             </div>
 
             {/* CTA Button */}
-            {product.isPreOrder ? (
+            {product.isPreOrder && isUnavailable ? (
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <Button onClick={handleAddToCart} disabled={isAdding} className="h-14 !rounded-none bg-[#4296a1] text-base text-white hover:bg-[#4296a1]/85">{isAdding ? "Adding..." : "Pre-order"} <ShoppingCart /></Button>
                 <NotifyMeDialog productId={product._id} productName={product.productName} className="h-14 !rounded-none border border-[#4296a1] bg-white text-base text-[#4296a1] hover:bg-[#4296a1]/10" />
@@ -386,7 +438,7 @@ const MerchandiseSingleCard = ({ product }: ProductHeroProps) => {
             ) : isUnavailable ? (
               <NotifyMeDialog productId={product._id} productName={product.productName} className="h-14 w-full !rounded-none bg-[#4296a1] text-base text-white hover:bg-[#4296a1]/85" />
             ) : (
-              <Button onClick={handleAddToCart} disabled={isAdding} className="w-full h-14 !rounded-none bg-[#4296a1] hover:bg-[#4296a1]/85 text-white text-base">{isAdding ? "Adding..." : "Add to Cart"} <ShoppingCart /></Button>
+              <Button onClick={handleAddToCart} disabled={isAdding} className="w-full h-14 !rounded-none bg-[#4296a1] hover:bg-[#4296a1]/85 text-white text-base">{isAdding ? "Adding..." : product.isPreOrder ? "Pre-order" : "Add to Cart"} <ShoppingCart /></Button>
             )}
 
             {product.productFeatures && product?.productFeatures?.length > 0 && (

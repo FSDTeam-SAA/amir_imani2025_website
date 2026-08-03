@@ -48,6 +48,10 @@ export interface Product {
   sizes?: string[]; // Keep for compatibility
   size?: string[];
   sizeStocks?: { size: string; quantity: number }[];
+  colorSizeStocks?: {
+    color: string;
+    sizes: { size: string; quantity: number }[];
+  }[];
   quantity?: number;
   ruleTitle?: string;
   rulls?: ProductRule[];
