@@ -1,12 +1,11 @@
 "use client";
 
-import { FormEvent, Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { FormEvent, Suspense, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
 import {
   Elements,
-  AddressElement,
   PaymentElement,
   useElements,
   useStripe,
@@ -36,7 +35,10 @@ import { clearGuestCart } from "@/lib/utils/guest-cart";
 import { useCartQuery } from "@/hooks/use-cart-query";
 import { getProductPrice } from "@/lib/utils/product-price";
 import { calculateShippingCad } from "@/lib/utils/shipping";
-import type { StripeAddressElement, StripeAddressElementChangeEvent } from "@stripe/stripe-js";
+import {
+  GeoapifyAddressAutocomplete,
+  ShippingAddressValues,
+} from "@/components/checkout/geoapify-address-autocomplete";
 
 const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
   ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
@@ -148,31 +150,6 @@ function CheckoutPaymentForm({
   );
 }
 
-function ShippingAddressAutocomplete({
-  onChange,
-  onReady,
-}: {
-  onChange: (event: StripeAddressElementChangeEvent) => void;
-  onReady: (element: StripeAddressElement) => void;
-}) {
-  const googleMapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
-
-  return (
-    <AddressElement
-      options={{
-        mode: "shipping",
-        allowedCountries: ["US", "CA"],
-        fields: { phone: "never" },
-        ...(googleMapsApiKey
-          ? { autocomplete: { mode: "google_maps_api", apiKey: googleMapsApiKey } }
-          : {}),
-      }}
-      onChange={onChange}
-      onReady={onReady}
-    />
-  );
-}
-
 function CheckoutPageContent() {
   const { data: session, update: updateSession } = useSession();
   const searchParams = useSearchParams();
@@ -192,8 +169,6 @@ function CheckoutPageContent() {
   >>(null);
   const [isPreparingPayment, setIsPreparingPayment] = useState(false);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
-  const [isShippingAddressComplete, setIsShippingAddressComplete] = useState(false);
-  const shippingAddressElementRef = useRef<StripeAddressElement | null>(null);
 
   const isAuthenticated = Boolean(session?.user?.id);
   const items = useMemo(() => cart?.productIds || [], [cart?.productIds]);
@@ -232,17 +207,8 @@ function CheckoutPageContent() {
       }));
     };
 
-  const updateShippingAddress = (event: StripeAddressElementChangeEvent) => {
-    const address = event.value.address;
-    setIsShippingAddressComplete(event.complete);
-    setValues((current) => ({
-      ...current,
-      address: [address.line1, address.line2].filter(Boolean).join(", "),
-      city: address.city || "",
-      province: address.state || "",
-      postalCode: address.postal_code || "",
-      country: (address.country === "CA" ? "CA" : "US") as "US" | "CA",
-    }));
+  const updateShippingAddress = (address: ShippingAddressValues) => {
+    setValues((current) => ({ ...current, ...address }));
   };
 
   const ensureCheckoutUser = async () => {
@@ -296,10 +262,12 @@ function CheckoutPageContent() {
       return;
     }
 
-    // getValue triggers Stripe's inline field validation, so an invalid postal
-    // code can never proceed to the payment-intent API call.
-    const addressResult = await shippingAddressElementRef.current?.getValue();
-    if (!addressResult?.complete || !isShippingAddressComplete) {
+    if (
+      !values.address ||
+      !values.city ||
+      !values.province ||
+      !values.postalCode
+    ) {
       toast.error("Please correct the shipping address, including the postal code.");
       return;
     }
@@ -446,26 +414,14 @@ function CheckoutPageContent() {
               <h2 className="mb-5 text-lg font-bold text-[#111111]">
                 Shipping address 
               </h2>
-              {stripePromise ? (
-                <>
-                  <p className="mb-3 text-sm text-[#666666]">
-                    Start typing your street address, then choose a suggestion. City,
-                    state/province, and postal code will fill automatically.
-                  </p>
-                  <Elements stripe={stripePromise}>
-                    <ShippingAddressAutocomplete
-                      onChange={updateShippingAddress}
-                      onReady={(element) => {
-                        shippingAddressElementRef.current = element;
-                      }}
-                    />
-                  </Elements>
-                </>
-              ) : (
-                <p className="text-sm text-red-600">
-                  Add NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY to enable address autocomplete.
-                </p>
-              )}
+              <p className="mb-3 text-sm text-[#666666]">
+                Start typing your street address, then choose a suggestion. City,
+                state/province, and postal code will fill automatically.
+              </p>
+              <GeoapifyAddressAutocomplete
+                value={values}
+                onChange={updateShippingAddress}
+              />
             </section>
 
             <Button
