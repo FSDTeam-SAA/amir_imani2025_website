@@ -37,7 +37,6 @@ export default function GameSection() {
   if (isLoading || featuredProducts.length === 0) return null;
 
   const primaryTitle = primaryProduct.productName;
-  const primarySubtitle = primaryProduct.feature || "Featured Game";
   const primaryImage =
     primaryProduct.homeImage ||
     primaryProduct.imgs?.[0] ||

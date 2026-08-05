@@ -104,7 +104,7 @@ const CARDS_DATA: CardData[] = [
   },
   {
     id: "Ziggy",
-    symbol: "Ziggy",
+    symbol: "ZIGGY",
     name: "Ziggy",
     imageSrc: "/shapes/zigi.png",
   },
@@ -190,7 +190,9 @@ function getApiErrorMessage(error: unknown, fallback: string) {
 }
 
 function getCardBySymbol(symbol: string) {
-  return CARDS_DATA.find((card) => card.symbol === symbol);
+  return CARDS_DATA.find(
+    (card) => card.symbol.toUpperCase() === symbol.toUpperCase(),
+  );
 }
 
 export default function TheReading() {
@@ -233,6 +235,8 @@ export default function TheReading() {
       };
 
       setActiveFortune(revealed);
+      setSelectedCards([]);
+      setSelectedOrder([]);
       toast.success("Your fortune has been revealed.");
 
       await queryClient.invalidateQueries({
@@ -280,10 +284,11 @@ export default function TheReading() {
   };
 
   const revealSelectedCards = (nextSelectedOrder: string[]) => {
-    if (todayFortune) {
-      setActiveFortune(todayFortune);
-      return;
-    }
+    // Temporary client-review mode: request a new result for every selection.
+    // if (todayFortune) {
+    //   setActiveFortune(todayFortune);
+    //   return;
+    // }
 
     if (!hasToken) {
       setIsAuthDialogOpen(true);
@@ -302,12 +307,13 @@ export default function TheReading() {
   };
 
   const handleCardClick = (id: string) => {
-    if (displayedFortune || todayFortune) {
-      toast.message(
-        "You've already revealed a reading. View it below or browse your history.",
-      );
-      return;
-    }
+    // Temporary client-review mode: allow interaction with cards after a reveal.
+    // if (displayedFortune || todayFortune) {
+    //   toast.message(
+    //     "You've already revealed a reading. View it below or browse your history.",
+    //   );
+    //   return;
+    // }
 
     if (selectedCards.includes(id)) {
       setSelectedCards((prev) => prev.filter((cardId) => cardId !== id));
@@ -354,13 +360,15 @@ export default function TheReading() {
           </p>
         </motion.div>
 
-        <AnimatePresence mode="wait">
-          {isResultView ? (
+        <div className="flex flex-col ">
+
+        <AnimatePresence mode="wait" >
+          {isResultView && (
             <motion.div
               key={
                 displayedFortune?._id || displayedFortune?.createdAt || "result"
               }
-              className="relative isolate mx-auto mt-10 w-full  overflow-hidden rounded-[2px] border border-[#2b3c40] bg-[#0d1719] p-4 sm:p-6"
+              className="order-2 relative isolate mx-auto mt-10 w-full overflow-hidden rounded-[2px] border border-[#2b3c40] bg-[#0d1719] p-4 sm:p-6"
               variants={itemVariants}
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
@@ -441,10 +449,12 @@ export default function TheReading() {
                   )}
               </motion.div>
             </motion.div>
-          ) : (
-            <motion.div
+          )}
+        </AnimatePresence>
+
+        <motion.div
               key="picker"
-              className="relative mt-10 flex min-h-[440px] items-center justify-center sm:mt-12 sm:min-h-[520px]"
+              className="order-1 relative mt-10 flex min-h-[440px] items-center justify-center sm:mt-12 sm:min-h-[520px]"
               variants={itemVariants}
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
@@ -596,7 +606,7 @@ export default function TheReading() {
                                 transform: "rotateY(180deg)",
                               }}
                             >
-                              <div className="relative flex h-9 w-9 items-center justify-center sm:h-14 sm:w-56">
+                              <div className="relative flex  w-20 items-center justify-center sm:h-14 sm:w-56">
                                 <Image
                                   src={card.imageSrc}
                                   alt={card.name}
@@ -631,9 +641,8 @@ export default function TheReading() {
                   </div>
                 ))}
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        </motion.div>
+        </div>
       </motion.section>
 
       <Dialog open={isAuthDialogOpen} onOpenChange={setIsAuthDialogOpen}>
