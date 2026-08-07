@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
+import { createLoginUrl } from "@/lib/auth/redirect";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
@@ -31,7 +32,9 @@ axiosInstance.interceptors.response.use(
     const shouldIgnore401 = (error.config as any)?._ignore401;
     if (error.response?.status === 401 && !shouldIgnore401) {
       localStorage.removeItem("authToken");
-      window.location.href = "/login";
+      window.location.href = createLoginUrl(
+        `${window.location.pathname}${window.location.search}${window.location.hash}`,
+      );
     }
     return Promise.reject(error);
   }

@@ -22,6 +22,7 @@ import { Button } from "@/components/ui/button";
 import { signIn } from "next-auth/react";
 import { toast } from "sonner";
 import { Checkbox } from "../ui/checkbox";
+import { getSafeCallbackUrl } from "@/lib/auth/redirect";
 
 // ✅ Zod validation schema
 const loginSchema = z.object({
@@ -56,8 +57,10 @@ const Login = () => {
       });
 
       if (result?.ok) {
-        // Login successful → redirect to home
-        window.location.href = "/";
+        const callbackUrl = getSafeCallbackUrl(
+          new URLSearchParams(window.location.search).get("callbackUrl"),
+        );
+        window.location.assign(callbackUrl);
         toast.success("Logged in successfully!");
       } else {
         // Login failed → show error

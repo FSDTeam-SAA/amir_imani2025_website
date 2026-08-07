@@ -11,6 +11,10 @@ export function proxy(request: NextRequest) {
   // Protect /profile route
   if (pathname.startsWith("/profile") && !token) {
     const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set(
+      "callbackUrl",
+      `${pathname}${request.nextUrl.search}`,
+    );
     return NextResponse.redirect(loginUrl);
   }
 

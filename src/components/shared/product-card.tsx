@@ -101,18 +101,8 @@ export default function ProductCard({
             <Button
               variant="secondary"
               className="flex-1 !rounded-none hover:bg-amber-100 bg-white border text-primary-foreground font-semibold"
-              onClick={(e) =>
-                product.isPreOrder ? handlePreorder(e) : handleAddToCart(e, product)
-              }
-              disabled={isAddingToCart}
             >
-              {isAddingToCart ? (
-                "..."
-              ) : (
-                <>
-                  <ShoppingCart className="w-4 h-4 mr-2" /> {product.isPreOrder ? "Pre-order" : "Add to Cart"}
-                </>
-              )}
+             View Product
             </Button>
           </div>
         </div>

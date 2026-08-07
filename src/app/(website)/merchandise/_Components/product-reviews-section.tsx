@@ -7,6 +7,8 @@ import { Loader2, Star } from "lucide-react";
 import { AxiosError } from "axios";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { usePathname } from "next/navigation";
+import { createLoginUrl } from "@/lib/auth/redirect";
 import { reviewService } from "@/lib/api/review-service";
 import {
   ProductReview,
@@ -31,6 +33,7 @@ export default function ProductReviewsSection({
 }: {
   productId: string;
 }) {
+  const pathname = usePathname();
   const { data: session, status } = useSession();
   const [reviews, setReviews] = useState<ProductReview[]>([]);
   const [summary, setSummary] = useState<ProductReviewSummary>(emptySummary);
@@ -273,7 +276,7 @@ export default function ProductReviewsSection({
           <div className="mt-6  border border-dashed border-[#E4D5B7] bg-[#FFF9EC] p-5 text-sm leading-6 text-[#6B5C3E]">
             <p>{reviewGateMessage}</p>
             <Link
-              href="/login"
+              href={createLoginUrl(pathname)}
               className="mt-3 inline-flex text-sm font-semibold text-[#3A8B91] underline underline-offset-4"
             >
               {isAuthenticated

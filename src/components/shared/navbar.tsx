@@ -20,6 +20,7 @@ import { useCart } from "@/provider/cart-provider";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import SearchMotal from "../search/SearchMotal";
 import StarfieldBackground from "@/app/(website)/fortune-telling/_components/starfield-background";
+import { createLoginUrl } from "@/lib/auth/redirect";
 
 const navigationItems = [
   { name: "Home", href: "/" },
@@ -67,6 +68,7 @@ export default function Navbar() {
   const { profile, loading } = useUserProfile();
   const { cart } = useCart();
   const isFortunePage = pathname === "/fortune-telling";
+  const loginUrl = createLoginUrl(pathname);
 
   const cartItemCount = cart?.productIds?.length || 0;
   const isAdmin = profile?.role?.toLowerCase() === "admin";
@@ -305,7 +307,7 @@ export default function Navbar() {
                     </DropdownMenuContent>
                   </DropdownMenu>
                 ) : (
-                  <Link href="/login">
+                  <Link href={loginUrl}>
                     <Button
                       size="sm"
                       className={`!rounded-none text-white font-medium ${
@@ -448,7 +450,7 @@ export default function Navbar() {
                             asChild
                           >
                             <Link
-                              href="/login"
+                              href={loginUrl}
                               onClick={() => setIsOpen(false)}
                             >
                               Log In

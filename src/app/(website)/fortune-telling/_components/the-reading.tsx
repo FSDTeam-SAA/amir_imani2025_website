@@ -10,6 +10,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { LoaderCircle, ScrollText, Sparkles, Stars } from "lucide-react";
 import { toast } from "sonner";
+import { createLoginUrl } from "@/lib/auth/redirect";
 import {
   Dialog,
   DialogContent,
@@ -284,11 +285,10 @@ export default function TheReading() {
   };
 
   const revealSelectedCards = (nextSelectedOrder: string[]) => {
-    // Temporary client-review mode: request a new result for every selection.
-    // if (todayFortune) {
-    //   setActiveFortune(todayFortune);
-    //   return;
-    // }
+    if (todayFortune) {
+      setActiveFortune(todayFortune);
+      return;
+    }
 
     if (!hasToken) {
       setIsAuthDialogOpen(true);
@@ -307,13 +307,12 @@ export default function TheReading() {
   };
 
   const handleCardClick = (id: string) => {
-    // Temporary client-review mode: allow interaction with cards after a reveal.
-    // if (displayedFortune || todayFortune) {
-    //   toast.message(
-    //     "You've already revealed a reading. View it below or browse your history.",
-    //   );
-    //   return;
-    // }
+    if (displayedFortune || todayFortune) {
+      toast.message(
+        "You've already revealed a reading. View it below or browse your history.",
+      );
+      return;
+    }
 
     if (selectedCards.includes(id)) {
       setSelectedCards((prev) => prev.filter((cardId) => cardId !== id));
@@ -418,11 +417,11 @@ export default function TheReading() {
                         />
                       </div>
                       <p className="font-serif text-lg leading-none tracking-[-0.03em] text-[#efe4d4] sm:text-2xl">
-                        {card.name}
-                      </p>
+                        {card.name}                                                                            
+                      </p>                                                                                   
                     </div>
                   </div>
-                ))}
+                ))}                                                                                                         
               </div>
 
               <motion.div
@@ -452,7 +451,8 @@ export default function TheReading() {
           )}
         </AnimatePresence>
 
-        <motion.div
+        {!isResultView && (
+          <motion.div
               key="picker"
               className="order-1 relative mt-10 flex min-h-[440px] items-center justify-center sm:mt-12 sm:min-h-[520px]"
               variants={itemVariants}
@@ -641,7 +641,8 @@ export default function TheReading() {
                   </div>
                 ))}
               </div>
-        </motion.div>
+          </motion.div>
+        )}
         </div>
       </motion.section>
 
@@ -661,7 +662,7 @@ export default function TheReading() {
           <div className="flex flex-wrap gap-3 pt-2">
             <button
               type="button"
-              onClick={() => router.push("/login")}
+              onClick={() => router.push(createLoginUrl("/fortune-telling"))}
               className="rounded-[2px] border border-[#e2974b] bg-[#e2974b] px-4 py-2.5 text-[11px] uppercase tracking-[0.14em] text-[#1b1713]"
             >
               Go to login

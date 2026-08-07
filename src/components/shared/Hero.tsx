@@ -4,6 +4,8 @@ import { MoveRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { motion } from "framer-motion";
+// import ParticleText from "@/components/ParticleText";
+
 import {
   fadeInUp,
   staggerContainer,
@@ -62,6 +64,26 @@ export default function Hero() {
             variants={fadeInUp}
           >
             <span className="block text-[#FFFFFF]">Different Games</span>
+            {/* <div className="m-0 p-0 leading-none">
+              <ParticleText 
+                text="Different Games"
+                particleSize={2.2}
+                density={4}
+                color="#f8fafc"
+                highlightColor="#8b5cf6"
+                scatter={190}
+                gatherDuration={1600}
+                stagger={420}
+                pointerRepel={42}
+                repelRadius={120}
+                idleDrift={0.8}
+                trigger="mount"
+                fontSize="clamp(3.5rem, 13vw, 9rem)"
+                fontWeight={800}
+                fontFamily="inherit"
+                glow
+              />
+            </div> */}
             <span className="block text-[#E96A3D]">One Language</span>
           </motion.h1>
 
@@ -69,7 +91,7 @@ export default function Hero() {
             className="text-[#B0B0B0] md:text-[#B0B0B0] text-base md:text-lg lg:text-xl max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed font-light"
             variants={fadeInUp}
           >
-           Every DoUndo experience speaks the same visual language.
+            Every DoUndo experience speaks the same visual language.
           </motion.p>
 
           {/* CTA Button */}
