@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -8,7 +8,7 @@ import { useSession } from "next-auth/react";
 import { AnimatePresence, motion, type Variants } from "framer-motion";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { LoaderCircle, ScrollText, Sparkles, Stars } from "lucide-react";
+import { Clock, LoaderCircle, ScrollText, Sparkles, Stars } from "lucide-react";
 import { toast } from "sonner";
 import { createLoginUrl } from "@/lib/auth/redirect";
 import {
@@ -161,15 +161,34 @@ const cardFaceTransition = {
   ease: EASE_OUT,
 };
 
-function isSameLocalDay(dateString: string) {
-  const date = new Date(dateString);
-  const now = new Date();
+function isWithin24Hours(dateString: string, comparisonDate = new Date()) {
+  const createdTime = new Date(dateString).getTime();
+  if (isNaN(createdTime)) return false;
+  const targetTime = createdTime + 24 * 60 * 60 * 1000;
+  return comparisonDate.getTime() < targetTime;
+}
 
-  return (
-    date.getFullYear() === now.getFullYear() &&
-    date.getMonth() === now.getMonth() &&
-    date.getDate() === now.getDate()
+function formatTimeRemainingFromDate(
+  createdAtString: string | null | undefined,
+  now: Date,
+) {
+  if (!createdAtString) return "00:00:00";
+
+  const createdTime = new Date(createdAtString).getTime();
+  if (isNaN(createdTime)) return "00:00:00";
+
+  const targetTime = createdTime + 24 * 60 * 60 * 1000;
+  const remainingSeconds = Math.max(
+    0,
+    Math.ceil((targetTime - now.getTime()) / 1000),
   );
+  const hours = Math.floor(remainingSeconds / 3600);
+  const minutes = Math.floor((remainingSeconds % 3600) / 60);
+  const seconds = remainingSeconds % 60;
+
+  return [hours, minutes, seconds]
+    .map((value) => String(value).padStart(2, "0"))
+    .join(":");
 }
 
 function formatFortuneDate(dateString: string) {
@@ -205,6 +224,7 @@ export default function TheReading() {
   const [selectedOrder, setSelectedOrder] = useState<string[]>([]);
   const [isAuthDialogOpen, setIsAuthDialogOpen] = useState(false);
   const [isHistoryDialogOpen, setIsHistoryDialogOpen] = useState(false);
+  const [currentTime, setCurrentTime] = useState(() => new Date());
   const [activeFortune, setActiveFortune] = useState<FortuneHistoryItem | null>(
     null,
   );
@@ -220,8 +240,20 @@ export default function TheReading() {
   });
 
   const history = historyQuery.data?.data || [];
-  const todayFortune = history.find((entry) => isSameLocalDay(entry.createdAt));
-  const displayedFortune = activeFortune ?? todayFortune ?? null;
+  const latestFortune =
+    history.length > 0
+      ? [...history].sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+        )[0]
+      : null;
+
+  const recentFortune =
+    latestFortune && isWithin24Hours(latestFortune.createdAt, currentTime)
+      ? latestFortune
+      : null;
+
+  const displayedFortune = activeFortune ?? recentFortune ?? null;
 
   const revealMutation = useMutation({
     mutationFn: (symbols: string[]) => fortuneTellingService.reveal(symbols),
@@ -251,11 +283,11 @@ export default function TheReading() {
       );
 
       if (
-        message.toLowerCase().includes("already received your fortune today")
+        message.toLowerCase().includes("already received your fortune")
       ) {
         toast.error(message);
-        if (todayFortune) {
-          setActiveFortune(todayFortune);
+        if (recentFortune) {
+          setActiveFortune(recentFortune);
         }
         return;
       }
@@ -274,6 +306,28 @@ export default function TheReading() {
         .filter(Boolean) as CardData[])
     : selectedCardDetails;
   const isResultView = Boolean(displayedFortune);
+  const timerBaseDate = latestFortune?.createdAt || displayedFortune?.createdAt;
+  const timeUntilNextReading = formatTimeRemainingFromDate(
+    timerBaseDate,
+    currentTime,
+  );
+
+  useEffect(() => {
+    if (!isResultView) {
+      return;
+    }
+
+    const intervalId = window.setInterval(() => {
+      const now = new Date();
+      setCurrentTime(now);
+
+      if (activeFortune && !isWithin24Hours(activeFortune.createdAt, now)) {
+        setActiveFortune(null);
+      }
+    }, 1000);
+
+    return () => window.clearInterval(intervalId);
+  }, [activeFortune, isResultView]);
 
   const openHistory = () => {
     if (!hasToken) {
@@ -285,8 +339,8 @@ export default function TheReading() {
   };
 
   const revealSelectedCards = (nextSelectedOrder: string[]) => {
-    if (todayFortune) {
-      setActiveFortune(todayFortune);
+    if (recentFortune) {
+      setActiveFortune(recentFortune);
       return;
     }
 
@@ -307,7 +361,7 @@ export default function TheReading() {
   };
 
   const handleCardClick = (id: string) => {
-    if (displayedFortune || todayFortune) {
+    if (displayedFortune || recentFortune) {
       toast.message(
         "You've already revealed a reading. View it below or browse your history.",
       );
@@ -360,99 +414,141 @@ export default function TheReading() {
         </motion.div>
 
         <div className="flex flex-col ">
+          <AnimatePresence mode="wait">
+            {isResultView && (
+              <motion.div
+                key={
+                  displayedFortune?._id ||
+                  displayedFortune?.createdAt ||
+                  "result"
+                }
+                className="order-2 relative isolate mx-auto mt-10 w-full overflow-hidden rounded-[2px] border border-[#2b3c40] bg-[#0d1719] p-4 sm:p-6"
+                variants={itemVariants}
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -24 }}
+              >
+                <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#101a1c_0%,#0c1416_100%)]" />
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-[radial-gradient(circle_at_top,rgba(222,148,72,0.08),transparent_68%)]" />
 
-        <AnimatePresence mode="wait" >
-          {isResultView && (
-            <motion.div
-              key={
-                displayedFortune?._id || displayedFortune?.createdAt || "result"
-              }
-              className="order-2 relative isolate mx-auto mt-10 w-full overflow-hidden rounded-[2px] border border-[#2b3c40] bg-[#0d1719] p-4 sm:p-6"
-              variants={itemVariants}
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -24 }}
-            >
-              <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#101a1c_0%,#0c1416_100%)]" />
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-[radial-gradient(circle_at_top,rgba(222,148,72,0.08),transparent_68%)]" />
-
-              <div className="relative z-10 flex flex-col gap-4 border-b border-[#243336] pb-5 sm:flex-row sm:items-start sm:justify-between">
-                <div>
-                  <div className="flex items-center gap-2 text-[12px] uppercase tracking-[0.22em] text-[#c9803d]">
-                    <Sparkles className="h-5 w-5" />
-                    <span>Revealed fortune</span>
+                <div className="relative z-10 flex flex-col gap-4 border-b border-[#243336] pb-5 sm:flex-row sm:items-start sm:justify-between">
+                  <div>
+                    <div className="flex items-center gap-2 text-[12px] uppercase tracking-[0.22em] text-[#c9803d]">
+                      <Sparkles className="h-5 w-5" />
+                      <span>Revealed fortune</span>
+                    </div>
+                    <p className="mt-3 text-[15px] leading-7 text-[#a0acab]">
+                      {displayedFortune
+                        ? `${displayedFortune.symbols.join(" • ")} • ${formatFortuneDate(displayedFortune.createdAt)}`
+                        : "Your omen is loading."}
+                    </p>
                   </div>
-                  <p className="mt-3 text-[15px] leading-7 text-[#a0acab]">
-                    {displayedFortune
-                      ? `${displayedFortune.symbols.join(" • ")} • ${formatFortuneDate(displayedFortune.createdAt)}`
-                      : "Your omen is loading."}
-                  </p>
+
+                  <motion.button
+                    type="button"
+                    whileHover={{ y: -2, scale: 1.01 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={openHistory}
+                    className="rounded-[2px] border border-[#4f5d5e] px-4 py-2.5 text-[11px] uppercase tracking-[0.14em] text-[#ced4ce] transition-colors hover:border-[#68777a]"
+                  >
+                    View history
+                  </motion.button>
                 </div>
 
-                <motion.button
-                  type="button"
-                  whileHover={{ y: -2, scale: 1.01 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={openHistory}
-                  className="rounded-[2px] border border-[#4f5d5e] px-4 py-2.5 text-[11px] uppercase tracking-[0.14em] text-[#ced4ce] transition-colors hover:border-[#68777a]"
-                >
-                  View history
-                </motion.button>
-              </div>
-
-              <div className="relative z-10 mt-6 grid grid-cols-3 gap-2 sm:gap-4">
-                {displayedCards.map((card, index) => (
-                  <div
-                    key={`${card.id}-${index}`}
-                    className="group flex min-h-28 flex-col items-center justify-center gap-2 rounded-[2px] border border-[#f0a95d] bg-[linear-gradient(180deg,rgba(58,35,24,0.98),rgba(44,26,18,0.98))] p-2 text-center shadow-[0_0_0_1px_rgba(240,169,93,0.18)] sm:min-h-40 sm:gap-3 sm:p-4"
-                  >
-                    <div className="flex flex-col items-center gap-2 sm:gap-3">
-                      <div className="relative h-12 w-12 sm:h-20 sm:w-20">
-                        <Image
-                          src={card.imageSrc}
-                          alt={card.name}
-                          width={1000}
-                          height={1000}
-                          className="h-full w-full object-contain transition-transform duration-200 group-hover:scale-105"
-                        />
+                <div className="relative z-10 mt-6 grid grid-cols-3 gap-2 sm:gap-4">
+                  {displayedCards.map((card, index) => (
+                    <div
+                      key={`${card.id}-${index}`}
+                      className="group flex min-h-28 flex-col items-center justify-center gap-2 rounded-[2px] border border-[#f0a95d] bg-[linear-gradient(180deg,rgba(58,35,24,0.98),rgba(44,26,18,0.98))] p-2 text-center shadow-[0_0_0_1px_rgba(240,169,93,0.18)] sm:min-h-40 sm:gap-3 sm:p-4"
+                    >
+                      <div className="flex flex-col items-center gap-2 sm:gap-3">
+                        <div className="relative h-12 w-12 sm:h-20 sm:w-20">
+                          <Image
+                            src={card.imageSrc}
+                            alt={card.name}
+                            width={1000}
+                            height={1000}
+                            className="h-full w-full object-contain transition-transform duration-200 group-hover:scale-105"
+                          />
+                        </div>
+                        <p className="font-serif text-lg leading-none tracking-[-0.03em] text-[#efe4d4] sm:text-2xl">
+                          {card.name}
+                        </p>
                       </div>
-                      <p className="font-serif text-lg leading-none tracking-[-0.03em] text-[#efe4d4] sm:text-2xl">
-                        {card.name}                                                                            
-                      </p>                                                                                   
                     </div>
+                  ))}
+                </div>
+
+                <div
+                  className="relative z-10 mt-5 flex items-center justify-center gap-3 border-y border-[#243336] py-3.5 text-center"
+                  role="status"
+                  aria-live="polite"
+                >
+                  {/* Animated glow behind timer */}
+                  <div className="pointer-events-none absolute inset-0 -z-10 bg-[#d7a167]/[0.025] blur-xl" />
+
+                  {/* Clock */}
+                  <div className="relative flex h-7 w-7 items-center justify-center">
+                    <span className="absolute inset-0 animate-ping rounded-full bg-[#d7a167]/10" />
+                    <Clock
+                      className="relative h-4 w-4 text-[#d7a167] drop-shadow-[0_0_6px_rgba(215,161,103,0.45)]"
+                      aria-hidden="true"
+                    />
                   </div>
-                ))}                                                                                                         
-              </div>
 
-              <motion.div
-                className="relative z-10 mt-6 space-y-4"
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.35, ease: EASE_OUT }}
-              >
-                {displayedFortune?.fortune
-                  .split("\n")
-                  .map((paragraph, index) =>
-                    paragraph.trim() ? (
-                      <p
-                        key={`${displayedFortune.createdAt}-${index}`}
-                        className={`leading-7 ${
-                          index === 0
-                            ? "font-serif text-[28px] text-[#dd9448]"
-                            : "text-[16px] leading-8 text-[#cdd5cf]"
-                        }`}
-                      >
-                        {paragraph.trim()}
-                      </p>
-                    ) : null,
-                  )}
+                  {/* Label */}
+                  <span className="text-[10px] uppercase tracking-[0.2em] text-[#8d9997]">
+                    Next reading opens in
+                  </span>
+
+                  {/* Animated Timer */}
+                  <time
+                    className="
+      relative min-w-[78px]
+      rounded-md border border-[#d7a167]/20
+      bg-[#d7a167]/[0.06]
+      px-3 py-1.5
+      font-mono text-[12px] font-semibold
+      tracking-[0.14em] text-[#f3e9da]
+      shadow-[inset_0_0_12px_rgba(215,161,103,0.04)]
+      transition-all duration-300
+      animate-[timerGlow_2.5s_ease-in-out_infinite]
+    "
+                  >
+                    <span className="absolute inset-0 rounded-md bg-[#d7a167]/5 animate-pulse" />
+                    <span className="relative">{timeUntilNextReading}</span>
+                  </time>
+                </div>
+
+                <motion.div
+                  className="relative z-10 mt-6 space-y-4"
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.35, ease: EASE_OUT }}
+                >
+                  {displayedFortune?.fortune
+                    .split("\n")
+                    .map((paragraph, index) =>
+                      paragraph.trim() ? (
+                        <p
+                          key={`${displayedFortune.createdAt}-${index}`}
+                          className={`leading-7 ${
+                            index === 0
+                              ? "font-serif text-[28px] text-[#dd9448]"
+                              : "text-[16px] leading-8 text-[#cdd5cf]"
+                          }`}
+                        >
+                          {paragraph.trim()}
+                        </p>
+                      ) : null,
+                    )}
+                </motion.div>
               </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+            )}
+          </AnimatePresence>
 
-        {!isResultView && (
-          <motion.div
+          {!isResultView && (
+            <motion.div
               key="picker"
               className="order-1 relative mt-10 flex min-h-[440px] items-center justify-center sm:mt-12 sm:min-h-[520px]"
               variants={itemVariants}
@@ -512,7 +608,7 @@ export default function TheReading() {
                 {cardRows.map((row, rowIndex) => (
                   <div
                     key={rowIndex}
-                  className={`relative flex w-full flex-nowrap justify-center ${
+                    className={`relative flex w-full flex-nowrap justify-center ${
                       rowIndex === 1
                         ? "-mt-1 sm:mt-0"
                         : rowIndex === 2
@@ -641,8 +737,8 @@ export default function TheReading() {
                   </div>
                 ))}
               </div>
-          </motion.div>
-        )}
+            </motion.div>
+          )}
         </div>
       </motion.section>
 
