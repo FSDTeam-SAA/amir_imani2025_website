@@ -7,7 +7,7 @@ import Hero1 from "@/components/shared/Hero1";
 const page = () => {
   return (
     <div>
-      <Hero1 
+      <Hero1
         image="/hero.jpg"
         title="ABOUT US"
         subtitle="Our Story"

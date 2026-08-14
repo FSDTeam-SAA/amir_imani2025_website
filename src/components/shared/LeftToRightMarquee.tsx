@@ -8,7 +8,7 @@ type RightToLeftMarqueeProps = {
 export default function RightToLeftMarquee({active}:RightToLeftMarqueeProps) {
   const words = [
     "Ares", "Shiva", "Gaia", "Shaman", "Enki", 
-    "Hera", "Mitra", "Ahura", "Asgard", "Titan", "Laozi", "Setna", "Ziggy"
+    "Hera", "Mitra", "Ahura", "Asgard", "Titan", "Laozi", "Setna", "Zigi"
   ];
 
   const repeatedWords = [...words, ...words, ...words];

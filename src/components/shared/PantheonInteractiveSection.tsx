@@ -125,7 +125,7 @@ trust • memory • bond
 In ancient Persia, Mitra watched over promises, not through power but presence. A circle and a
 square, different in every way but joined at one point. That one point is not sameness. It’s
 friendship. He sees who stays loyal even when no one is watching.`,
-    iconImage: "/shapes/mitra.svg",
+    iconImage: "/shapes/mitra.png",
     cardImage: "/card/Cards-8.jpg",
     color: "#95A5A6",
   },
@@ -155,7 +155,7 @@ intuition • vision • listening
 Shaman appears in black because he carries the others. Eleven colours from the other symbols
 sit inside him, silent but alive. His shape pulls you inward, as if he already knows what you're
 hiding. He doesn’t walk the path. He is where it begins.`,
-    iconImage: "/shapes/shaman.svg",
+    iconImage: "/shapes/shaman.png",
     cardImage: "/card/Cards-10.jpg",
     color: "#D4AC0D",
   },
@@ -190,9 +190,9 @@ thunder. Own it.`,
     color: "#795548",
   },
   {
-    id: "Ziggy",
-    name: "Ziggy",
-    title: "Ziggy",
+    id: "Zigi",
+    name: "Zigi",
+    title: "Zigi",
     subtitle: "Trickster",
     number: "No. 13 / 13",
     description: `Zigi ignores the rules of the other symbols. He appears when things become too certain or controlled. His shape is playful, restless, and unpredictable. He changes direction, breaks patterns, and hides inside distraction.

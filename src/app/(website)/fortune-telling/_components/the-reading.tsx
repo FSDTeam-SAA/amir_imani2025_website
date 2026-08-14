@@ -77,7 +77,7 @@ const CARDS_DATA: CardData[] = [
     id: "mitra",
     symbol: "MITRA",
     name: "Mitra",
-    imageSrc: "/shapes/mitra.svg",
+    imageSrc: "/shapes/mitra.png",
   },
   {
     id: "setna",
@@ -89,7 +89,7 @@ const CARDS_DATA: CardData[] = [
     id: "shaman",
     symbol: "SHAMAN",
     name: "Shaman",
-    imageSrc: "/shapes/shaman.svg",
+    imageSrc: "/shapes/shaman.png",
   },
   {
     id: "shiva",
@@ -104,9 +104,9 @@ const CARDS_DATA: CardData[] = [
     imageSrc: "/shapes/titan.svg",
   },
   {
-    id: "Ziggy",
-    symbol: "ZIGGY",
-    name: "Ziggy",
+    id: "Zigi",
+    symbol: "ZIGI",
+    name: "Zigi",
     imageSrc: "/shapes/zigi.png",
   },
 ];
