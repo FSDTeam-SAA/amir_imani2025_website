@@ -22,7 +22,7 @@ export default function FortuneTellingHero() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease: EASE_OUT }}
     >
-      <div className="relative min-h-[360px] md:min-h-[420px] lg:min-h-[500px]">
+      <div className="relative min-h-[360px] md:min-h-[420px] lg:min-h-[500px] ">
         <div className="relative z-10 max-w-[820px]">
           <div className="mb-6 flex flex-wrap items-center gap-2 text-[9px] uppercase tracking-[0.22em] text-[#768483]">
             <span className="rounded-full border border-[#203236] px-3 py-1">

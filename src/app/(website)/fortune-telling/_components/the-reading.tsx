@@ -107,7 +107,7 @@ const CARDS_DATA: CardData[] = [
     id: "Zigi",
     symbol: "ZIGI",
     name: "Zigi",
-    imageSrc: "/shapes/zigi.png",
+    imageSrc: "/shapes/zigi.svg",
   },
 ];
 
