@@ -151,7 +151,11 @@ function CheckoutPaymentForm({
 }
 
 function CheckoutPageContent() {
-  const { data: session, update: updateSession } = useSession();
+  const {
+    data: session,
+    status: sessionStatus,
+    update: updateSession,
+  } = useSession();
   const searchParams = useSearchParams();
   const selectedCountry = searchParams.get("shippingCountry");
   const cartShippingCountry =
@@ -170,7 +174,7 @@ function CheckoutPageContent() {
   const [isPreparingPayment, setIsPreparingPayment] = useState(false);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
-  const isAuthenticated = Boolean(session?.user?.id);
+  const isAuthenticated = sessionStatus === "authenticated";
   const items = useMemo(() => cart?.productIds || [], [cart?.productIds]);
   const currency = getProductPrice(items[0]?.productId).currency;
 
@@ -212,7 +216,23 @@ function CheckoutPageContent() {
   };
 
   const ensureCheckoutUser = async () => {
-    if (session?.user?.id) return session.user.id;
+    if (sessionStatus === "loading") {
+      throw new Error("Your login session is still loading. Please try again.");
+    }
+
+    // A signed-in customer must always pay with their existing account. Never
+    // fall through to registration merely because their session is incomplete.
+    if (sessionStatus === "authenticated") {
+      const userId = session?.user?.id?.trim();
+      if (!userId) {
+        throw new Error(
+          "Could not identify your logged-in account. Please sign in again."
+        );
+      }
+
+      return userId;
+    }
+
     if (checkoutUserId) return checkoutUserId;
 
     const response = await authService.register({
@@ -426,7 +446,12 @@ function CheckoutPageContent() {
 
             <Button
               type="submit"
-              disabled={isPreparingPayment || Boolean(clientSecret) || isLoading}
+              disabled={
+                isPreparingPayment ||
+                Boolean(clientSecret) ||
+                isLoading ||
+                sessionStatus === "loading"
+              }
               className="mt-8 h-12 w-full bg-primary text-white hover:bg-[#111111] md:w-auto"
             >
               {isPreparingPayment ? (

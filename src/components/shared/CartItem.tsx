@@ -53,16 +53,9 @@ const CartItem = React.memo(function CartItem({
         {/* Product Details (Mobile: Next to image, Desktop: Flexed) */}
         <div className="flex-1 flex flex-col md:flex-row md:items-center justify-between gap-4 min-w-0">
           <div className="flex flex-col gap-1 w-full md:max-w-[300px] pr-8 sm:pr-0">
-            <h3 className="text-base font-semibold text-primary leading-tight truncate">
+            <h3 className="text-base font-semibold text-black leading-tight truncate">
               {title}
             </h3>
-            <div
-              className="text-xs text-[#8B8B8B] leading-relaxed line-clamp-1"
-              dangerouslySetInnerHTML={{
-                __html: shortDescription,
-              }}
-            />
-
             {(color || size) && (
               <div className="flex flex-wrap gap-3 mt-1">
                 {color && (
