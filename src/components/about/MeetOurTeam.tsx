@@ -80,7 +80,7 @@ export default function MeetOurTeam() {
 
         {/* Main Header */}
         <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
-          Meet Our <span className="text-[#E96A3D]">Founders.</span>
+          Meet Our <span className="text-[#E96A3D]">Team</span>
         </h2>
 
         {/* Subtitle Description */}

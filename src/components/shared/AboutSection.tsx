@@ -42,7 +42,7 @@ one shared universe.
             <div>
               <div className="text-4xl md:text-5xl font-bold mb-2 tracking-tight">∞</div>
               <div className="text-[10px]  font-bold tracking-[0.15em] uppercase text-white/80">
-              Infinity Experiences.
+              INFINITE Experiences.
               </div>
             </div>
           </div>
